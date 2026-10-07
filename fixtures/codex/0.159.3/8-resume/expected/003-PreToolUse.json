@@ -1,0 +1,19 @@
+{
+  "kind": "tool.pre",
+  "session": "01a0f71a-7656-7c02-8461-8d00e7f552ce",
+  "tool_call": "exec-340f1eca-8f46-4a97-9d82-146c2e2d860c",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a0f739-85cf-7d01-a27a-edf2d067ea29",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-55-01-01a0f71a-7656-7c02-8461-8d00e7f552ce.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "pwd"
+    },
+    "command": "pwd"
+  }
+}

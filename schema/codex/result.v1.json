@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:subspace:result:codex:v1",
+  "title": "Result of applying the codex mapping document (format 1) to one raw codex payload; see docs/model.md",
+  "$ref": "#/$defs/result",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "opaque": {},
+    "result": {
+      "type": "object",
+      "required": [
+        "kind",
+        "codex"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "session.start",
+            "turn.start",
+            "turn.stop",
+            "tool.pre",
+            "tool.post",
+            "permission.request",
+            "agent.start",
+            "compact.start",
+            "compact.end",
+            "other",
+            "unknown"
+          ]
+        },
+        "session": {
+          "$ref": "#/$defs/id"
+        },
+        "agent": {
+          "$ref": "#/$defs/id"
+        },
+        "tool_call": {
+          "$ref": "#/$defs/id"
+        },
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cwd": {
+          "type": "string"
+        },
+        "codex": {
+          "$ref": "#/$defs/codex"
+        }
+      },
+      "additionalProperties": false
+    },
+    "codex": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "session.start",
+            "turn.start",
+            "tool.pre",
+            "permission.request",
+            "tool.post",
+            "compact.start",
+            "compact.end",
+            "agent.start",
+            "agent.turn.stop",
+            "turn.stop",
+            "turn.interrupt",
+            "unknown"
+          ]
+        },
+        "turn_id": {
+          "$ref": "#/$defs/id"
+        },
+        "rollout_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parent_rollout_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "type": "string"
+        },
+        "permission_mode": {
+          "type": "string"
+        },
+        "agent_type": {
+          "type": "string"
+        },
+        "start_source": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "tool_name": {
+          "type": "string"
+        },
+        "tool_input": {
+          "$ref": "#/$defs/opaque"
+        },
+        "command": {
+          "type": "string"
+        },
+        "tool_response": {
+          "$ref": "#/$defs/opaque"
+        },
+        "spawn_name": {
+          "type": "string"
+        },
+        "spawn_task": {
+          "type": "string"
+        },
+        "compact_trigger": {
+          "type": "string"
+        },
+        "last_assistant_message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

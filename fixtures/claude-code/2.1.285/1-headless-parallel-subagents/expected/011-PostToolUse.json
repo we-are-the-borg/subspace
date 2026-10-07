@@ -1,0 +1,31 @@
+{
+  "kind": "tool.post",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "agent": "a89ee3c49b791e40d",
+  "tool_call": "toolu_01NDLSNn3akp9GvnoR9zYvKW",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "tool_name": "Read",
+    "tool_input": {
+      "file_path": "/Users/user/dev/subspace/tools/hook-capture/README.md"
+    },
+    "tool_response": {
+      "type": "text",
+      "file": {
+        "filePath": "/Users/user/dev/subspace/tools/hook-capture/README.md",
+        "content": "# Hook capture\n\nThrowaway Claude Code project that records every subscribed hook event (see `docs/events.md`) under the same conditions as the real plugin: `async: true`, no output, exit 0.\n\n- `log.sh` writes one file per event to `captures/events/`: `<name>.json` is the raw payload, `<name>.meta` holds `$PPID`, `$CLAUDE_PID`, the parent process chain and the names (not values) of exported `CLAUDE_*` variables.\n- `collect.sh` copies every transcript the events reference, including `subagents/`, to `captures/transcripts/`.\n\n`captures/` is git-ignored; curated payloads go to `fixtures/claude-code/<version>/` (#4).\n\n## Runs\n\nRun everything from this directory. Start clean with `rm -rf captures`.\n\n**1. Headless, two parallel subagents**\n\n```sh\nclaude -p \"Start exactly two general-purpose subagents in parallel (one message, two Agent calls). Agent 1: 'Run: sleep 3; echo alpha. Report the output.' Agent 2: 'Read README.md and report its content.' Then reply with both results.\" \\\n  --model haiku --allowedTools \"Agent\" \"Bash(sleep 3; echo alpha)\" \"Read\"\n```\n\nThe prompt must come right after `-p`: `--allowedTools` takes any number of values and would swallow it. `-p` also kills async hooks still running at teardown, so late events such as `Stop` or `SessionEnd` may be missing here. Run 2 covers them.\n\n**2. Interactive, ended with `/exit`**\n\nStart `claude --model haiku`. On the first start, accept the workspace trust dialog, otherwise the project hooks don't run.\n\n1. Send the same prompt as in run 1, without the quotes around it.\n2. When a permission prompt appears, **wait at least 10 seconds** before approving (the `permission_prompt` notification fires after about 6 s).\n3. Run `/compact`.\n4. Run `/model sonnet`.\n5. Run `/exit`.\n\n**3. Interactive, ended with Ctrl-C**\n\nStart `claude --model haiku`, send `hi`, wait for the answer, then press Ctrl-C twice.\n\n**Afterwards**\n\n```sh\n./collect.sh\n```\n\n## What #4 checks\n\n- Do tool calls inside a subagent carry its `agent_id`? Which fields do `Agent` tool calls and `SubagentStart`/`SubagentStop` have?\n- Is `$PPID` the Claude process (compare with the process chain in `.meta`)? Is `CLAUDE_PID` set in hooks and does it match?\n- Does `SessionEnd` arrive async after `/exit` (run 2) and Ctrl-C (run 3)?\n- How far does arrival order (file mtime) deviate from the transcript timestamps?\n- Payload sizes, especially outliers.\n",
+        "numLines": 50,
+        "startLine": 1,
+        "totalLines": 50
+      }
+    },
+    "duration_ms": 4,
+    "file_path": "/Users/user/dev/subspace/tools/hook-capture/README.md"
+  }
+}

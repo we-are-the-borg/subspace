@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "6fa2109c-8e3e-4ae5-99eb-e8f5672d7306",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/6fa2109c-8e3e-4ae5-99eb-e8f5672d7306.jsonl",
+    "prompt_id": "4dee80ee-35f8-4630-8fbf-f8602e0aa016",
+    "permission_mode": "default",
+    "last_assistant_message": "Hey! I see you're on the `plugin/scaffold` branch for the subspace project. Looking at your plan, steps 1-3 and 5 are complete. Next up is:\n\n- **#4** — Evaluate captures and store fixtures (needs a user run)\n- **#6** — `spool.sh` with tests\n- **#7** — End-to-end\n\nWhat's on your mind?",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

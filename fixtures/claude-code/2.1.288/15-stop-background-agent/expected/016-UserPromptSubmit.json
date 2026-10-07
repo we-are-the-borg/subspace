@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "f36170bf-a638-463e-a6cc-f7550e72b11e",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
+    "prompt_id": "5aa98454-8ee1-48bd-a600-f8c7e5736c55",
+    "permission_mode": "auto",
+    "prompt": "<task-notification>\n<task-type>artifact-auto-react</task-type>\n<summary>Artifact auto-replies are disarmed for the rest of this session</summary>\nNo subscription was active to stop (a new session re-arms on publish; a watch this session carried stays disarmed for its continuations).\n</task-notification>"
+  }
+}

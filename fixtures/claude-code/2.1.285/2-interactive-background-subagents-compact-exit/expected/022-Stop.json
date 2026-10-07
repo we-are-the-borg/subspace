@@ -1,0 +1,24 @@
+{
+  "kind": "turn.stop",
+  "session": "70df4d87-5cf7-455a-bbbf-9d65ca03a023",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023.jsonl",
+    "prompt_id": "5cf00cf7-cd00-4f86-9d28-434a371f9799",
+    "permission_mode": "default",
+    "last_assistant_message": "Agent 1 complete: the command output is **alpha**.\n\nWaiting for Agent 2 (README.md reader) to finish...",
+    "background_tasks": [
+      {
+        "id": "a49678b26aced2971",
+        "type": "subagent",
+        "status": "running",
+        "description": "Read and report README.md",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a49678b26aced2971"
+    ]
+  }
+}

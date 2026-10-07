@@ -1,0 +1,28 @@
+{
+  "kind": "tool.post",
+  "session": "8ed9b628-a6a9-4322-9f26-8fb075b17634",
+  "tool_call": "toolu_01PABLRt6QQVo2fw7CTFNo4U",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/8ed9b628-a6a9-4322-9f26-8fb075b17634.jsonl",
+    "prompt_id": "ed141005-45f7-403b-8010-9fe38d1c3e1c",
+    "permission_mode": "default",
+    "tool_name": "Glob",
+    "tool_input": {
+      "pattern": "captures/s13*"
+    },
+    "tool_response": {
+      "filenames": [
+        "captures/s13.txt"
+      ],
+      "durationMs": 17,
+      "numFiles": 1,
+      "truncated": false,
+      "totalMatches": 1,
+      "countIsComplete": true
+    },
+    "duration_ms": 17
+  }
+}

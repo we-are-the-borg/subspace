@@ -1,0 +1,12 @@
+{
+  "kind": "session.start",
+  "session": "01a0f73c-f632-7622-a755-51d3ace56468",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex/captures/project with spaces",
+  "codex": {
+    "kind": "session.start",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T13-32-42-01a0f73c-f632-7622-a755-51d3ace56468.jsonl",
+    "model": "gpt-6-luna",
+    "permission_mode": "default",
+    "start_source": "startup"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "tool.post",
+  "session": "4fc6892d-93ff-4652-9fca-a81cb12b8c7c",
+  "agent": "aaaf4a85361d74cd5",
+  "tool_call": "toolu_01Lh9qdodUjNrBDxNgHb3WTh",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/4fc6892d-93ff-4652-9fca-a81cb12b8c7c.jsonl",
+    "prompt_id": "d1efa8e4-50db-4c73-a6d2-e9ea93ccb6e3",
+    "permission_mode": "auto",
+    "agent_type": "general-purpose",
+    "tool_name": "SubagentHandback",
+    "tool_input": {
+      "message": "I did not run the command, so there is no output to report. The Bash tool blocked `sleep 30; echo bg` with this error: \"Blocked: sleep 30 followed by: echo bg. To wait for a condition, use Monitor with an until-loop... Do not chain shorter sleeps to work around this block.\" I did not retry it or work around it with shorter sleeps or a background run, since you asked for exactly this command in the foreground. If you want it run another way, for example in the background with `run_in_background`, tell me and I'll do that."
+    },
+    "tool_response": {
+      "success": true,
+      "message": "Report delivered to your caller."
+    },
+    "duration_ms": 20
+  }
+}

@@ -1,0 +1,15 @@
+name: Feature request
+description: A new event, agent or field apps should get.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What do you need, and why?
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: For a new hook event, note whether registering it alone changes the agent's behavior (see `docs/events/`).

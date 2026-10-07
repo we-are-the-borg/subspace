@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "prompt": "Start exactly two general-purpose subagents in parallel (one message, two Agent calls). Agent 1: 'Run: sleep 3; echo alpha. Report the output.' Agent 2: 'Read README.md and report its content.' Then reply with both results."
+  }
+}

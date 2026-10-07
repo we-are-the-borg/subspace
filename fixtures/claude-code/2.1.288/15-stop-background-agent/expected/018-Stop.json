@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "f36170bf-a638-463e-a6cc-f7550e72b11e",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
+    "prompt_id": "ed0afacb-8455-4dd4-940b-4339d340d430",
+    "permission_mode": "auto",
+    "last_assistant_message": "The background agent \"Run sleep commands\" was stopped by the user before it finished, so I have no output from the four sleep-and-echo commands to report.",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

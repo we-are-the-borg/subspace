@@ -1,0 +1,27 @@
+{
+  "kind": "other",
+  "session": "f36170bf-a638-463e-a6cc-f7550e72b11e",
+  "agent": "a0d9b929f1cf5c907",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
+    "prompt_id": "848c6dbb-d4b5-4ab0-9a69-f732fd68c001",
+    "permission_mode": "auto",
+    "agent_type": "",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e/subagents/agent-a0d9b929f1cf5c907.jsonl",
+    "last_assistant_message": "what did the agent output?",
+    "background_tasks": [
+      {
+        "id": "a80f925acc1e94159",
+        "type": "subagent",
+        "status": "running",
+        "description": "Run sleep commands",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a80f925acc1e94159"
+    ]
+  }
+}

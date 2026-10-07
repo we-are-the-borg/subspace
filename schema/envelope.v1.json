@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:subspace:envelope:v1",
+  "title": "subspace event file, version 1",
+  "description": "One agent hook event as written to $ROOT/events/<UTC date>/<ts>-<pid>-<random>.json. See docs/contract.md §4. The payload is the source agent's hook JSON, unchanged; its format belongs to that agent and is only sketched here.",
+  "type": "object",
+  "required": ["v", "source", "ts", "pid", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "description": "Format version. Apps skip files with an unknown version.",
+      "const": 1
+    },
+    "source": {
+      "description": "Agent that produced the event, e.g. \"claude-code\" or \"codex\" (contract §4). Apps ignore sources they don't know.",
+      "type": "string",
+      "minLength": 1
+    },
+    "ts": {
+      "description": "Unix seconds when the plugin saw the event. With async hooks this is not the exact moment of the event.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "pid": {
+      "description": "Parent process of the launched hook command. Its source-specific meaning is defined in contract §4.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "payload": {
+      "description": "The hook's stdin JSON, byte for byte. Fields depend on source and hook_event_name; see docs/events/ and fixtures/<source>/<version>/.",
+      "type": "object",
+      "required": ["hook_event_name"],
+      "properties": {
+        "hook_event_name": { "type": "string" },
+        "session_id": { "type": "string" },
+        "transcript_path": { "type": ["string", "null"] },
+        "cwd": { "type": "string" },
+        "agent_id": { "type": "string" },
+        "agent_type": { "type": "string" }
+      }
+    }
+  }
+}

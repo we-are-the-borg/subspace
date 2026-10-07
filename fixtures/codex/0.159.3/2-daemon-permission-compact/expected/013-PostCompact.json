@@ -1,0 +1,12 @@
+{
+  "kind": "compact.end",
+  "session": "01a0f71a-7656-7c02-8461-8d00e7f552ce",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "compact.end",
+    "turn_id": "01a0f71e-0629-7e70-9d3d-21dc8a797a0e",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-55-01-01a0f71a-7656-7c02-8461-8d00e7f552ce.jsonl",
+    "model": "gpt-6.1-sol",
+    "compact_trigger": "manual"
+  }
+}

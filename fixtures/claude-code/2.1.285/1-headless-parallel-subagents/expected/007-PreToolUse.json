@@ -1,0 +1,22 @@
+{
+  "kind": "tool.pre",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "tool_call": "toolu_01XoQFfkP3MRS6Y5FM9nxrRB",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Read README.md and report content",
+      "prompt": "Read the file README.md in the current directory and report its full content.",
+      "run_in_background": false
+    },
+    "spawn_description": "Read README.md and report content",
+    "spawn_prompt": "Read the file README.md in the current directory and report its full content.",
+    "spawn_background": false
+  }
+}

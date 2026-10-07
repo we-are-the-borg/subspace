@@ -1,0 +1,19 @@
+{
+  "kind": "permission.request",
+  "session": "01a0f71a-7656-7c02-8461-8d00e7f552ce",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "permission.request",
+    "turn_id": "01a0f71d-9c6e-7f50-a26c-ab4e6cf77046",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-55-01-01a0f71a-7656-7c02-8461-8d00e7f552ce.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "printf 'permission-denied\\n' > captures/permission-denied-probe",
+      "description": "May I run this exact command to write the disposable captures/permission-denied-probe file?"
+    },
+    "command": "printf 'permission-denied\\n' > captures/permission-denied-probe"
+  }
+}

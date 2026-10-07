@@ -1,0 +1,14 @@
+{
+  "name": "subspace",
+  "description": "Observe-only Claude Code plugins",
+  "owner": {
+    "name": "Andreas Wehr"
+  },
+  "plugins": [
+    {
+      "name": "subspace",
+      "source": "./",
+      "description": "Writes every hook event, unchanged, into a shared folder that local apps read. Never blocks or interferes."
+    }
+  ]
+}

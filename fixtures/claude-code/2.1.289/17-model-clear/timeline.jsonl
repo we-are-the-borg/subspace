@@ -1,0 +1,31 @@
+{"ms": 1791212477600, "action": "start"}
+{"ms": 1791212478370, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1791212478426, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1791212478534, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1791212478659, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1791212478659, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1791212482126, "action": "send: Reply with the word one. No tools."}
+{"ms": 1791212482199, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1791212482232, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1791212483463, "n": 8, "file": "events/008-Stop.json"}
+{"ms": 1791212483797, "n": 9, "file": "status/009-status.json", "inode_changed": false}
+{"ms": 1791212487076, "action": "send: /model sonnet"}
+{"ms": 1791212487106, "n": 10, "file": "status/010-status.json", "inode_changed": false}
+{"ms": 1791212489084, "action": "switch model dialog: yes"}
+{"ms": 1791212489161, "n": 11, "file": "events/011-PostModelSwitch.json"}
+{"ms": 1791212489219, "n": 12, "file": "status/012-status.json", "inode_changed": false}
+{"ms": 1791212492807, "action": "send: /clear"}
+{"ms": 1791212492862, "n": 13, "file": "status/013-status.json", "inode_changed": false}
+{"ms": 1791212492893, "n": 14, "file": "events/014-SessionEnd.json"}
+{"ms": 1791212492914, "n": 15, "file": "events/015-SessionStart.json"}
+{"ms": 1791212496523, "action": "send: Reply with the word two. No tools."}
+{"ms": 1791212496587, "n": 16, "file": "status/016-status.json", "inode_changed": false}
+{"ms": 1791212496615, "n": 17, "file": "events/017-UserPromptSubmit.json"}
+{"ms": 1791212496683, "n": 18, "file": "events/018-InstructionsLoaded.json"}
+{"ms": 1791212496683, "n": 19, "file": "events/019-InstructionsLoaded.json"}
+{"ms": 1791212497938, "n": 20, "file": "events/020-Stop.json"}
+{"ms": 1791212498260, "n": 21, "file": "status/021-status.json", "inode_changed": false}
+{"ms": 1791212503464, "action": "send: /exit"}
+{"ms": 1791212503734, "file_deleted": "767.json"}
+{"ms": 1791212503799, "n": 22, "file": "events/022-SessionEnd.json"}
+{"ms": 1791212505467, "action": "exited"}

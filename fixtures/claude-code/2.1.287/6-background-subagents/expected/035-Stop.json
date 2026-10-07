@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "4fc6892d-93ff-4652-9fca-a81cb12b8c7c",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/4fc6892d-93ff-4652-9fca-a81cb12b8c7c.jsonl",
+    "prompt_id": "de53cc7f-651c-46ca-b408-f5839962299a",
+    "permission_mode": "auto",
+    "last_assistant_message": "The first agent ran `sleep 10; echo fg` in the foreground and it printed:\n\n```\nfg\n```\n\nThe second agent's `sleep 30; echo bg` was blocked, so it never ran.",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

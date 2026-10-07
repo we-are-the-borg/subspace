@@ -1,0 +1,119 @@
+name: release-please
+
+on:
+  push:
+    branches: [main]
+  # Re-run the dist publication for an existing release tag.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish to its dist repo we-are-the-borg/subspace-<source>, e.g. claude-code-1.0.0
+        required: true
+
+# Writes go through the release GitHub App's tokens, not GITHUB_TOKEN.
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.tags.outputs.tags }}
+      dist: ${{ steps.tags.outputs.dist }}
+    steps:
+      # A token of the release GitHub App instead of GITHUB_TOKEN, so the
+      # release PRs it opens run CI like any other PR.
+      - uses: actions/create-github-app-token@v3
+        id: app
+        if: github.event_name == 'push'
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+      - uses: googleapis/release-please-action@v5
+        id: rp
+        if: github.event_name == 'push'
+        with:
+          token: ${{ steps.app.outputs.token }}
+      # Tags released by this run (one per released adapter package), from
+      # paths_released and each path's "<path>--release_created" and
+      # "<path>--tag_name" outputs; or the dispatch input.
+      - id: tags
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          OUTPUTS: ${{ toJSON(steps.rp.outputs) }}
+        run: |
+          if [ "$EVENT" = workflow_dispatch ]; then
+            tags=$INPUT_TAG
+          else
+            tags=$(printf '%s' "$OUTPUTS" | jq -r '. as $o
+              | (($o.paths_released // "[]") | fromjson)
+              | map(select(($o[. + "--release_created"] | tostring) == "true") | $o[. + "--tag_name"])
+              | join(" ")')
+          fi
+          echo "tags=$tags"
+          echo "tags=$tags" >> "$GITHUB_OUTPUT"
+          # One dist job per tag: <source>-<version>, the release-please
+          # component is the source; its dist repo follows from it.
+          dist=$(printf '%s\n' $tags | jq -R -s -c 'split("\n") | map(select(. != "")
+            | (sub("-[0-9].*$"; "")) as $s
+            | {tag: ., source: $s, repo: ("subspace-" + $s)})')
+          echo "dist=$dist"
+          echo "dist=$dist" >> "$GITHUB_OUTPUT"
+
+  # Publishes each released adapter to its own dist repo
+  # we-are-the-borg/subspace-<source>, whose root is the plugin and its
+  # marketplace: one commit plus the tag, pushed atomically. Never push to a
+  # dist repo by hand. Tags created by release-please with GITHUB_TOKEN
+  # trigger no workflows, so this runs here instead of on the tag. Tags
+  # already in the dist repo are skipped, so a re-run is harmless.
+  dist:
+    needs: release-please
+    if: needs.release-please.outputs.tags != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.release-please.outputs.dist) }}
+    env:
+      TAG: ${{ matrix.tag }}
+      SOURCE: ${{ matrix.source }}
+      REPO: we-are-the-borg/${{ matrix.repo }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          path: dev
+      # The release GitHub App, limited to this dist repo.
+      - uses: actions/create-github-app-token@v3
+        id: app
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          repositories: ${{ matrix.repo }}
+      - name: Clone the dist repo
+        env:
+          TOKEN: ${{ steps.app.outputs.token }}
+        run: git clone "https://x-access-token:$TOKEN@github.com/$REPO.git" dist
+      - name: Assemble
+        run: |
+          if git -C dist ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null; then
+            echo "skip $TAG: already in $REPO"
+            echo "SKIP=1" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          git -C dev checkout -q "refs/tags/$TAG"
+          sh dev/tools/dist/assemble.sh "$SOURCE" dist "$TAG"
+      - name: Commit, tag and push atomically
+        if: env.SKIP != '1'
+        run: |
+          cd dist
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -q -m "release: $TAG"
+          git tag -a -m "$TAG" "$TAG"
+          git show --stat --format='%H %s' HEAD
+          git push --atomic origin HEAD:main "refs/tags/$TAG"

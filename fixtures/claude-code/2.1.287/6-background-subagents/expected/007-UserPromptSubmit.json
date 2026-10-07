@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "4fc6892d-93ff-4652-9fca-a81cb12b8c7c",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/4fc6892d-93ff-4652-9fca-a81cb12b8c7c.jsonl",
+    "prompt_id": "02e7d3e5-2cac-4ca7-9d4b-c61d5b47c117",
+    "permission_mode": "auto",
+    "prompt": "Call the Agent tool once with subagent_type general-purpose and run_in_background false, prompt: 'Run exactly this Bash command in the foreground: sleep 10; echo fg. Report the output.' Then reply with its result."
+  }
+}

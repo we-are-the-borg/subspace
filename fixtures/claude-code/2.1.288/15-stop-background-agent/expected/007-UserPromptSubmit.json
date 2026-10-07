@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "f36170bf-a638-463e-a6cc-f7550e72b11e",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
+    "prompt_id": "848c6dbb-d4b5-4ab0-9a69-f732fd68c001",
+    "permission_mode": "auto",
+    "prompt": "Call the Agent tool once with subagent_type general-purpose and run_in_background true, prompt: 'Run these Bash commands one after the other, each in the foreground: sleep 10; echo one, then sleep 10; echo two, then sleep 10; echo three, then sleep 10; echo four. Report the output.' Don't wait for it."
+  }
+}

@@ -1,0 +1,279 @@
+{
+  "format": 1,
+  "revision": 5,
+  "source": "claude-code",
+  "block": "claude_code",
+  "observed": ["2.1.285", "2.1.287", "2.1.288", "2.1.289"],
+  "core": {
+    "kind": {
+      "path": "/hook_event_name",
+      "map": {
+        "SessionStart": "session.start",
+        "UserPromptSubmit": "turn.start",
+        "Stop": "turn.stop",
+        "PreToolUse": "tool.pre",
+        "PostToolUse": "tool.post",
+        "PermissionRequest": "permission.request",
+        "SubagentStart": "agent.start",
+        "PreCompact": "compact.start",
+        "PostCompact": "compact.end",
+        "SessionEnd": "other",
+        "InstructionsLoaded": "other",
+        "ConfigChange": "other",
+        "PostToolBatch": "other",
+        "Notification": "other",
+        "SubagentStop": "other",
+        "PostModelSwitch": "other",
+        "Setup": "other",
+        "UserPromptExpansion": "other",
+        "PermissionDenied": "other",
+        "PostToolUseFailure": "tool.post",
+        "TaskCreated": "other",
+        "TaskCompleted": "other",
+        "TeammateIdle": "other",
+        "StopFailure": "other",
+        "CwdChanged": "other",
+        "DirectoryAdded": "other",
+        "Elicitation": "other",
+        "ElicitationResult": "other"
+      },
+      "default": "unknown"
+    },
+    "session": { "path": "/session_id", "type": "id" },
+    "agent": { "path": "/agent_id", "type": "id" },
+    "tool_call": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure"] }],
+      "path": "/tool_use_id",
+      "type": "id"
+    },
+    "tool": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest"] }],
+      "path": "/tool_name",
+      "map": { "Bash": "shell", "Agent": "spawn_agent" },
+      "default": "other"
+    },
+    "cwd": { "path": "/cwd", "type": "string" }
+  },
+  "fields": {
+    "kind": {
+      "path": "/hook_event_name",
+      "map": {
+        "SessionStart": "session.start",
+        "SessionEnd": "session.end",
+        "InstructionsLoaded": "instructions.load",
+        "ConfigChange": "config.change",
+        "UserPromptSubmit": "turn.start",
+        "PreToolUse": "tool.pre",
+        "PermissionRequest": "permission.request",
+        "PostToolUse": "tool.post",
+        "PostToolBatch": "tool.batch",
+        "Notification": "notification",
+        "SubagentStart": "agent.start",
+        "SubagentStop": "agent.stop",
+        "Stop": "turn.stop",
+        "PreCompact": "compact.start",
+        "PostCompact": "compact.end",
+        "PostModelSwitch": "model.change",
+        "Setup": "setup",
+        "UserPromptExpansion": "prompt.expand",
+        "PermissionDenied": "permission.denied",
+        "PostToolUseFailure": "tool.failure",
+        "TaskCreated": "task.create",
+        "TaskCompleted": "task.complete",
+        "TeammateIdle": "teammate.idle",
+        "StopFailure": "turn.failure",
+        "CwdChanged": "cwd.change",
+        "DirectoryAdded": "directory.add",
+        "Elicitation": "elicitation.request",
+        "ElicitationResult": "elicitation.result"
+      },
+      "default": "unknown"
+    },
+    "transcript_path": { "path": "/transcript_path", "type": "string" },
+    "prompt_id": { "path": "/prompt_id", "type": "id" },
+    "permission_mode": { "path": "/permission_mode", "type": "string" },
+    "agent_type": { "path": "/agent_type", "type": "string", "note": "empty for internal agents (C2-025)" },
+    "start_source": {
+      "when": [{ "path": "/hook_event_name", "in": ["SessionStart"] }],
+      "path": "/source",
+      "type": "string"
+    },
+    "model": {
+      "when": [{ "path": "/hook_event_name", "in": ["SessionStart"] }],
+      "path": "/model",
+      "type": "string"
+    },
+    "end_reason": {
+      "when": [{ "path": "/hook_event_name", "in": ["SessionEnd"] }],
+      "path": "/reason",
+      "type": "string"
+    },
+    "prompt": {
+      "when": [{ "path": "/hook_event_name", "in": ["UserPromptSubmit"] }],
+      "path": "/prompt",
+      "type": "string"
+    },
+    "tool_name": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest"] }],
+      "path": "/tool_name",
+      "type": "string"
+    },
+    "tool_input": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest"] }],
+      "path": "/tool_input",
+      "type": "any"
+    },
+    "tool_response": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostToolUse"] }],
+      "path": "/tool_response",
+      "type": "any"
+    },
+    "duration_ms": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostToolUse", "PostToolUseFailure"] }],
+      "path": "/duration_ms",
+      "type": "integer"
+    },
+    "error": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostToolUseFailure"] }],
+      "path": "/error",
+      "type": "string"
+    },
+    "is_interrupt": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostToolUseFailure"] }],
+      "path": "/is_interrupt",
+      "type": "boolean"
+    },
+    "file_path": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest"] },
+        { "path": "/tool_name", "in": ["Write", "Edit", "Read"] }
+      ],
+      "path": "/tool_input/file_path",
+      "type": "string"
+    },
+    "spawn_description": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_input/description",
+      "type": "string"
+    },
+    "spawn_prompt": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_input/prompt",
+      "type": "string"
+    },
+    "spawn_type": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_input/subagent_type",
+      "type": "string"
+    },
+    "spawn_model": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_input/model",
+      "type": "string",
+      "note": "the alias the call sets (e.g. haiku), not a full model ID; absent when the subagent inherits its model, then only spawned_model names it (S16-008, S16-009)"
+    },
+    "spawn_background": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_input/run_in_background",
+      "type": "boolean"
+    },
+    "spawned_agent": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PostToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_response/agentId",
+      "type": "id",
+      "note": "equals the subagent's core agent (C1-016, C2-008)"
+    },
+    "spawned_async": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PostToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_response/isAsync",
+      "type": "boolean"
+    },
+    "spawned_model": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PostToolUse"] },
+        { "path": "/tool_name", "in": ["Agent"] }
+      ],
+      "path": "/tool_response/resolvedModel",
+      "type": "string",
+      "note": "full model ID the subagent runs with, also when inherited (S16-011, S16-012)"
+    },
+    "notification_message": {
+      "when": [{ "path": "/hook_event_name", "in": ["Notification"] }],
+      "path": "/message",
+      "type": "string"
+    },
+    "notification_type": {
+      "when": [{ "path": "/hook_event_name", "in": ["Notification"] }],
+      "path": "/notification_type",
+      "type": "string"
+    },
+    "agent_transcript_path": {
+      "when": [{ "path": "/hook_event_name", "in": ["SubagentStop"] }],
+      "path": "/agent_transcript_path",
+      "type": "string"
+    },
+    "parent_tool_use_id": {
+      "when": [{ "path": "/hook_event_name", "in": ["SubagentStart", "SubagentStop"] }],
+      "path": "/parent_tool_use_id",
+      "type": "id",
+      "note": "documented by Claude Code, not sent by 2.1.285; picked up once it appears"
+    },
+    "last_assistant_message": {
+      "when": [{ "path": "/hook_event_name", "in": ["Stop", "SubagentStop"] }],
+      "path": "/last_assistant_message",
+      "type": "string"
+    },
+    "background_tasks": {
+      "when": [{ "path": "/hook_event_name", "in": ["Stop", "SubagentStop"] }],
+      "path": "/background_tasks",
+      "type": "array"
+    },
+    "background_agents": {
+      "when": [{ "path": "/hook_event_name", "in": ["Stop", "SubagentStop"] }],
+      "path": "/background_tasks",
+      "each": { "when": [{ "path": "/type", "in": ["subagent"] }], "path": "/id", "type": "id" },
+      "note": "the agent IDs of the running background subagents; shells and other entries left out"
+    },
+    "compact_trigger": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreCompact", "PostCompact"] }],
+      "path": "/trigger",
+      "type": "string"
+    },
+    "compact_summary": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostCompact"] }],
+      "path": "/compact_summary",
+      "type": "string"
+    },
+    "from_model": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostModelSwitch"] }],
+      "path": "/from_model",
+      "type": "string"
+    },
+    "to_model": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostModelSwitch"] }],
+      "path": "/to_model",
+      "type": "string"
+    }
+  }
+}

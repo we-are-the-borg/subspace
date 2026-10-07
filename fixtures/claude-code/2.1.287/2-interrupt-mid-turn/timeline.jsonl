@@ -1,0 +1,20 @@
+{"ms": 1790968981042, "action": "start"}
+{"ms": 1790968981792, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790968981902, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790968981956, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790968982112, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790968982114, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790968985570, "action": "send: Write a 2000-word story about a lighthouse. No tools."}
+{"ms": 1790968985634, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1790968985659, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1790968989782, "action": "press esc mid-turn"}
+{"ms": 1790968989899, "n": 8, "file": "status/008-status.json", "inode_changed": false}
+{"ms": 1790968995293, "action": "send: Write a 2000-word story about a lighthouse. No tools."}
+{"ms": 1790968995337, "n": 9, "file": "status/009-status.json", "inode_changed": false}
+{"ms": 1790968995375, "n": 10, "file": "events/010-UserPromptSubmit.json"}
+{"ms": 1790968999501, "action": "press ctrl-c mid-turn"}
+{"ms": 1790968999546, "n": 11, "file": "status/011-status.json", "inode_changed": false}
+{"ms": 1790969005011, "action": "send: /exit"}
+{"ms": 1790969005312, "file_deleted": "3668.json"}
+{"ms": 1790969005356, "n": 12, "file": "events/012-SessionEnd.json"}
+{"ms": 1790969005626, "action": "exited"}

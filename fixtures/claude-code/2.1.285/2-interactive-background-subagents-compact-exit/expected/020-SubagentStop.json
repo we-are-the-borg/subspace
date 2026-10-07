@@ -1,0 +1,35 @@
+{
+  "kind": "other",
+  "session": "70df4d87-5cf7-455a-bbbf-9d65ca03a023",
+  "agent": "a39f8e1822e441b9e",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023.jsonl",
+    "prompt_id": "80437e56-0841-408c-b8a8-895d6706839c",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023/subagents/agent-a39f8e1822e441b9e.jsonl",
+    "last_assistant_message": "The exact output I see is:\n\n```\nalpha\n```",
+    "background_tasks": [
+      {
+        "id": "a39f8e1822e441b9e",
+        "type": "subagent",
+        "status": "running",
+        "description": "Run sleep and echo command",
+        "agent_type": "general-purpose"
+      },
+      {
+        "id": "a49678b26aced2971",
+        "type": "subagent",
+        "status": "running",
+        "description": "Read and report README.md",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a39f8e1822e441b9e",
+      "a49678b26aced2971"
+    ]
+  }
+}

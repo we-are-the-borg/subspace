@@ -1,0 +1,24 @@
+{
+  "kind": "turn.stop",
+  "session": "356cc977-00dd-4889-9e26-0aa587d3d220",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220.jsonl",
+    "prompt_id": "302490f7-a683-4e12-9271-f2762cf70887",
+    "permission_mode": "default",
+    "last_assistant_message": "Agent started and running. It will complete in about 10 seconds—I'll report the output when the notification arrives.",
+    "background_tasks": [
+      {
+        "id": "a959f735a8ae89a1c",
+        "type": "subagent",
+        "status": "running",
+        "description": "Run Bash command and report output",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a959f735a8ae89a1c"
+    ]
+  }
+}

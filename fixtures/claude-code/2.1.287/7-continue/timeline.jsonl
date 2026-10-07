@@ -1,0 +1,16 @@
+{"ms": 1790969214215, "action": "start"}
+{"ms": 1790969214980, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790969215034, "n": 2, "file": "status/002-status.json", "inode_changed": false}
+{"ms": 1790969215090, "n": 3, "file": "events/003-SessionStart.json"}
+{"ms": 1790969215191, "n": 4, "file": "status/004-status.json", "inode_changed": false}
+{"ms": 1790969215292, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790969215303, "n": 6, "file": "events/006-InstructionsLoaded.json"}
+{"ms": 1790969218750, "action": "send: hi"}
+{"ms": 1790969218793, "n": 7, "file": "status/007-status.json", "inode_changed": false}
+{"ms": 1790969218844, "n": 8, "file": "events/008-UserPromptSubmit.json"}
+{"ms": 1790969220635, "n": 9, "file": "events/009-Stop.json"}
+{"ms": 1790969221006, "n": 10, "file": "status/010-status.json", "inode_changed": false}
+{"ms": 1790969226331, "action": "send: /exit"}
+{"ms": 1790969226636, "file_deleted": "7033.json"}
+{"ms": 1790969226680, "n": 11, "file": "events/011-SessionEnd.json"}
+{"ms": 1790969226946, "action": "exited"}

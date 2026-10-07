@@ -1,0 +1,19 @@
+{
+  "kind": "tool.pre",
+  "session": "e11a65ec-ddcd-4cd0-bb7b-9dd26757f849",
+  "agent": "a99b925b23945c344",
+  "tool_call": "toolu_01EiXwcSdNt595qg2BsAkSsZ",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849.jsonl",
+    "prompt_id": "47b7ab59-fbcc-4dbd-a0e0-8a17afec6733",
+    "permission_mode": "auto",
+    "agent_type": "general-purpose",
+    "tool_name": "SubagentHandback",
+    "tool_input": {
+      "message": "one"
+    }
+  }
+}

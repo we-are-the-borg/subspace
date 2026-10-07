@@ -1,0 +1,19 @@
+{
+  "kind": "tool.pre",
+  "session": "356cc977-00dd-4889-9e26-0aa587d3d220",
+  "tool_call": "toolu_01DhKsBhcugKFaoKB5S6oYp1",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220.jsonl",
+    "prompt_id": "e1880343-043b-4db9-b464-35b8d585816d",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "sleep 30; echo bg",
+      "description": "Background command that sleeps 30 seconds then echoes",
+      "run_in_background": true
+    }
+  }
+}

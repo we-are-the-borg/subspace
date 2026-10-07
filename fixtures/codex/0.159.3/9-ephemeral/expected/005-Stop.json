@@ -1,0 +1,13 @@
+{
+  "kind": "turn.stop",
+  "session": "01a0f73b-6f30-7ec0-9468-59bc2437d062",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "turn.stop",
+    "turn_id": "01a0f73b-702d-7c52-8f83-c5b6c2dd2425",
+    "rollout_path": null,
+    "model": "gpt-6-luna",
+    "permission_mode": "default",
+    "last_assistant_message": "`/Users/user/dev/subspace/tools/hook-capture/codex`"
+  }
+}

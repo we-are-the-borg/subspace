@@ -1,0 +1,21 @@
+{
+  "kind": "tool.pre",
+  "session": "01a0f6f3-e902-7f10-9fdd-9a6e4d38a220",
+  "agent": "01a0f6f4-3b45-7802-90cd-9b2414112d38",
+  "tool_call": "exec-cc516842-b94a-41bb-9d03-a77d7f924ac6",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a0f6f4-3b98-7290-996b-be39f5a0ee09",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-13-16-01a0f6f4-3b45-7802-90cd-9b2414112d38.jsonl",
+    "model": "gpt-5.6-luna",
+    "permission_mode": "default",
+    "agent_type": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "pwd && sed -n '1,200p' README.md"
+    },
+    "command": "pwd && sed -n '1,200p' README.md"
+  }
+}

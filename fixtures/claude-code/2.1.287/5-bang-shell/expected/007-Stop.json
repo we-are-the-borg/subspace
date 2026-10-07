@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "de12188a-8f53-4c70-be34-9c73f91e972b",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/de12188a-8f53-4c70-be34-9c73f91e972b.jsonl",
+    "prompt_id": "3fb3a1de-cbf2-4377-a524-55e727b9683a",
+    "permission_mode": "default",
+    "last_assistant_message": "Hallo! Bereit, um zu helfen. Was möchtest du heute arbeiten?\n\nI can see you're on the `chore/capture-session-status` branch with some modifications and new files. What would you like me to focus on?",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

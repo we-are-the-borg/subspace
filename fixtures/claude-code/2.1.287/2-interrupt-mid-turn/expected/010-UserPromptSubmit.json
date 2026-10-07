@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "53d7703c-613e-4c00-b9ab-a400db09b847",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/53d7703c-613e-4c00-b9ab-a400db09b847.jsonl",
+    "prompt_id": "a294b775-c820-46d6-8809-cda14488dc5f",
+    "permission_mode": "default",
+    "prompt": "Write a 2000-word story about a lighthouse. No tools."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "session": "c0d8cfbd-d33c-4f40-8638-aee29917c901",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code_session": {
+    "pid": 7793,
+    "process_kind": "interactive",
+    "entrypoint": "sdk-cli",
+    "name": "claude-code-95",
+    "version": "2.1.287",
+    "started_at": 1790969254224
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:subspace:session-status:claude-code:v1",
+  "title": "Result of applying a session-status mapping document (format 1) to one session status file; see docs/model.md §12",
+  "$ref": "#/$defs/result",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/$defs/id"
+        },
+        "cwd": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "working",
+            "waiting",
+            "idle"
+          ]
+        },
+        "claude_code_session": {
+          "$ref": "#/$defs/claude_code_session"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "claude_code_session"
+      ]
+    },
+    "claude_code_session": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "status_at": {
+          "type": "integer"
+        },
+        "waiting_for": {
+          "enum": [
+            "permission",
+            "input",
+            "dialog"
+          ]
+        },
+        "waiting_text": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "process_kind": {
+          "type": "string"
+        },
+        "entrypoint": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "started_at": {
+          "type": "integer"
+        },
+        "updated_at": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

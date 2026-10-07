@@ -1,0 +1,18 @@
+{
+  "kind": "tool.pre",
+  "session": "f36170bf-a638-463e-a6cc-f7550e72b11e",
+  "agent": "ad232b89a27705b52",
+  "tool_call": "toolu_01LWHnycy6ZWmcTaDmNHKEpe",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
+    "prompt_id": "dbeb1c9a-5283-47b8-9833-a6b874c182cd",
+    "permission_mode": "auto",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "true"
+    }
+  }
+}

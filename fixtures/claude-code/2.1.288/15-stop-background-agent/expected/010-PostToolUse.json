@@ -1,0 +1,33 @@
+{
+  "kind": "tool.post",
+  "session": "f36170bf-a638-463e-a6cc-f7550e72b11e",
+  "tool_call": "toolu_01WtCtW6Kj7kCHgFftUFJRMi",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
+    "prompt_id": "848c6dbb-d4b5-4ab0-9a69-f732fd68c001",
+    "permission_mode": "auto",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Run sleep commands",
+      "prompt": "Run these Bash commands one after the other, each in the foreground: sleep 10; echo one, then sleep 10; echo two, then sleep 10; echo three, then sleep 10; echo four. Report the output.",
+      "subagent_type": "general-purpose"
+    },
+    "tool_response": {
+      "isAsync": true,
+      "status": "async_launched",
+      "agentId": "a80f925acc1e94159",
+      "description": "Run sleep commands",
+      "resolvedModel": "claude-sonnet-5-5",
+      "prompt": "Run these Bash commands one after the other, each in the foreground: sleep 10; echo one, then sleep 10; echo two, then sleep 10; echo three, then sleep 10; echo four. Report the output.",
+      "outputFile": "/private/tmp/claude-501/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e/tasks/a80f925acc1e94159.output",
+      "canReadOutputFile": true
+    },
+    "duration_ms": 9,
+    "spawned_agent": "a80f925acc1e94159",
+    "spawned_async": true,
+    "spawned_model": "claude-sonnet-5-5"
+  }
+}

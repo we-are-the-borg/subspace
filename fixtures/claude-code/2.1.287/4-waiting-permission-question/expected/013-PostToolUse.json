@@ -1,0 +1,26 @@
+{
+  "kind": "tool.post",
+  "session": "078d4786-cd8d-49c2-93ba-73158fa14f25",
+  "tool_call": "toolu_012Q93n9wBTeQBzbT1oLNzHS",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/078d4786-cd8d-49c2-93ba-73158fa14f25.jsonl",
+    "prompt_id": "e8172dcf-b52f-4e40-b4ba-aa52c6832a82",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "touch captures/perm-one",
+      "description": "Create file captures/perm-one"
+    },
+    "tool_response": {
+      "stdout": "",
+      "stderr": "",
+      "interrupted": false,
+      "isImage": false,
+      "noOutputExpected": true
+    },
+    "duration_ms": 565
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "tool.post",
+  "session": "356cc977-00dd-4889-9e26-0aa587d3d220",
+  "tool_call": "toolu_017VsEykQwwv4Dgm8my6atzy",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220.jsonl",
+    "prompt_id": "302490f7-a683-4e12-9271-f2762cf70887",
+    "permission_mode": "default",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Run Bash command and report output",
+      "prompt": "Run exactly this Bash command: sleep 10; echo fg. Report the output.",
+      "subagent_type": "general-purpose"
+    },
+    "tool_response": {
+      "isAsync": true,
+      "status": "async_launched",
+      "agentId": "a959f735a8ae89a1c",
+      "description": "Run Bash command and report output",
+      "resolvedModel": "claude-haiku-4-5-20251001",
+      "prompt": "Run exactly this Bash command: sleep 10; echo fg. Report the output.",
+      "outputFile": "/private/tmp/claude-501/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220/tasks/a959f735a8ae89a1c.output",
+      "canReadOutputFile": true
+    },
+    "duration_ms": 4,
+    "spawned_agent": "a959f735a8ae89a1c",
+    "spawned_async": true,
+    "spawned_model": "claude-haiku-4-5-20251001"
+  }
+}

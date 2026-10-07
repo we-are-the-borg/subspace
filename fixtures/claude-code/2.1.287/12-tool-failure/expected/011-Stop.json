@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "f0224ec1-1508-4a98-8917-99b52a7b9910",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f0224ec1-1508-4a98-8917-99b52a7b9910.jsonl",
+    "prompt_id": "2f9f29b2-4b70-49aa-84a3-28c8e62b102f",
+    "permission_mode": "default",
+    "last_assistant_message": "The command returned exit code 1 with the error: `ls: captures/nonexistent-dir: No such file or directory`",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

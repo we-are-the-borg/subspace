@@ -1,0 +1,16 @@
+{"ms": 1791212508479, "action": "start"}
+{"ms": 1791212509461, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1791212509574, "n": 2, "file": "status/002-status.json", "inode_changed": false}
+{"ms": 1791212509632, "n": 3, "file": "events/003-SessionStart.json"}
+{"ms": 1791212509739, "n": 4, "file": "status/004-status.json", "inode_changed": false}
+{"ms": 1791212509796, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1791212509797, "n": 6, "file": "events/006-InstructionsLoaded.json"}
+{"ms": 1791212513217, "action": "send: Reply with the word three. No tools."}
+{"ms": 1791212513279, "n": 7, "file": "status/007-status.json", "inode_changed": false}
+{"ms": 1791212513317, "n": 8, "file": "events/008-UserPromptSubmit.json"}
+{"ms": 1791212514538, "n": 9, "file": "events/009-Stop.json"}
+{"ms": 1791212514903, "n": 10, "file": "status/010-status.json", "inode_changed": false}
+{"ms": 1791212520163, "action": "send: /exit"}
+{"ms": 1791212520479, "file_deleted": "1925.json"}
+{"ms": 1791212520504, "n": 11, "file": "events/011-SessionEnd.json"}
+{"ms": 1791212522166, "action": "exited"}

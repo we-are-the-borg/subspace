@@ -1,0 +1,16 @@
+{"ms": 1790969126932, "action": "start"}
+{"ms": 1790969127645, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790969127693, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790969127810, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790969127964, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790969127968, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790969130759, "action": "enter bash mode"}
+{"ms": 1790969132268, "action": "send: sleep 10"}
+{"ms": 1790969132319, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1790969146249, "n": 7, "file": "events/007-Stop.json"}
+{"ms": 1790969146626, "n": 8, "file": "status/008-status.json", "inode_changed": false}
+{"ms": 1790969147779, "action": "send: /exit"}
+{"ms": 1790969148143, "n": 9, "file": "status/009-status.json", "inode_changed": true}
+{"ms": 1790969148188, "n": 10, "file": "events/010-SessionEnd.json"}
+{"ms": 1790969148412, "file_deleted": "5389.json"}
+{"ms": 1790969148604, "action": "exited"}

@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "last_assistant_message": "## Results from both agents:\n\n**Agent 1 (Command execution):**\n```\nalpha\n```\n\n**Agent 2 (README.md content):**\n\nThe README describes a throwaway Claude Code project for capturing hook events. Key points:\n\n- `log.sh` writes one JSON file per event to `captures/events/` plus metadata files\n- `collect.sh` copies referenced transcripts to `captures/transcripts/`\n- Three documented test runs:\n  1. **Headless with parallel subagents** — runs the exact command you just asked me to execute\n  2. **Interactive, ended with `/exit`**\n  3. **Interactive, ended with Ctrl-C**\n- Verification checks (#4) for agent IDs, process info, session end timing, and payload sizes\n\nNotably, the README's \"Run 1\" section contains the exact prompt you just gave me as an example headless command.",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

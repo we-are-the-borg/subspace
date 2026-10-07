@@ -1,0 +1,32 @@
+{"ms": 1790969151617, "action": "start"}
+{"ms": 1790969152435, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790969152459, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790969152601, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790969152701, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790969152701, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790969156158, "action": "send: Start one general-purpose subagent in the foreground with the prompt 'Run exactly this Bash command: sleep 10; echo fg. Report the output.' Then reply with its result."}
+{"ms": 1790969156240, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1790969156259, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1790969158945, "n": 8, "file": "events/008-PreToolUse.json"}
+{"ms": 1790969158968, "n": 9, "file": "events/009-SubagentStart.json"}
+{"ms": 1790969158977, "n": 10, "file": "events/010-PostToolUse.json"}
+{"ms": 1790969159051, "n": 11, "file": "events/011-PostToolBatch.json"}
+{"ms": 1790969160737, "n": 12, "file": "events/012-PreToolUse.json"}
+{"ms": 1790969162408, "n": 13, "file": "events/013-Stop.json"}
+{"ms": 1790969166034, "action": "send: Start one general-purpose subagent in the background (run_in_background: true) with the prompt 'Run exactly this Bash command: sleep 30; echo bg. Report the output.' Don't wait for it."}
+{"ms": 1790969166139, "n": 14, "file": "events/014-UserPromptSubmit.json"}
+{"ms": 1790969170205, "n": 15, "file": "events/015-PreToolUse.json"}
+{"ms": 1790969170233, "n": 16, "file": "events/016-PostToolUse.json"}
+{"ms": 1790969170297, "n": 17, "file": "events/017-PostToolBatch.json"}
+{"ms": 1790969171145, "n": 18, "file": "events/018-PostToolUse.json"}
+{"ms": 1790969171221, "n": 19, "file": "events/019-PostToolBatch.json"}
+{"ms": 1790969171611, "n": 20, "file": "events/020-Stop.json"}
+{"ms": 1790969173039, "n": 21, "file": "events/021-SubagentStop.json"}
+{"ms": 1790969173051, "n": 22, "file": "status/022-status.json", "inode_changed": false}
+{"ms": 1790969173084, "n": 23, "file": "events/023-UserPromptSubmit.json"}
+{"ms": 1790969175489, "n": 24, "file": "events/024-Stop.json"}
+{"ms": 1790969175828, "n": 25, "file": "status/025-status.json", "inode_changed": false}
+{"ms": 1790969181032, "action": "send: /exit"}
+{"ms": 1790969181071, "n": 26, "file": "status/026-status.json", "inode_changed": false}
+{"ms": 1790969211205, "action": "kill -9 (driver: no exit within 30 s)"}
+{"ms": 1790969214980, "file_deleted": "5783.json"}

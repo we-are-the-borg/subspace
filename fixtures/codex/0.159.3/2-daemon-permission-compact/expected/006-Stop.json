@@ -1,0 +1,13 @@
+{
+  "kind": "turn.stop",
+  "session": "01a0f71a-7656-7c02-8461-8d00e7f552ce",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "turn.stop",
+    "turn_id": "01a0f71d-3d93-7ff2-9d67-7366ccdff5d6",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-55-01-01a0f71a-7656-7c02-8461-8d00e7f552ce.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "last_assistant_message": "The elevated command completed successfully, writing `permission-approved` followed by a newline to `captures/permission-probe`. No retries or other file changes were made."
+  }
+}

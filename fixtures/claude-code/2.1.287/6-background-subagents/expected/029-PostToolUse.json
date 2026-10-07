@@ -1,0 +1,24 @@
+{
+  "kind": "tool.post",
+  "session": "4fc6892d-93ff-4652-9fca-a81cb12b8c7c",
+  "agent": "a9f58d4fb59750034",
+  "tool_call": "toolu_01TxVDs2cmjzun9rsmntf1Y6",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/4fc6892d-93ff-4652-9fca-a81cb12b8c7c.jsonl",
+    "prompt_id": "b1995e6c-4931-4422-943a-303c8d07bea4",
+    "permission_mode": "auto",
+    "agent_type": "general-purpose",
+    "tool_name": "SubagentHandback",
+    "tool_input": {
+      "message": "I ran `sleep 10; echo fg` in the foreground. It finished normally and printed:\n\nfg"
+    },
+    "tool_response": {
+      "success": true,
+      "message": "Report delivered to your caller."
+    },
+    "duration_ms": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "turn.stop",
+  "session": "4fc6892d-93ff-4652-9fca-a81cb12b8c7c",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/4fc6892d-93ff-4652-9fca-a81cb12b8c7c.jsonl",
+    "prompt_id": "02e7d3e5-2cac-4ca7-9d4b-c61d5b47c117",
+    "permission_mode": "auto",
+    "last_assistant_message": "The agent was launched in the background even though I set `run_in_background` to false, so I don't have its result yet. I'll report the output once it finishes.",
+    "background_tasks": [
+      {
+        "id": "a9f58d4fb59750034",
+        "type": "subagent",
+        "status": "running",
+        "description": "Run sleep command",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a9f58d4fb59750034"
+    ]
+  }
+}

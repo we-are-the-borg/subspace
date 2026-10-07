@@ -1,0 +1,13 @@
+{
+  "name": "subspace",
+  "interface": {
+    "displayName": "subspace"
+  },
+  "plugins": [
+    {
+      "name": "subspace",
+      "source": "./",
+      "description": "Writes every hook event, unchanged, into a shared folder that local apps read. Async hooks; silent exit 0, no decisions or model context."
+    }
+  ]
+}

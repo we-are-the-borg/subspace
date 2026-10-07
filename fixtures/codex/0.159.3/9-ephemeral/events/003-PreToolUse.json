@@ -1,0 +1,1 @@
+{"session_id":"01a0f73b-6f30-7ec0-9468-59bc2437d062","turn_id":"01a0f73b-702d-7c52-8f83-c5b6c2dd2425","transcript_path":null,"cwd":"/Users/user/dev/subspace/tools/hook-capture/codex","hook_event_name":"PreToolUse","model":"gpt-6-luna","permission_mode":"default","tool_name":"Bash","tool_input":{"command":"pwd"},"tool_use_id":"exec-f00a2265-bb9c-4f3f-b5ee-a1bbb44aee8a"}

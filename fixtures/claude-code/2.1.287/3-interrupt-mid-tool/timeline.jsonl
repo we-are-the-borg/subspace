@@ -1,0 +1,16 @@
+{"ms": 1790969008636, "action": "start"}
+{"ms": 1790969009441, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790969009487, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790969009606, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790969009773, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790969009773, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790969013190, "action": "send: Run exactly this Bash command and nothing else: sleep 20; echo done"}
+{"ms": 1790969013239, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1790969013280, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1790969015376, "n": 8, "file": "events/008-PreToolUse.json"}
+{"ms": 1790969019445, "action": "press esc mid-tool"}
+{"ms": 1790969019558, "n": 9, "file": "status/009-status.json", "inode_changed": false}
+{"ms": 1790969024953, "action": "send: /exit"}
+{"ms": 1790969025252, "file_deleted": "4182.json"}
+{"ms": 1790969025348, "n": 10, "file": "events/010-SessionEnd.json"}
+{"ms": 1790969025563, "action": "exited"}

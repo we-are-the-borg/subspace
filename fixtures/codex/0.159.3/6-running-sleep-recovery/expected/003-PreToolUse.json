@@ -1,0 +1,19 @@
+{
+  "kind": "tool.pre",
+  "session": "01a0f735-3b55-7ca0-848e-6d8a30065041",
+  "tool_call": "exec-a161fb25-f152-405f-a41a-40c85efe672e",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a0f735-9e53-7e80-b9a7-e9ec9e649102",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T13-24-16-01a0f735-3b55-7ca0-848e-6d8a30065041.jsonl",
+    "model": "gpt-6-luna",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "sleep 30"
+    },
+    "command": "sleep 30"
+  }
+}

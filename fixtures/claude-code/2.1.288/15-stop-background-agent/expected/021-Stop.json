@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "f36170bf-a638-463e-a6cc-f7550e72b11e",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
+    "prompt_id": "dbeb1c9a-5283-47b8-9833-a6b874c182cd",
+    "permission_mode": "auto",
+    "last_assistant_message": "ok",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

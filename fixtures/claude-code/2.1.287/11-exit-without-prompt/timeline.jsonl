@@ -1,0 +1,10 @@
+{"ms": 1790974749213, "action": "start"}
+{"ms": 1790974750247, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790974750486, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790974750530, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790974750937, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790974750938, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790974759212, "action": "send: /exit"}
+{"ms": 1790974759493, "file_deleted": "5818.json"}
+{"ms": 1790974759559, "n": 6, "file": "events/006-SessionEnd.json"}
+{"ms": 1790974761221, "action": "exited"}

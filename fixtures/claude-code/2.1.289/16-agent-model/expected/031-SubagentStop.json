@@ -1,0 +1,17 @@
+{
+  "kind": "other",
+  "session": "e11a65ec-ddcd-4cd0-bb7b-9dd26757f849",
+  "agent": "a16dcb28002f979bf",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849.jsonl",
+    "prompt_id": "f78fe519-7fac-4e52-807c-dcba1eb3a55a",
+    "permission_mode": "auto",
+    "agent_type": "",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849/subagents/agent-a16dcb28002f979bf.jsonl",
+    "last_assistant_message": "I'd stay silent here. The test task is finished, and no next step follows obviously from it.",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

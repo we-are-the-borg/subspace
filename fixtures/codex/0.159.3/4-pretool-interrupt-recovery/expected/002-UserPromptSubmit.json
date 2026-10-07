@@ -1,0 +1,13 @@
+{
+  "kind": "turn.start",
+  "session": "01a0f72f-bc80-7822-bc97-ecba336ba9dc",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "turn.start",
+    "turn_id": "01a0f730-151b-7652-ac50-c05e31e3cc3c",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T13-18-16-01a0f72f-bc80-7822-bc97-ecba336ba9dc.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "prompt": "Use the shell tool to run sleep 30, then report done. Do not edit files."
+  }
+}

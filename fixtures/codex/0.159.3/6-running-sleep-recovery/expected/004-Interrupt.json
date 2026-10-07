@@ -1,0 +1,12 @@
+{
+  "kind": "other",
+  "session": "01a0f735-3b55-7ca0-848e-6d8a30065041",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "turn.interrupt",
+    "turn_id": "01a0f735-9e53-7e80-b9a7-e9ec9e649102",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T13-24-16-01a0f735-3b55-7ca0-848e-6d8a30065041.jsonl",
+    "model": "gpt-6-luna",
+    "permission_mode": "default"
+  }
+}

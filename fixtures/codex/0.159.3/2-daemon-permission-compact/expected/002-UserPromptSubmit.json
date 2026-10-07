@@ -1,0 +1,13 @@
+{
+  "kind": "turn.start",
+  "session": "01a0f71a-7656-7c02-8461-8d00e7f552ce",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "turn.start",
+    "turn_id": "01a0f71d-3d93-7ff2-9d67-7366ccdff5d6",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-55-01-01a0f71a-7656-7c02-8461-8d00e7f552ce.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "prompt": "run printf 'permission-approved\\n' > captures/permission-probe in the shell. This disposable write needs elevated sandbox permission because the session is read-only; request it and wait for my approval. Do not retry or modify any other files."
+  }
+}

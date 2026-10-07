@@ -1,0 +1,16 @@
+{
+  "session": "356cc977-00dd-4889-9e26-0aa587d3d220",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "state": "working",
+  "claude_code_session": {
+    "status": "shell",
+    "status_at": 1790969175815,
+    "pid": 5783,
+    "process_kind": "interactive",
+    "entrypoint": "cli",
+    "name": "claude-code-8f",
+    "version": "2.1.287",
+    "started_at": 1790969152389,
+    "updated_at": 1790969175815
+  }
+}

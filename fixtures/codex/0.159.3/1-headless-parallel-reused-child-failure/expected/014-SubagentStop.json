@@ -1,0 +1,16 @@
+{
+  "kind": "other",
+  "session": "01a0f6f3-e902-7f10-9fdd-9a6e4d38a220",
+  "agent": "01a0f6f4-21c7-7573-bb07-228ea9311563",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "agent.turn.stop",
+    "turn_id": "01a0f6f4-221c-7fc3-bb59-d8d230204ff4",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-13-09-01a0f6f4-21c7-7573-bb07-228ea9311563.jsonl",
+    "parent_rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-12-55-01a0f6f3-e902-7f10-9fdd-9a6e4d38a220.jsonl",
+    "model": "gpt-5.6-luna",
+    "permission_mode": "default",
+    "agent_type": "default",
+    "last_assistant_message": "Command output:\n\n```text\nalpha\n```\n\nExit code: `0`"
+  }
+}

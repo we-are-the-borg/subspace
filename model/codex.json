@@ -1,0 +1,141 @@
+{
+  "format": 1,
+  "revision": 1,
+  "source": "codex",
+  "block": "codex",
+  "observed": ["0.159.3"],
+  "core": {
+    "kind": {
+      "path": "/hook_event_name",
+      "map": {
+        "SessionStart": "session.start",
+        "UserPromptSubmit": "turn.start",
+        "Stop": "turn.stop",
+        "PreToolUse": "tool.pre",
+        "PostToolUse": "tool.post",
+        "PermissionRequest": "permission.request",
+        "SubagentStart": "agent.start",
+        "PreCompact": "compact.start",
+        "PostCompact": "compact.end",
+        "SubagentStop": "other",
+        "Interrupt": "other"
+      },
+      "default": "unknown"
+    },
+    "session": { "path": "/session_id", "type": "id" },
+    "agent": { "path": "/agent_id", "type": "id" },
+    "tool_call": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse"] }],
+      "path": "/tool_use_id",
+      "type": "id"
+    },
+    "tool": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PermissionRequest"] }],
+      "path": "/tool_name",
+      "map": { "Bash": "shell", "collaborationspawn_agent": "spawn_agent" },
+      "default": "other"
+    },
+    "cwd": { "path": "/cwd", "type": "string" }
+  },
+  "fields": {
+    "kind": {
+      "path": "/hook_event_name",
+      "map": {
+        "SessionStart": "session.start",
+        "UserPromptSubmit": "turn.start",
+        "PreToolUse": "tool.pre",
+        "PermissionRequest": "permission.request",
+        "PostToolUse": "tool.post",
+        "PreCompact": "compact.start",
+        "PostCompact": "compact.end",
+        "SubagentStart": "agent.start",
+        "SubagentStop": "agent.turn.stop",
+        "Stop": "turn.stop",
+        "Interrupt": "turn.interrupt"
+      },
+      "default": "unknown"
+    },
+    "turn_id": { "path": "/turn_id", "type": "id" },
+    "rollout_path": [
+      {
+        "when": [{ "path": "/hook_event_name", "in": ["SubagentStop"] }],
+        "path": "/agent_transcript_path",
+        "type": ["string", "null"],
+        "note": "on SubagentStop transcript_path is the parent's rollout (X1-014)"
+      },
+      { "path": "/transcript_path", "type": ["string", "null"], "note": "null in ephemeral sessions (X9-001)" }
+    ],
+    "parent_rollout_path": {
+      "when": [{ "path": "/hook_event_name", "in": ["SubagentStop"] }],
+      "path": "/transcript_path",
+      "type": ["string", "null"]
+    },
+    "model": { "path": "/model", "type": "string" },
+    "permission_mode": { "path": "/permission_mode", "type": "string" },
+    "agent_type": { "path": "/agent_type", "type": "string" },
+    "start_source": {
+      "when": [{ "path": "/hook_event_name", "in": ["SessionStart"] }],
+      "path": "/source",
+      "type": "string"
+    },
+    "prompt": {
+      "when": [{ "path": "/hook_event_name", "in": ["UserPromptSubmit"] }],
+      "path": "/prompt",
+      "type": "string"
+    },
+    "tool_name": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PermissionRequest"] }],
+      "path": "/tool_name",
+      "type": "string"
+    },
+    "tool_input": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PermissionRequest"] }],
+      "path": "/tool_input",
+      "type": "any"
+    },
+    "command": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PermissionRequest"] },
+        { "path": "/tool_name", "in": ["Bash"] }
+      ],
+      "path": "/tool_input/command",
+      "type": "string",
+      "note": "stable field for matching a permission request to its call (X2-004 adds description)"
+    },
+    "tool_response": {
+      "when": [{ "path": "/hook_event_name", "in": ["PostToolUse"] }],
+      "path": "/tool_response",
+      "type": "any",
+      "note": "always a string in 0.159.3, possibly empty, sometimes JSON-encoded; says nothing about success (X1-006)"
+    },
+    "spawn_name": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/tool_name", "in": ["collaborationspawn_agent"] }
+      ],
+      "path": "/tool_input/task_name",
+      "type": "string"
+    },
+    "spawn_task": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PostToolUse"] },
+        { "path": "/tool_name", "in": ["collaborationspawn_agent"] }
+      ],
+      "path": "/tool_response",
+      "parse": "json",
+      "pick": "/task_name",
+      "type": "string",
+      "note": "task path such as /root/alpha, not the child's agent id (X1-008)"
+    },
+    "compact_trigger": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreCompact", "PostCompact"] }],
+      "path": "/trigger",
+      "type": "string"
+    },
+    "last_assistant_message": {
+      "when": [{ "path": "/hook_event_name", "in": ["Stop", "SubagentStop"] }],
+      "path": "/last_assistant_message",
+      "type": "string"
+    }
+  }
+}

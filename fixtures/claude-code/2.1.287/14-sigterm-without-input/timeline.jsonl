@@ -1,0 +1,10 @@
+{"ms": 1790974980055, "action": "start"}
+{"ms": 1790974981138, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790974981278, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790974981357, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790974981900, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790974981904, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790974989324, "action": "kill -TERM"}
+{"ms": 1790974989634, "file_deleted": "8996.json"}
+{"ms": 1790974989675, "n": 6, "file": "events/006-SessionEnd.json"}
+{"ms": 1790974990143, "action": "exited"}

@@ -1,0 +1,22 @@
+{
+  "kind": "tool.pre",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "tool_call": "toolu_01EmwXSxBrcL2H2k7MjpU4yf",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Run command and report output",
+      "prompt": "Run the bash command: sleep 3; echo alpha. Report the exact output you receive.",
+      "run_in_background": false
+    },
+    "spawn_description": "Run command and report output",
+    "spawn_prompt": "Run the bash command: sleep 3; echo alpha. Report the exact output you receive.",
+    "spawn_background": false
+  }
+}

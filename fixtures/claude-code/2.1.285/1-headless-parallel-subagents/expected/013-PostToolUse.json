@@ -1,0 +1,27 @@
+{
+  "kind": "tool.post",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "agent": "ace844c63d8963861",
+  "tool_call": "toolu_016rjBrzdQNF7YZbRGhwJ3sq",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "sleep 3; echo alpha"
+    },
+    "tool_response": {
+      "stdout": "alpha",
+      "stderr": "",
+      "interrupted": false,
+      "isImage": false,
+      "noOutputExpected": false
+    },
+    "duration_ms": 3872
+  }
+}

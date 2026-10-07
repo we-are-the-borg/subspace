@@ -1,0 +1,34 @@
+{
+  "kind": "other",
+  "session": "356cc977-00dd-4889-9e26-0aa587d3d220",
+  "agent": "a959f735a8ae89a1c",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220.jsonl",
+    "prompt_id": "e1880343-043b-4db9-b464-35b8d585816d",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220/subagents/agent-a959f735a8ae89a1c.jsonl",
+    "last_assistant_message": "Output:\n```\nfg\n```\n\nThe command ran successfully. It slept for 10 seconds, then echoed \"fg\".",
+    "background_tasks": [
+      {
+        "id": "a959f735a8ae89a1c",
+        "type": "subagent",
+        "status": "running",
+        "description": "Run Bash command and report output",
+        "agent_type": "general-purpose"
+      },
+      {
+        "id": "b1030i5uk",
+        "type": "shell",
+        "status": "running",
+        "description": "Background command that sleeps 30 seconds then echoes",
+        "command": "sleep 30; echo bg"
+      }
+    ],
+    "background_agents": [
+      "a959f735a8ae89a1c"
+    ]
+  }
+}

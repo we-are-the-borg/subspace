@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "70df4d87-5cf7-455a-bbbf-9d65ca03a023",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023.jsonl",
+    "prompt_id": "fd3bd1d5-c605-4658-b18f-8bf7796434fe",
+    "permission_mode": "default",
+    "last_assistant_message": "**Both agents complete. Results:**\n\n**Agent 1 (Command output):**\n```\nalpha\n```\n\n**Agent 2 (README.md content):**\n\nThe README describes a throwaway hook-capture tool for the subspace project that:\n\n- **Records hook events** with `log.sh`: writes one JSON file per event to `captures/events/` plus metadata (PPID, Claude process info, exported variables)\n- **Collects transcripts** with `collect.sh`: copies all referenced transcripts to `captures/transcripts/`\n- **Defines test runs**:\n  1. Headless with two parallel subagents (bash command + README read)\n  2. Interactive session ended with `/exit` (with permission prompt approval delay)\n  3. Interactive session ended with Ctrl-C\n- **PR #4 validates**: agent_id fields in tool calls, PPID/CLAUDE_PID matching, SessionEnd timing after exit/interrupt, payload sizes\n\nCurated payloads go to `fixtures/claude-code/<version>/` after running `./collect.sh`.",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

@@ -1,0 +1,43 @@
+{"ms": 1790969564171, "action": "start"}
+{"ms": 1790969564916, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790969564965, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790969565077, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790969565219, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790969565223, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790969568500, "action": "send: Call the Agent tool once with subagent_type general-purpose and run_in_background false, prompt: 'Run exactly this Bash command in the foreground: sleep 10; echo fg. Report the output.' Then reply with its result."}
+{"ms": 1790969568556, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1790969568586, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1790969570807, "n": 8, "file": "events/008-PreToolUse.json"}
+{"ms": 1790969571336, "n": 9, "file": "events/009-SubagentStart.json"}
+{"ms": 1790969571340, "n": 10, "file": "events/010-PostToolUse.json"}
+{"ms": 1790969571518, "n": 11, "file": "events/011-PostToolBatch.json"}
+{"ms": 1790969572656, "n": 12, "file": "events/012-Stop.json"}
+{"ms": 1790969572970, "n": 13, "file": "events/013-PreToolUse.json"}
+{"ms": 1790969576378, "action": "send: Call the Agent tool once with subagent_type general-purpose and run_in_background true, prompt: 'Run exactly this Bash command in the foreground: sleep 30; echo bg. Report the output.' Don't wait for it."}
+{"ms": 1790969576468, "n": 14, "file": "events/014-UserPromptSubmit.json"}
+{"ms": 1790969578446, "n": 15, "file": "events/015-PreToolUse.json"}
+{"ms": 1790969578890, "n": 16, "file": "events/016-SubagentStart.json"}
+{"ms": 1790969578890, "n": 17, "file": "events/017-PostToolUse.json"}
+{"ms": 1790969578952, "n": 18, "file": "events/018-PostToolBatch.json"}
+{"ms": 1790969580199, "n": 19, "file": "events/019-Stop.json"}
+{"ms": 1790969580950, "n": 20, "file": "events/020-PostToolBatch.json"}
+{"ms": 1790969583383, "n": 21, "file": "events/021-PostToolUse.json"}
+{"ms": 1790969583446, "n": 22, "file": "events/022-PostToolBatch.json"}
+{"ms": 1790969583780, "n": 23, "file": "events/023-PreToolUse.json"}
+{"ms": 1790969584269, "n": 24, "file": "events/024-PostToolUse.json"}
+{"ms": 1790969584290, "n": 25, "file": "events/025-UserPromptSubmit.json"}
+{"ms": 1790969584356, "n": 26, "file": "events/026-PostToolBatch.json"}
+{"ms": 1790969584364, "n": 27, "file": "events/027-SubagentStop.json"}
+{"ms": 1790969584610, "n": 28, "file": "events/028-PreToolUse.json"}
+{"ms": 1790969584926, "n": 29, "file": "events/029-PostToolUse.json"}
+{"ms": 1790969584993, "n": 30, "file": "events/030-PostToolBatch.json"}
+{"ms": 1790969584996, "n": 31, "file": "events/031-SubagentStop.json"}
+{"ms": 1790969586154, "n": 32, "file": "events/032-Stop.json"}
+{"ms": 1790969586519, "n": 33, "file": "status/033-status.json", "inode_changed": false}
+{"ms": 1790969586574, "n": 34, "file": "events/034-UserPromptSubmit.json"}
+{"ms": 1790969588310, "n": 35, "file": "events/035-Stop.json"}
+{"ms": 1790969588672, "n": 36, "file": "status/036-status.json", "inode_changed": false}
+{"ms": 1790969596820, "action": "send: /exit"}
+{"ms": 1790969597133, "file_deleted": "12230.json"}
+{"ms": 1790969597181, "n": 37, "file": "events/037-SessionEnd.json"}
+{"ms": 1790969598823, "action": "exited"}

@@ -1,0 +1,14 @@
+{
+  "kind": "turn.stop",
+  "session": "e11a65ec-ddcd-4cd0-bb7b-9dd26757f849",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849.jsonl",
+    "prompt_id": "149fbc78-1ace-4bef-858d-8c4cd7e03189",
+    "permission_mode": "auto",
+    "last_assistant_message": "Both agents have reported back:\n\n- **Haiku agent:** \"one\"\n- **Default-model agent:** \"two\"",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

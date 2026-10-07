@@ -1,0 +1,28 @@
+{
+  "kind": "tool.post",
+  "session": "4fc6892d-93ff-4652-9fca-a81cb12b8c7c",
+  "agent": "a9f58d4fb59750034",
+  "tool_call": "toolu_01A2qfk4MnA1pNURPjFtfvHj",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/4fc6892d-93ff-4652-9fca-a81cb12b8c7c.jsonl",
+    "prompt_id": "d1efa8e4-50db-4c73-a6d2-e9ea93ccb6e3",
+    "permission_mode": "auto",
+    "agent_type": "general-purpose",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "sleep 10; echo fg",
+      "description": "Sleep then echo"
+    },
+    "tool_response": {
+      "stdout": "fg",
+      "stderr": "",
+      "interrupted": false,
+      "isImage": false,
+      "noOutputExpected": false
+    },
+    "duration_ms": 10398
+  }
+}

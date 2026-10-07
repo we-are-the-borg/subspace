@@ -1,0 +1,27 @@
+{
+  "kind": "other",
+  "session": "70df4d87-5cf7-455a-bbbf-9d65ca03a023",
+  "agent": "a49678b26aced2971",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023.jsonl",
+    "prompt_id": "5cf00cf7-cd00-4f86-9d28-434a371f9799",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023/subagents/agent-a49678b26aced2971.jsonl",
+    "last_assistant_message": "## README.md Content\n\nThe file contains documentation for a hook capture tool within the subspace project. Here's the full content:\n\n**Header and Overview:**\n- This is a throwaway Claude Code project that records every subscribed hook event under the same conditions as the real plugin (`async: true`, no output, exit 0)\n\n**Key Components:**\n- `log.sh`: Writes one file per event to `captures/events/`\n  - `<name>.json` contains the raw payload\n  - `<name>.meta` contains `$PPID`, `$CLAUDE_PID`, the parent process chain, and names of exported `CLAUDE_*` variables\n- `collect.sh`: Copies every transcript that events reference (including `subagents/`) to `captures/transcripts/`\n- `captures/` is git-ignored; curated payloads go to `fixtures/claude-code/<version>/`\n\n**Three Test Runs:**\n\n1. **Headless with two parallel subagents**: Uses `claude -p` to start exactly two subagents in parallel—one running a bash command (sleep 3; echo alpha) and one reading README.md. Includes specific flag ordering since `-p` kills async hooks at teardown.\n\n2. **Interactive session ended with `/exit`**: Starts claude interactively, sends a prompt, waits 10+ seconds before approving a permission prompt (for the `permission_prompt` notification), runs `/compact`, changes to sonnet model, then exits.\n\n3. **Interactive session ended with Ctrl-C**: Sends \"hi\", gets a response, then presses Ctrl-C twice.\n\nAfter all runs, execute `./collect.sh`.\n\n**What the PR #4 checks:**\n- Whether tool calls inside subagents carry an `agent_id` and which fields `Agent` calls and `SubagentStart`/`SubagentStop` have\n- Whether `$PPID` is the Claude process and `CLAUDE_PID` matches\n- Whether `SessionEnd` arrives async after `/exit` and Ctrl-C\n- Deviation between arrival order (file mtime) and transcript timestamps\n- Payload sizes, especially outliers",
+    "background_tasks": [
+      {
+        "id": "a49678b26aced2971",
+        "type": "subagent",
+        "status": "running",
+        "description": "Read and report README.md",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a49678b26aced2971"
+    ]
+  }
+}

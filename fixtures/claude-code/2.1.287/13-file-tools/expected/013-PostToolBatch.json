@@ -1,0 +1,11 @@
+{
+  "kind": "other",
+  "session": "8ed9b628-a6a9-4322-9f26-8fb075b17634",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.batch",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/8ed9b628-a6a9-4322-9f26-8fb075b17634.jsonl",
+    "prompt_id": "ed141005-45f7-403b-8010-9fe38d1c3e1c",
+    "permission_mode": "default"
+  }
+}

@@ -1,0 +1,6 @@
+tools/hook-capture/*/captures/
+.DS_Store
+__pycache__/
+tasks/
+# Personal Claude Code settings (permission grants), also in the capture projects
+**/.claude/settings.local.json

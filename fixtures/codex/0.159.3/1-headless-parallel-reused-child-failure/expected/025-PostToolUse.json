@@ -1,0 +1,22 @@
+{
+  "kind": "tool.post",
+  "session": "01a0f6f3-e902-7f10-9fdd-9a6e4d38a220",
+  "agent": "01a0f6f4-21c7-7573-bb07-228ea9311563",
+  "tool_call": "exec-486051b9-18e3-4878-b980-dd55e6892c1f",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "tool.post",
+    "turn_id": "01a0f6f4-804b-7571-a045-1397b0fe2a47",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T12-13-09-01a0f6f4-21c7-7573-bb07-228ea9311563.jsonl",
+    "model": "gpt-5.6-luna",
+    "permission_mode": "default",
+    "agent_type": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "printf 'alpha-again\\n'"
+    },
+    "command": "printf 'alpha-again\\n'",
+    "tool_response": "alpha-again\n"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "8ed9b628-a6a9-4322-9f26-8fb075b17634",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/8ed9b628-a6a9-4322-9f26-8fb075b17634.jsonl",
+    "prompt_id": "ed141005-45f7-403b-8010-9fe38d1c3e1c",
+    "permission_mode": "default",
+    "prompt": "In this order, one tool call each: Write the file captures/s13.txt with the text 'one'. Edit it to replace 'one' with 'two'. Read it. Grep for 'two' with path captures/s13.txt. Glob for 'captures/s13*'. Then reply 'done'."
+  }
+}

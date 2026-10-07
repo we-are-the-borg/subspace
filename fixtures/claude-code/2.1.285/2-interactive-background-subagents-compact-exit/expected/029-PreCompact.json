@@ -1,0 +1,11 @@
+{
+  "kind": "compact.start",
+  "session": "70df4d87-5cf7-455a-bbbf-9d65ca03a023",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "compact.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023.jsonl",
+    "prompt_id": "65eb17fb-1f82-4162-90a2-390afb590f6a",
+    "compact_trigger": "manual"
+  }
+}

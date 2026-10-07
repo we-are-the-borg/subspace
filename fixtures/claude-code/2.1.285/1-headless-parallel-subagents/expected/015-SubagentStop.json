@@ -1,0 +1,17 @@
+{
+  "kind": "other",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "agent": "ace844c63d8963861",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320/subagents/agent-ace844c63d8963861.jsonl",
+    "last_assistant_message": "The exact output is:\n\n```\nalpha\n```",
+    "background_tasks": [],
+    "background_agents": []
+  }
+}

@@ -1,0 +1,100 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        shell: [sh, bash]
+        include:
+          - os: ubuntu-latest
+            shell: dash
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - run: sh tests/spool.test.sh
+        env:
+          SPOOL_SH: ${{ matrix.shell }}
+      - run: python3 tests/codex-capture.test.py
+        env:
+          CAPTURE_SH: ${{ matrix.shell }}
+      - run: python3 tests/codex-adapter.test.py
+        env:
+          ADAPTER_SH: ${{ matrix.shell }}
+      - name: Mapping documents reproduce the golden files
+        run: python3 tests/model.test.py
+      - name: No personal data in the repository
+        run: python3 tests/fixtures-privacy.test.py
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: npm install -g @anthropic-ai/claude-code
+      - name: Assemble each dist repo (nothing pushed)
+        run: |
+          for a in adapters/*/; do
+            a=${a%/}; source=${a#adapters/}
+            dist="$RUNNER_TEMP/dist/$source"
+            sh tools/dist/assemble.sh "$source" "$dist"
+            (cd "$dist" && find . -type f | sort && cat SOURCE)
+            # The plugin at the root, as committed (x bits included), plus
+            # its marketplace, README, docs and SOURCE: nothing else.
+            (cd "$a" && find . -type f) | while read -r f; do
+              cmp "$a/$f" "$dist/$f" || exit 1
+            done
+            test -x "$dist/scripts/spool.sh"
+            test -f "$dist/README.md" && test -f "$dist/LICENSE" && test -f "$dist/docs/contract.md" && test -f "$dist/docs/model.md"
+            # Relative links in the shipped docs resolve inside the dist repo.
+            for f in "$dist"/docs/*.md; do
+              grep -oE '\]\([^)#]+' "$f" | sed 's/^](//' | grep -vE '^[a-z]+:' | while read -r t; do
+                test -e "$dist/docs/$t" || { echo "broken link $t in $f"; exit 1; }
+              done
+              # Links into the dev repo name files that exist at this commit.
+              grep -oE '\]\(https://github.com/we-are-the-borg/subspace/blob/[^/]+/[^)#]+' "$f" |
+                sed -E 's#.*/blob/[^/]+/##' | while read -r p; do
+                git cat-file -e "HEAD:$p" || { echo "broken link $p in $f"; exit 1; }
+              done
+            done
+          done
+          test "$(ls -A "$RUNNER_TEMP/dist/claude-code/.claude-plugin" | sort | tr '\n' ' ')" = "marketplace.json plugin.json "
+          test -f "$RUNNER_TEMP/dist/codex/.agents/plugins/marketplace.json"
+      - run: claude plugin validate "$RUNNER_TEMP/dist/claude-code"
+      - run: claude plugin validate "$RUNNER_TEMP/dist/claude-code/.claude-plugin/plugin.json"
+      - name: Adapter copies match core/ and schema/
+        # Also fails on copies that are new (untracked) or deleted.
+        run: |
+          sh tools/sync.sh
+          git status --porcelain -- adapters
+          test -z "$(git status --porcelain -- adapters)"
+      - name: Envelopes of all fixtures match the schema
+        run: |
+          # fixtures/<source>/<version>/<run>/events/*.json
+          for f in fixtures/*/*/*/events/*.json; do
+            source=${f#fixtures/}; source=${source%%/*}
+            # Written by the assembled adapter, i.e. what users install.
+            SUBSPACE_DIR="$RUNNER_TEMP/root" sh "$RUNNER_TEMP/dist/$source/scripts/spool.sh" "$source" < "$f"
+          done
+          npx -y ajv-cli@5 validate --spec=draft2020 -s schema/envelope.v1.json -d "$RUNNER_TEMP/root/events/*/*.json"
+      - name: Changed mapping documents bump their revision
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          python3 tools/model/revision-check.py FETCH_HEAD
+      - name: Mapping documents and golden files match their schemas
+        run: |
+          npx -y ajv-cli@5 validate --spec=draft2020 -s schema/mapping.v1.json -d "model/*.json"
+          for s in schema/*/; do
+            s=${s#schema/}; s=${s%/}
+            npx -y ajv-cli@5 validate --spec=draft2020 -s "schema/$s/result.v1.json" -d "fixtures/$s/*/*/expected/*.json"
+          done
+          npx -y ajv-cli@5 validate --spec=draft2020 -s schema/claude-code/session-status.v1.json -d "fixtures/claude-code/*/*/status-expected/*.json"

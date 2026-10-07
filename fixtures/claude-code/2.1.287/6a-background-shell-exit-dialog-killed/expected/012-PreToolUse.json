@@ -1,0 +1,20 @@
+{
+  "kind": "tool.pre",
+  "session": "356cc977-00dd-4889-9e26-0aa587d3d220",
+  "agent": "a959f735a8ae89a1c",
+  "tool_call": "toolu_018wZNYPqZic35oTCRchheEb",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220.jsonl",
+    "prompt_id": "302490f7-a683-4e12-9271-f2762cf70887",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "sleep 10; echo fg",
+      "description": "Run sleep 10 then echo fg"
+    }
+  }
+}

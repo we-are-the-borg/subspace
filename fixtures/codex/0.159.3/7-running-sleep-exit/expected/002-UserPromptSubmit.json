@@ -1,0 +1,13 @@
+{
+  "kind": "turn.start",
+  "session": "01a0f736-96ac-7e83-9f87-260ac9ab8936",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/codex",
+  "codex": {
+    "kind": "turn.start",
+    "turn_id": "01a0f737-18af-7e03-8d7f-1d27d117a9e1",
+    "rollout_path": "/Users/user/.codex/sessions/2026/10/01/rollout-2026-10-01T13-25-45-01a0f736-96ac-7e83-9f87-260ac9ab8936.jsonl",
+    "model": "gpt-6-luna",
+    "permission_mode": "default",
+    "prompt": "Run `sleep 30` using exec_command with yield_time_ms: 1000.\nOnce the tool returns a session_id for the running process, say\n“SLEEP IS RUNNING”, then wait for that process using write_stdin.\nDo not edit files."
+  }
+}

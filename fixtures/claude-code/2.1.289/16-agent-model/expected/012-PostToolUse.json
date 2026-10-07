@@ -1,0 +1,34 @@
+{
+  "kind": "tool.post",
+  "session": "e11a65ec-ddcd-4cd0-bb7b-9dd26757f849",
+  "tool_call": "toolu_01CzDuPyz7rqNmKgFQt7zeWm",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849.jsonl",
+    "prompt_id": "7d01a35a-60c1-4df7-a238-7c44d4d8721f",
+    "permission_mode": "auto",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Reply one",
+      "prompt": "Reply with the word one. No tools.",
+      "subagent_type": "general-purpose",
+      "model": "haiku"
+    },
+    "tool_response": {
+      "isAsync": true,
+      "status": "async_launched",
+      "agentId": "a99b925b23945c344",
+      "description": "Reply one",
+      "resolvedModel": "claude-haiku-4-5-20251001",
+      "prompt": "Reply with the word one. No tools.",
+      "outputFile": "/private/tmp/claude-501/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849/tasks/a99b925b23945c344.output",
+      "canReadOutputFile": true
+    },
+    "duration_ms": 9,
+    "spawned_agent": "a99b925b23945c344",
+    "spawned_async": true,
+    "spawned_model": "claude-haiku-4-5-20251001"
+  }
+}

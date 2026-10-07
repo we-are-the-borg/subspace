@@ -1,0 +1,13 @@
+{
+  "kind": "other",
+  "session": "0505288b-ea45-4223-8992-a11388993320",
+  "agent": "a89ee3c49b791e40d",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "tool.batch",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/0505288b-ea45-4223-8992-a11388993320.jsonl",
+    "prompt_id": "018dffa7-b65a-4020-a9cb-6fb130a07bf7",
+    "permission_mode": "default",
+    "agent_type": "general-purpose"
+  }
+}

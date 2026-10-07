@@ -1,0 +1,45 @@
+{"ms": 1790969310741, "action": "start"}
+{"ms": 1790969311559, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790969311615, "n": 2, "file": "status/002-status.json", "inode_changed": false}
+{"ms": 1790969311642, "n": 3, "file": "events/003-SessionStart.json"}
+{"ms": 1790969311736, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790969311746, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790969315271, "action": "send: Run exactly this Bash command and nothing else: touch captures/perm-one"}
+{"ms": 1790969315362, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1790969315367, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1790969317033, "n": 8, "file": "status/008-status.json", "inode_changed": false}
+{"ms": 1790969317056, "n": 9, "file": "events/009-PreToolUse.json"}
+{"ms": 1790969317074, "n": 10, "file": "events/010-PermissionRequest.json"}
+{"ms": 1790969323085, "n": 11, "file": "events/011-Notification.json"}
+{"ms": 1790969332156, "action": "approve permission"}
+{"ms": 1790969332213, "n": 12, "file": "status/012-status.json", "inode_changed": false}
+{"ms": 1790969332810, "n": 13, "file": "events/013-PostToolUse.json"}
+{"ms": 1790969332872, "n": 14, "file": "events/014-PostToolBatch.json"}
+{"ms": 1790969333715, "n": 15, "file": "events/015-Stop.json"}
+{"ms": 1790969334058, "n": 16, "file": "status/016-status.json", "inode_changed": false}
+{"ms": 1790969337316, "action": "send: Run exactly this Bash command and nothing else: touch captures/perm-two"}
+{"ms": 1790969337364, "n": 17, "file": "status/017-status.json", "inode_changed": false}
+{"ms": 1790969337391, "n": 18, "file": "events/018-UserPromptSubmit.json"}
+{"ms": 1790969338747, "n": 19, "file": "events/019-PreToolUse.json"}
+{"ms": 1790969338748, "n": 20, "file": "status/020-status.json", "inode_changed": false}
+{"ms": 1790969338766, "n": 21, "file": "events/021-PermissionRequest.json"}
+{"ms": 1790969344755, "n": 22, "file": "events/022-Notification.json"}
+{"ms": 1790969353963, "action": "reject permission"}
+{"ms": 1790969354073, "n": 23, "file": "status/023-status.json", "inode_changed": false}
+{"ms": 1790969359472, "action": "send: Use the AskUserQuestion tool to ask me which color I like, with the two options red and blue. Then reply with my answer."}
+{"ms": 1790969359537, "n": 24, "file": "status/024-status.json", "inode_changed": false}
+{"ms": 1790969359538, "n": 25, "file": "events/025-UserPromptSubmit.json"}
+{"ms": 1790969361749, "n": 26, "file": "events/026-PreToolUse.json"}
+{"ms": 1790969361757, "n": 27, "file": "status/027-status.json", "inode_changed": false}
+{"ms": 1790969361766, "n": 28, "file": "events/028-PermissionRequest.json"}
+{"ms": 1790969367773, "n": 29, "file": "events/029-Notification.json"}
+{"ms": 1790969376942, "action": "answer question"}
+{"ms": 1790969376983, "n": 30, "file": "status/030-status.json", "inode_changed": false}
+{"ms": 1790969377018, "n": 31, "file": "events/031-PostToolUse.json"}
+{"ms": 1790969377094, "n": 32, "file": "events/032-PostToolBatch.json"}
+{"ms": 1790969378163, "n": 33, "file": "events/033-Stop.json"}
+{"ms": 1790969378524, "n": 34, "file": "status/034-status.json", "inode_changed": false}
+{"ms": 1790969383692, "action": "send: /exit"}
+{"ms": 1790969383966, "file_deleted": "8511.json"}
+{"ms": 1790969384025, "n": 35, "file": "events/035-SessionEnd.json"}
+{"ms": 1790969385696, "action": "exited"}

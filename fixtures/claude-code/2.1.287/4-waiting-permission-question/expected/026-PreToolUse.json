@@ -1,0 +1,33 @@
+{
+  "kind": "tool.pre",
+  "session": "078d4786-cd8d-49c2-93ba-73158fa14f25",
+  "tool_call": "toolu_01XWWJER73MBr9UH78Hqdn4i",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/078d4786-cd8d-49c2-93ba-73158fa14f25.jsonl",
+    "prompt_id": "91e9f9c7-aac1-413e-b751-5f8e9faed590",
+    "permission_mode": "default",
+    "tool_name": "AskUserQuestion",
+    "tool_input": {
+      "questions": [
+        {
+          "question": "Which color do you like?",
+          "header": "Color preference",
+          "options": [
+            {
+              "label": "Red",
+              "description": "A warm, bold color"
+            },
+            {
+              "label": "Blue",
+              "description": "A cool, calm color"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex session-start", "async": true}]}],
+    "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "PreToolUse": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "PermissionRequest": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "PostToolUse": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "PreCompact": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "PostCompact": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "SubagentStart": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "SubagentStop": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "Stop": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}],
+    "Interrupt": [{"hooks": [{"type": "command", "command": "sh \"${PLUGIN_ROOT}/scripts/spool.sh\" codex", "async": true}]}]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "tool.pre",
+  "session": "e11a65ec-ddcd-4cd0-bb7b-9dd26757f849",
+  "tool_call": "toolu_01GGMFGx57F2UdXAHGu4ymL5",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849.jsonl",
+    "prompt_id": "7d01a35a-60c1-4df7-a238-7c44d4d8721f",
+    "permission_mode": "auto",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Reply two",
+      "prompt": "Reply with the word two. No tools.",
+      "subagent_type": "general-purpose"
+    },
+    "spawn_description": "Reply two",
+    "spawn_prompt": "Reply with the word two. No tools.",
+    "spawn_type": "general-purpose"
+  }
+}

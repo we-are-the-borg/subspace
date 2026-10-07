@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "revision": 1,
+  "source": "claude-code",
+  "document": "session-status",
+  "block": "claude_code_session",
+  "observed": ["2.1.287"],
+  "core": {
+    "session": { "path": "/sessionId", "type": "id" },
+    "cwd": { "path": "/cwd", "type": "string" },
+    "state": {
+      "path": "/status",
+      "map": { "busy": "working", "shell": "working", "waiting": "waiting", "idle": "idle" },
+      "note": "Unknown status values leave state absent: unknown, never guessed"
+    }
+  },
+  "fields": {
+    "status": { "path": "/status", "type": "string" },
+    "status_at": { "path": "/statusUpdatedAt", "type": "integer" },
+    "waiting_for": {
+      "when": [{ "path": "/status", "in": ["waiting"] }],
+      "path": "/waitingFor",
+      "map": { "permission prompt": "permission", "input needed": "input", "dialog open": "dialog" }
+    },
+    "waiting_text": {
+      "when": [{ "path": "/status", "in": ["waiting"] }],
+      "path": "/waitingFor",
+      "type": "string"
+    },
+    "pid": { "path": "/pid", "type": "integer" },
+    "process_kind": { "path": "/kind", "type": "string" },
+    "entrypoint": { "path": "/entrypoint", "type": "string" },
+    "name": { "path": "/name", "type": "string" },
+    "version": { "path": "/version", "type": "string" },
+    "started_at": { "path": "/startedAt", "type": "integer" },
+    "updated_at": { "path": "/updatedAt", "type": "integer" }
+  }
+}

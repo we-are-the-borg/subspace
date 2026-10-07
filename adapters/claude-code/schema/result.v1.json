@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:subspace:result:claude-code:v1",
+  "title": "Result of applying the claude-code mapping document (format 1) to one raw claude-code payload; see docs/model.md",
+  "$ref": "#/$defs/result",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "opaque": {},
+    "result": {
+      "type": "object",
+      "required": [
+        "kind",
+        "claude_code"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "session.start",
+            "turn.start",
+            "turn.stop",
+            "tool.pre",
+            "tool.post",
+            "permission.request",
+            "agent.start",
+            "compact.start",
+            "compact.end",
+            "other",
+            "unknown"
+          ]
+        },
+        "session": {
+          "$ref": "#/$defs/id"
+        },
+        "agent": {
+          "$ref": "#/$defs/id"
+        },
+        "tool_call": {
+          "$ref": "#/$defs/id"
+        },
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cwd": {
+          "type": "string"
+        },
+        "claude_code": {
+          "$ref": "#/$defs/claude_code"
+        }
+      },
+      "additionalProperties": false
+    },
+    "claude_code": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "session.start",
+            "session.end",
+            "setup",
+            "instructions.load",
+            "turn.start",
+            "prompt.expand",
+            "tool.pre",
+            "permission.request",
+            "permission.denied",
+            "tool.post",
+            "tool.failure",
+            "tool.batch",
+            "notification",
+            "agent.start",
+            "agent.stop",
+            "task.create",
+            "task.complete",
+            "teammate.idle",
+            "turn.failure",
+            "turn.stop",
+            "compact.start",
+            "compact.end",
+            "model.change",
+            "config.change",
+            "cwd.change",
+            "directory.add",
+            "elicitation.request",
+            "elicitation.result",
+            "unknown"
+          ]
+        },
+        "transcript_path": {
+          "type": "string"
+        },
+        "prompt_id": {
+          "$ref": "#/$defs/id"
+        },
+        "permission_mode": {
+          "type": "string"
+        },
+        "agent_type": {
+          "type": "string"
+        },
+        "start_source": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "end_reason": {
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "tool_name": {
+          "type": "string"
+        },
+        "tool_input": {
+          "$ref": "#/$defs/opaque"
+        },
+        "tool_response": {
+          "$ref": "#/$defs/opaque"
+        },
+        "duration_ms": {
+          "type": "integer"
+        },
+        "error": {
+          "type": "string"
+        },
+        "is_interrupt": {
+          "type": "boolean"
+        },
+        "file_path": {
+          "type": "string"
+        },
+        "spawn_description": {
+          "type": "string"
+        },
+        "spawn_prompt": {
+          "type": "string"
+        },
+        "spawn_type": {
+          "type": "string"
+        },
+        "spawn_model": {
+          "type": "string"
+        },
+        "spawn_background": {
+          "type": "boolean"
+        },
+        "spawned_agent": {
+          "$ref": "#/$defs/id"
+        },
+        "spawned_async": {
+          "type": "boolean"
+        },
+        "spawned_model": {
+          "type": "string"
+        },
+        "notification_message": {
+          "type": "string"
+        },
+        "notification_type": {
+          "type": "string"
+        },
+        "agent_transcript_path": {
+          "type": "string"
+        },
+        "parent_tool_use_id": {
+          "$ref": "#/$defs/id"
+        },
+        "last_assistant_message": {
+          "type": "string"
+        },
+        "background_tasks": {
+          "type": "array"
+        },
+        "background_agents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "compact_trigger": {
+          "type": "string"
+        },
+        "compact_summary": {
+          "type": "string"
+        },
+        "from_model": {
+          "type": "string"
+        },
+        "to_model": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

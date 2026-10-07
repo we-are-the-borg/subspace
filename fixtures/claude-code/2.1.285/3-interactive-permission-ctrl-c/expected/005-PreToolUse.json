@@ -1,0 +1,18 @@
+{
+  "kind": "tool.pre",
+  "session": "6fa2109c-8e3e-4ae5-99eb-e8f5672d7306",
+  "tool_call": "toolu_01THQF4D4D9GgyQET9mrh4Eg",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/6fa2109c-8e3e-4ae5-99eb-e8f5672d7306.jsonl",
+    "prompt_id": "4dee80ee-35f8-4630-8fbf-f8602e0aa016",
+    "permission_mode": "default",
+    "tool_name": "Read",
+    "tool_input": {
+      "file_path": "/Users/user/dev/subspace/notes/todo.md"
+    },
+    "file_path": "/Users/user/dev/subspace/notes/todo.md"
+  }
+}

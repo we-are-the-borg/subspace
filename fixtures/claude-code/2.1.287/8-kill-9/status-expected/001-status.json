@@ -1,0 +1,12 @@
+{
+  "session": "a82d16a1-62b7-4d7e-888e-2586cc5dc5bc",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code_session": {
+    "pid": 7426,
+    "process_kind": "interactive",
+    "entrypoint": "cli",
+    "name": "claude-code-a5",
+    "version": "2.1.287",
+    "started_at": 1790969230755
+  }
+}

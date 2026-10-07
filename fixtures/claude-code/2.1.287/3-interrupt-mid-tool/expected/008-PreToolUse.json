@@ -1,0 +1,18 @@
+{
+  "kind": "tool.pre",
+  "session": "f4b771cc-f13f-4f47-9a76-235ba09b1417",
+  "tool_call": "toolu_012xn68i9CJfTpWLjbHA96Cw",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f4b771cc-f13f-4f47-9a76-235ba09b1417.jsonl",
+    "prompt_id": "e7d64ea1-fd82-47c6-9131-c83a62f3938f",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "sleep 20; echo done",
+      "description": "Run sleep for 20 seconds then echo done"
+    }
+  }
+}

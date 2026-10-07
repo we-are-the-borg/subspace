@@ -1,0 +1,14 @@
+version: 2
+updates:
+  # Keeps the actions in .github/workflows current. The PR title follows
+  # Conventional Commits (chore releases nothing).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      actions:
+        patterns: ["*"]

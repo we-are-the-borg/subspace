@@ -1,0 +1,10 @@
+{
+  "kind": "session.start",
+  "session": "53d29d64-7546-4aef-91e7-22dc7213f0bf",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "session.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/53d29d64-7546-4aef-91e7-22dc7213f0bf.jsonl",
+    "start_source": "clear"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "session": "31d88d15-f725-441b-8f42-88443f5fd7d1",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "state": "waiting",
+  "claude_code_session": {
+    "status": "waiting",
+    "status_at": 1791212487087,
+    "waiting_for": "dialog",
+    "waiting_text": "dialog open",
+    "pid": 767,
+    "process_kind": "interactive",
+    "entrypoint": "cli",
+    "name": "claude-code-ac",
+    "version": "2.1.289",
+    "started_at": 1791212478356,
+    "updated_at": 1791212487087
+  }
+}

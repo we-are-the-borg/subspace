@@ -1,0 +1,34 @@
+{
+  "kind": "other",
+  "session": "e11a65ec-ddcd-4cd0-bb7b-9dd26757f849",
+  "agent": "a2a34e739949f479b",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849.jsonl",
+    "prompt_id": "47b7ab59-fbcc-4dbd-a0e0-8a17afec6733",
+    "permission_mode": "auto",
+    "agent_type": "general-purpose",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849/subagents/agent-a2a34e739949f479b.jsonl",
+    "background_tasks": [
+      {
+        "id": "a99b925b23945c344",
+        "type": "subagent",
+        "status": "running",
+        "description": "Reply one",
+        "agent_type": "general-purpose"
+      },
+      {
+        "id": "a2a34e739949f479b",
+        "type": "subagent",
+        "status": "running",
+        "description": "Reply two",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a99b925b23945c344",
+      "a2a34e739949f479b"
+    ]
+  }
+}

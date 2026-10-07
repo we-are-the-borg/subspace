@@ -1,0 +1,20 @@
+{
+  "kind": "tool.pre",
+  "session": "70df4d87-5cf7-455a-bbbf-9d65ca03a023",
+  "agent": "a49678b26aced2971",
+  "tool_call": "toolu_01VmNv6DkW8fiwqABnMaV6G8",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023.jsonl",
+    "prompt_id": "80437e56-0841-408c-b8a8-895d6706839c",
+    "permission_mode": "default",
+    "agent_type": "general-purpose",
+    "tool_name": "Read",
+    "tool_input": {
+      "file_path": "/Users/user/dev/subspace/tools/hook-capture/README.md"
+    },
+    "file_path": "/Users/user/dev/subspace/tools/hook-capture/README.md"
+  }
+}

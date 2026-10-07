@@ -1,0 +1,29 @@
+{
+  "kind": "tool.post",
+  "session": "8ed9b628-a6a9-4322-9f26-8fb075b17634",
+  "tool_call": "toolu_01RW6KbdWashC5MWp5ZWk4dZ",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/8ed9b628-a6a9-4322-9f26-8fb075b17634.jsonl",
+    "prompt_id": "ed141005-45f7-403b-8010-9fe38d1c3e1c",
+    "permission_mode": "default",
+    "tool_name": "Read",
+    "tool_input": {
+      "file_path": "/Users/user/dev/subspace/tools/hook-capture/claude-code/captures/s13.txt"
+    },
+    "tool_response": {
+      "type": "text",
+      "file": {
+        "filePath": "/Users/user/dev/subspace/tools/hook-capture/claude-code/captures/s13.txt",
+        "content": "two",
+        "numLines": 1,
+        "startLine": 1,
+        "totalLines": 1
+      }
+    },
+    "duration_ms": 5,
+    "file_path": "/Users/user/dev/subspace/tools/hook-capture/claude-code/captures/s13.txt"
+  }
+}

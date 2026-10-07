@@ -1,0 +1,12 @@
+{
+  "kind": "other",
+  "session": "078d4786-cd8d-49c2-93ba-73158fa14f25",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "notification",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/078d4786-cd8d-49c2-93ba-73158fa14f25.jsonl",
+    "prompt_id": "75722c7d-6571-49ac-a7d6-47f7c5ff225c",
+    "notification_message": "Claude needs your permission",
+    "notification_type": "permission_prompt"
+  }
+}

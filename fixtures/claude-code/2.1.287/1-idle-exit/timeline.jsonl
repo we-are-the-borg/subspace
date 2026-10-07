@@ -1,0 +1,16 @@
+{"ms": 1790968964498, "action": "start"}
+{"ms": 1790968965338, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790968965368, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1790968965443, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1790968965617, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1790968965627, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1790968969030, "action": "send: hi"}
+{"ms": 1790968969088, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1790968969119, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1790968971713, "n": 8, "file": "events/008-Stop.json"}
+{"ms": 1790968972068, "n": 9, "file": "status/009-status.json", "inode_changed": false}
+{"ms": 1790968977412, "action": "send: /exit"}
+{"ms": 1790968977725, "n": 10, "file": "status/010-status.json", "inode_changed": true}
+{"ms": 1790968977792, "n": 11, "file": "events/011-SessionEnd.json"}
+{"ms": 1790968977992, "file_deleted": "3137.json"}
+{"ms": 1790968978025, "action": "exited"}

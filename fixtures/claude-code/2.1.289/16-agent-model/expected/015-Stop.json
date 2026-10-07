@@ -1,0 +1,32 @@
+{
+  "kind": "turn.stop",
+  "session": "e11a65ec-ddcd-4cd0-bb7b-9dd26757f849",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849.jsonl",
+    "prompt_id": "7d01a35a-60c1-4df7-a238-7c44d4d8721f",
+    "permission_mode": "auto",
+    "last_assistant_message": "Both agents are running in the background, so I don't have either result yet. I'll report them when the completion notifications arrive.",
+    "background_tasks": [
+      {
+        "id": "a99b925b23945c344",
+        "type": "subagent",
+        "status": "running",
+        "description": "Reply one",
+        "agent_type": "general-purpose"
+      },
+      {
+        "id": "a2a34e739949f479b",
+        "type": "subagent",
+        "status": "running",
+        "description": "Reply two",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "a99b925b23945c344",
+      "a2a34e739949f479b"
+    ]
+  }
+}

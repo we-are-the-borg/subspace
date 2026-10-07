@@ -1,0 +1,18 @@
+{
+  "session": "078d4786-cd8d-49c2-93ba-73158fa14f25",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "state": "waiting",
+  "claude_code_session": {
+    "status": "waiting",
+    "status_at": 1790969338697,
+    "waiting_for": "permission",
+    "waiting_text": "permission prompt",
+    "pid": 8511,
+    "process_kind": "interactive",
+    "entrypoint": "cli",
+    "name": "claude-code-a6",
+    "version": "2.1.287",
+    "started_at": 1790969311550,
+    "updated_at": 1790969338697
+  }
+}

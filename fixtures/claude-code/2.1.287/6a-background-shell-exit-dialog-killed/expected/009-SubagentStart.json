@@ -1,0 +1,12 @@
+{
+  "kind": "agent.start",
+  "session": "356cc977-00dd-4889-9e26-0aa587d3d220",
+  "agent": "a959f735a8ae89a1c",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/356cc977-00dd-4889-9e26-0aa587d3d220.jsonl",
+    "prompt_id": "302490f7-a683-4e12-9271-f2762cf70887",
+    "agent_type": "general-purpose"
+  }
+}

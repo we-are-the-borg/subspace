@@ -1,0 +1,12 @@
+{
+  "kind": "other",
+  "session": "31d88d15-f725-441b-8f42-88443f5fd7d1",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "model.change",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/31d88d15-f725-441b-8f42-88443f5fd7d1.jsonl",
+    "prompt_id": "48028b11-4a13-4653-8ca1-f515402487d7",
+    "from_model": "claude-haiku-4-5-20251001",
+    "to_model": "claude-sonnet-5-5"
+  }
+}

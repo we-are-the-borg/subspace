@@ -1,0 +1,32 @@
+name: Bug report
+description: Something doesn't work as the README or the contract describes.
+labels: [bug]
+body:
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent
+      options: [Claude Code, Codex]
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Agent version (`claude --version` / `codex --version`), subspace version (`plugin.json` in the plugin data folder) and macOS version.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+  - type: markdown
+    attributes:
+      value: |
+        Event files contain your prompts, tool input and output. **Don't paste them unredacted**: remove paths, names and anything private first.

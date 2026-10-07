@@ -1,0 +1,11 @@
+{
+  "kind": "other",
+  "session": "4fc6892d-93ff-4652-9fca-a81cb12b8c7c",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "session.end",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/4fc6892d-93ff-4652-9fca-a81cb12b8c7c.jsonl",
+    "prompt_id": "f190c827-95f8-40f9-a43e-04ca0e6d1ca4",
+    "end_reason": "prompt_input_exit"
+  }
+}

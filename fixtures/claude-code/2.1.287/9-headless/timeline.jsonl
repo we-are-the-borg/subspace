@@ -1,0 +1,12 @@
+{"ms": 1790969253785, "action": "start claude -p"}
+{"ms": 1790969254266, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1790969254312, "n": 2, "file": "events/002-InstructionsLoaded.json"}
+{"ms": 1790969254312, "n": 3, "file": "events/003-InstructionsLoaded.json"}
+{"ms": 1790969254326, "n": 4, "file": "events/004-SessionStart.json"}
+{"ms": 1790969254592, "n": 5, "file": "status/005-status.json", "inode_changed": false}
+{"ms": 1790969255194, "n": 6, "file": "events/006-UserPromptSubmit.json"}
+{"ms": 1790969258111, "n": 7, "file": "events/007-Stop.json"}
+{"ms": 1790969258468, "n": 8, "file": "status/008-status.json", "inode_changed": true}
+{"ms": 1790969258497, "n": 9, "file": "events/009-SessionEnd.json"}
+{"ms": 1790969259193, "action": "exited"}
+{"ms": 1790969259222, "file_deleted": "7793.json"}
