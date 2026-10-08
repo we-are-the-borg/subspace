@@ -1,6 +1,6 @@
 {
   "name": "subspace",
-  "version": "0.11.0",
+  "version": "1.0.0",
   "description": "Writes every hook event, unchanged, into a shared folder that local apps read. Never blocks or interferes.",
   "author": {
     "name": "Andreas Wehr"
