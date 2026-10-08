@@ -12,6 +12,7 @@
     "developerName": "Andreas Wehr",
     "category": "Developer Tools",
     "websiteURL": "https://github.com/we-are-the-borg/subspace",
+    "privacyPolicyURL": "https://github.com/we-are-the-borg/subspace/blob/main/PRIVACY.md",
     "logo": "./assets/icon.png",
     "composerIcon": "./assets/icon.png"
   }

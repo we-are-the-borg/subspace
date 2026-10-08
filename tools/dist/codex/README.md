@@ -35,6 +35,10 @@ Restart Codex afterwards: a running session loses its hooks when the old version
 codex plugin remove subspace@subspace
 ```
 
+## Privacy
+
+Everything stays on your computer; nothing is sent anywhere. Details: [Privacy policy](https://github.com/we-are-the-borg/subspace/blob/main/PRIVACY.md).
+
 ## For apps
 
 The folder layout, file format and detection rules are in [`docs/contract.md`](docs/contract.md); the mapping documents in `model/` are described in [`docs/model.md`](docs/model.md). This repository holds only what the plugin installs and is written by the release workflow of [`we-are-the-borg/subspace`](https://github.com/we-are-the-borg/subspace), where development happens. `SOURCE` names the development commit each release was built from.
