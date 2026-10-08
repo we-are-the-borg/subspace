@@ -2,17 +2,26 @@ name: pr-title
 
 # The squash commit takes the PR title, and release-please builds the version
 # and changelog from it, so it must follow Conventional Commits.
+# Plain pull_request, no token and no third-party action: the title comes from
+# the event payload, so this also works for PRs from forks.
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, edited, reopened, synchronize]
 
-permissions:
-  pull-requests: read
+permissions: {}
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: amannn/action-semantic-pull-request@v6
+      - name: Conventional Commits title
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          types='feat|fix|docs|chore|ci|build|test|refactor|perf|style|revert'
+          if printf '%s\n' "$TITLE" | grep -Eq "^($types)(\([a-z0-9-]+\))?!?: [^ ].*"; then
+            echo "ok: $TITLE"
+          else
+            echo "::error::PR title must follow Conventional Commits, e.g. 'fix: …' or 'feat(contract)!: …' (types: ${types//|/, }). Got: $TITLE"
+            exit 1
+          fi
