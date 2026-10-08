@@ -112,7 +112,7 @@ Events with empty stdin are dropped.
 
 ## 5. Retention
 
-- Claude Code: the user sets `retention_days` in `/config` (plugin `userConfig`, default 3, range 1–30). The hook script reads it as `CLAUDE_PLUGIN_OPTION_RETENTION_DAYS`. Codex has no corresponding plugin setting in 0.159.3 and keeps the default of 3; its adapter declares no `userConfig`.
+- Claude Code: the user sets `retention_days` as a plugin option (`userConfig`, default 3, range 1–30: `/plugin` → Configure options, `claude plugin configure`, or `--config` at install). The hook script reads it as `CLAUDE_PLUGIN_OPTION_RETENTION_DAYS`. Codex has no corresponding plugin setting in 0.159.3 and keeps the default of 3; its adapter declares no `userConfig`.
 - On every invocation the plugin deletes whole day folders older than `retention_days`: it keeps the current UTC day and the `retention_days` days before it, so at least `retention_days` × 24 hours of history remain. No per-file scanning, no size measuring.
 - Apps must tolerate files and folders vanishing at any time, including while they read them.
 - Apps don't delete anything. Longer history belongs in an app's own cache.

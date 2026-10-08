@@ -66,7 +66,8 @@ jobs:
               done
             done
           done
-          test "$(ls -A "$RUNNER_TEMP/dist/claude-code/.claude-plugin" | sort | tr '\n' ' ')" = "marketplace.json plugin.json "
+          test -f "$RUNNER_TEMP/dist/claude-code/.claude-plugin/marketplace.json"
+          test -f "$RUNNER_TEMP/dist/claude-code/.claude-plugin/plugin.json"
           test -f "$RUNNER_TEMP/dist/codex/.agents/plugins/marketplace.json"
       - run: claude plugin validate "$RUNNER_TEMP/dist/claude-code"
       - run: claude plugin validate "$RUNNER_TEMP/dist/claude-code/.claude-plugin/plugin.json"
