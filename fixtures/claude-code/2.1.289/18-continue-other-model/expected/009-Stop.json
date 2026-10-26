@@ -9,6 +9,7 @@
     "permission_mode": "default",
     "last_assistant_message": "three",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

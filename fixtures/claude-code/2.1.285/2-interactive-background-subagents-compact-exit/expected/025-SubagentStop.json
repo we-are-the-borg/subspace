@@ -12,6 +12,7 @@
     "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture/70df4d87-5cf7-455a-bbbf-9d65ca03a023/subagents/agent-a4b0e69069164dc6c.jsonl",
     "last_assistant_message": "(Waiting for Agent 2 to complete; no suggestion at this time.)",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

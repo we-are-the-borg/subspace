@@ -12,6 +12,7 @@
     "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/e11a65ec-ddcd-4cd0-bb7b-9dd26757f849/subagents/agent-ad47b03764e3eaf4b.jsonl",
     "last_assistant_message": "what did the haiku agent say?",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

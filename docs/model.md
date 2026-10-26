@@ -132,12 +132,14 @@ Unobserved hooks get their kind and the fields that hold on every hook (`transcr
 | `spawned_agent` | non-empty string | `tool_response.agentId` on `PostToolUse` of `Agent`; equals the subagent's core `agent` | C1-016, C2-008 |
 | `spawned_async` | boolean | `tool_response.isAsync` on `PostToolUse` of `Agent` | C2-008 `true` |
 | `spawned_model` | string | `tool_response.resolvedModel` on `PostToolUse` of `Agent`: the full model ID the subagent runs with, also when inherited; the only place an inherited model shows | S16-012 `claude-haiku-4-5-20251001` (alias `haiku`), S16-011 `claude-sonnet-5-5` (inherited); C1-016, C2-008, S15-010 |
+| `spawned_shell` | non-empty string | `tool_response.backgroundTaskId` on `PostToolUse` of `Bash`: a call with `run_in_background` started a background shell; equals that shell's `id` in `background_shells`. Absent for foreground calls | S6a-016; absent S6a-018 |
 | `notification_message`, `notification_type` | string | `message`, `notification_type` on `Notification` | C3-007 |
 | `agent_transcript_path` | string | `agent_transcript_path` on `SubagentStop` | C1-015 |
 | `parent_tool_use_id` | non-empty string | `parent_tool_use_id` on `SubagentStart`/`SubagentStop`; **documented, not sent by 2.1.285** | – |
 | `last_assistant_message` | string | `last_assistant_message` on `Stop`, `SubagentStop` | C1-015, C1-020; absent C2-027 |
 | `background_tasks` | array, **opaque** entries | `background_tasks` on `Stop`, `SubagentStop` | C2-014, C2-020 |
 | `background_agents` | array of non-empty strings | `id` of every `background_tasks` entry with `type: subagent`, same hooks: the core `agent` of each background subagent still running. `[]` when none runs; absent when `background_tasks` is | S6a-013 (a `shell` entry left out), S15-013, S15-018 `[]` |
+| `background_shells` | array of objects | every `background_tasks` entry with `type: shell`, whole, same hooks: the background shells still running. Entries are Claude Code's; observed keys `id`, `type`, `status`, `description`, `command`, read them defensively. `[]` when none runs; absent when `background_tasks` is | S6a-020, S6a-021, S6a-024; `[]` S6a-013 |
 | `compact_trigger` | string | `trigger` on `PreCompact`, `PostCompact` | C2-029, C2-033 |
 | `compact_summary` | string | `compact_summary` on `PostCompact` | C2-033 |
 | `from_model`, `to_model` | string | `from_model`, `to_model` on `PostModelSwitch` | C2-030 |
@@ -159,6 +161,7 @@ Left in `payload` because no app uses them today: `scratchpad_dir`, `Instruction
   3. `spawned_agent` on the `Agent` post equals the subagent's `agent`. Background launches have `spawned_async: true` and post right after the launch (C2-008); foreground ones post only after the subagent stopped (C1-016 after C1-015).
   The parent of a subagent is the core `agent` of its `Agent` call (absent: the root). Never assign by order.
 - **Background agents.** A `turn.start` whose `prompt` starts with `<task-notification>` (C2-021, C2-024, S6a-023) or `<agent-message ` (S6-025, S6-034; the subagent called the tool `SubagentHandback` first, S6-023) carries a background agent's result, not a user prompt. In 2.1.287 interactive `Agent` calls without `run_in_background` were launched async (S6-010, S6-017, S6a-010). `background_tasks` is a snapshot of running background agents; observed entries have `id` (= `agent`), `type` (`subagent`), `status`, `description`, `agent_type` (C2-014), or `type: shell` with `command` instead of `agent_type` (S6a-020); `status` was always `running`. `background_agents` lists the subagents' IDs.
+- **Background shells.** A `Bash` call with `run_in_background` posts right away with `spawned_shell` (S6a-016), the `id` its entry in `background_shells` carries from then on (S6a-020). The shell outlives the turn: S6a-024 still lists it after the last `turn.stop`, while the session status file shows `shell` (§12.2). No hook event marks its end, and no snapshot comes while no turn runs (S6a ends with the session killed and the shell still listed). A normal end and a shell stopped by the user are unobserved. Apps take a shell as ended when a later snapshot of the same `session` no longer lists it; while no turn runs, the only signal is the session status file leaving `shell` (§12.2), which means every shell has ended.
 - **Stopped background agents.** A background agent stopped by the user (S15: Ctrl+X Ctrl+K) sends **no `agent.stop`**, and its running tool no `tool.post` (S15-012). It is only missing from the next snapshot: S15-013 has it in `background_agents`, S15-018 has `[]`. Rules for apps:
   - Only background agents appear in the snapshot (`spawned_async: true` on their `Agent` post); a foreground subagent is never in it (C1-015). Never end one by its absence.
   - A background agent missing from the `background_agents` of a root `turn.stop` or an `agent.stop` of the same `session` has ended, if that event's envelope `ts` is later than the one of the agent's `Agent` post (same second: keep it open; `ts` has seconds and async hooks are written late). Arrival order is only a hint (contract §6).
@@ -259,7 +262,7 @@ A rule is an object with these keys, evaluated in this order:
 | Key | Value | Effect |
 |---|---|---|
 | `when` | list of conditions | The rule applies only if every condition holds. A condition is `{ "path": <pointer>, "in": [<strings>] }`: it holds if the value at the pointer is a string equal to one of the listed strings. Absent `when` always holds. |
-| `path` | JSON Pointer ([RFC 6901](https://www.rfc-editor.org/rfc/rfc6901)), or a list of them | The value at the first pointer that exists in the payload. A key holding `null` exists. None exists → no value. |
+| `path` | JSON Pointer ([RFC 6901](https://www.rfc-editor.org/rfc/rfc6901)), or a list of them | The value at the first pointer that exists in the payload. A key holding `null` exists. None exists → no value. The empty pointer `""` is the whole payload (inside `each`: the whole element). |
 | `parse` | `"json"` | The value must be a string; it is parsed as JSON. Not a string or not valid JSON → no value. |
 | `pick` | JSON Pointer | Applied to the parsed value (only together with `parse`). Missing → no value. |
 | `each` | a field spec | The value must be an array, else no value. The spec is applied to every element as if the element were the payload (its pointers start at the element). Elements whose spec yields no value are left out; the value is the array of the others, in order. An empty array stays empty. |
@@ -297,7 +300,7 @@ A rule is an object with these keys, evaluated in this order:
   "each": { "when": [ { "path": "/type", "in": ["subagent"] } ], "path": "/id", "type": "id" } }
 ```
 
-`each` both projects and filters: the inner `when` drops the `shell` entries, `path` picks each remaining entry's `id`. `[{"id":"a1","type":"subagent",…},{"id":"b2","type":"shell",…}]` yields `["a1"]`; `[]` yields `[]`; a missing `background_tasks` leaves the field absent.
+`each` both projects and filters: the inner `when` drops the `shell` entries, `path` picks each remaining entry's `id`. `[{"id":"a1","type":"subagent",…},{"id":"b2","type":"shell",…}]` yields `["a1"]`; `[]` yields `[]`; a missing `background_tasks` leaves the field absent. `background_shells` keeps whole entries instead, with `"path": ""` and `"type": "object"`: the same input yields `[{"id":"b2","type":"shell",…}]`.
 
 A drift such as a key renamed from `agent_transcript_path` to `child_transcript_path` is absorbed by `"path": ["/child_transcript_path", "/agent_transcript_path"]`: new payloads use the new key, old event files still resolve the old one.
 
@@ -365,6 +368,7 @@ Checked against today's logic in The Collective (`ClaudeCodeAdapter.swift`) and 
 | Internal agents | Claude Code `agent_type: ""` |
 | Waiting for the user | core `permission.request`; Claude Code `notification_type` |
 | Done | core `turn.stop` plus open agents; Claude Code `background_agents` (also ends agents stopped by the user, which send no `agent.stop`) |
+| Background shells, count and description | Claude Code `background_shells`, `spawned_shell`; session status `shell` (§12.2) |
 | Touched files | Claude Code `file_path` of `Write`/`Edit` (S13-008, S13-011); Codex writes through the shell without a path (X2-003) |
 | Transcript paths | Claude Code `transcript_path`, `agent_transcript_path`; Codex `rollout_path`, `parent_rollout_path` |
 
@@ -379,6 +383,7 @@ Anything else an app wants is still in `payload`; reading it there couples that 
 - The session's model is missing after `/clear`, on `resume` and in headless sessions (S17, S18, C1, S9); apps carry it over on `clear` only (§3.3).
 - Subagent resume ("the same task-id may notify more than once", C2-021) is unobserved.
 - A background agent stopped by the user has no end event; only its absence from `background_agents` shows it (S15). Stopping a single agent from the task list, rather than all with Ctrl+X Ctrl+K, is unobserved.
+- A background shell has no end event either. Only a killed session is captured (S6a); a shell that ends on its own, one the user stops, and whether its end starts a `<task-notification>` turn as for background agents are unobserved.
 
 **Codex**
 - Child ↔ spawn needs the rollout, and is impossible in ephemeral sessions. Nested spawning and reuse across resume are unobserved.
@@ -424,7 +429,7 @@ Left in the file: `procStart`, `peerProtocol`, `peerFeatures`, `pidDomain`, `mes
 
 ### 12.2 Meaning of `state`
 
-- `working`: a turn runs, including tools, `!` shell commands (S5-006) and background subagents (S6: `working` across two `turn.stop`s until the last hand-back turn ended). `shell` (S6a-025) means no turn but a background shell still running; it maps to `working` too, the raw value stays in `status`.
+- `working`: a turn runs, including tools, `!` shell commands (S5-006) and background subagents (S6: `working` across two `turn.stop`s until the last hand-back turn ended). `shell` (S6a-025) means no turn but a background shell still running; it maps to `working` too, the raw value stays in `status`. Which shells run, with their descriptions, is in the hook events' `background_shells` (§3.2).
 - `waiting`: the session needs the user: a permission dialog (S4-008), a question (`AskUserQuestion`, S4-027), a dialog such as the exit confirmation (S6a-026). The hooks show the first two as well (`permission.request`, S4-010, S4-028), the dialog only here.
 - `idle`: no turn runs. Reached after a normal end and, **without any hook event**, after Esc or Ctrl-C mid-turn (S2-008, S2-011) or mid-tool (S3-009) and after a rejected permission (S4-023).
 

@@ -153,6 +153,9 @@ class Interpreter(unittest.TestCase):
         self.assertEqual(run({"v": {"path": "/a/b~1c/~0d/2"}}, payload), {})
         self.assertEqual(run({"v": {"path": "/a/b~1c/~0d/01"}}, payload), {})
         self.assertEqual(run({"v": {"path": "no-slash"}}, payload), {})
+        self.assertEqual(run({"v": {"path": ""}}, payload), {"v": payload})
+        self.assertEqual(run({"v": {"path": "/a", "each": {"path": "", "type": "object"}}},
+                             {"a": [{"x": 1}, 2]}), {"v": [{"x": 1}]})
 
     def test_fallback_paths_first_existing_wins_and_null_exists(self):
         spec = {"path": ["/new", "/old"]}

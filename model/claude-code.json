@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "revision": 5,
+  "revision": 6,
   "source": "claude-code",
   "block": "claude_code",
   "observed": ["2.1.285", "2.1.287", "2.1.288", "2.1.289"],
@@ -218,6 +218,15 @@
       "type": "string",
       "note": "full model ID the subagent runs with, also when inherited (S16-011, S16-012)"
     },
+    "spawned_shell": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PostToolUse"] },
+        { "path": "/tool_name", "in": ["Bash"] }
+      ],
+      "path": "/tool_response/backgroundTaskId",
+      "type": "id",
+      "note": "equals the id of the shell's background_shells entry (S6a-016)"
+    },
     "notification_message": {
       "when": [{ "path": "/hook_event_name", "in": ["Notification"] }],
       "path": "/message",
@@ -254,6 +263,12 @@
       "path": "/background_tasks",
       "each": { "when": [{ "path": "/type", "in": ["subagent"] }], "path": "/id", "type": "id" },
       "note": "the agent IDs of the running background subagents; shells and other entries left out"
+    },
+    "background_shells": {
+      "when": [{ "path": "/hook_event_name", "in": ["Stop", "SubagentStop"] }],
+      "path": "/background_tasks",
+      "each": { "when": [{ "path": "/type", "in": ["shell"] }], "path": "", "type": "object" },
+      "note": "the running background shells, each background_tasks entry whole; subagents and other entries left out"
     },
     "compact_trigger": {
       "when": [{ "path": "/hook_event_name", "in": ["PreCompact", "PostCompact"] }],

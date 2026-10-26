@@ -9,6 +9,7 @@
     "permission_mode": "auto",
     "last_assistant_message": "The background agent \"Run sleep commands\" was stopped by the user before it finished, so I have no output from the four sleep-and-echo commands to report.",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }
