@@ -251,6 +251,64 @@ unsupported result rather than introducing a different logging implementation.
 Plugin paths containing spaces are covered by the installed-plugin test
 (`tools/e2e/codex.md`).
 
+## 7. Writer lock files (#5)
+
+Targets `codex-cli 0.164.0`. Checks whether
+`$CODEX_HOME/thread-writer-locks/<thread-id>.lock` disappearing tells an app
+that a session ended
+([writer lock](https://github.com/openai/codex/blob/rust-v0.164.0/codex-rs/rollout/src/writer_lock.rs)).
+`watch-locks.py` polls that folder every 50 ms and writes
+`captures/locks/log.jsonl`: files `present` at its start, `created`, `deleted`,
+the `holder` (pid and comm from `lsof`, once a second, null when nobody holds
+it open) and what FSEvents reports (`fsevents.swift`, started by the watcher if
+`swift` exists). It never creates, locks or deletes anything there and never
+probes the locks with `flock`. It records every thread of this Codex home,
+including the ChatGPT app's; curation keeps only the runs' threads.
+
+`drive-lock-runs.py [A B …]` plays runs A–G below without a human: it starts
+the watcher unless one runs, drives `codex` in a pseudo-terminal **from the
+repository root** (trusted; this project's hooks are trusted per path and would
+need a new review) and waits for the hook events of the **installed subspace
+plugin** (`$CODEX_HOME/plugins/data/subspace-subspace/events/`), whose `Stop`
+names each root `session_id`. Actions go to `captures/locks/actions.jsonl`,
+terminal output to `captures/tty/<run>.log`. The default model answers; it
+costs a few requests.
+
+Codex 0.163.0 raised the daemon's unload delay (`thread_unload_delay_secs`)
+from 60 s to 1800 s, so start `./watch-locks.py` yourself first (the driver
+then leaves it running) and keep it for **31 minutes** after the last daemon
+run (A, C, D, E) to see their locks go. Run H stays manual. By
+hand, note the time right after each `/exit` (or kill):
+
+```sh
+echo "X exit $(date +%s)" >> captures/runs/notes-locks.md   # X = run letter
+```
+
+- **A daemon:** `codex -s read-only`, `/status` (note the `Server` row), send
+  `Reply with lock-a.`, `/exit`.
+- **B embedded:** `codex --no-daemon -s read-only`, send `Reply with lock-b.`,
+  `/exit`.
+- **C resume:** `codex resume <A's thread id> -s read-only` (the `created`
+  line of A in terminal 1). Note whether the lock reappears before or only
+  after the prompt `Reply with lock-c.`, then `/exit`.
+- **D child thread:** `codex -s read-only`, send `Start one subagent that
+  replies with lock-d-child and wait for it, then reply with lock-d.`, `/exit`.
+- **E closed terminal:** `codex -s read-only`, send `Reply with lock-e.`, then
+  close the terminal tab instead of `/exit`.
+- **F crash:** `codex --no-daemon -s read-only`, send `Reply with lock-f.`,
+  then from another terminal `pkill -9 -f 'codex --no-daemon -s read-only'`.
+  The file should stay with holder null. Then start `codex --no-daemon -s
+  read-only` again, send `Reply with lock-f2.` (the first acquire of a new
+  process removes stale locks), `/exit`.
+- **G headless:** `codex exec -s read-only 'Reply with lock-g.'` and
+  `codex exec --ephemeral -s read-only 'Reply with lock-g2.'`.
+- **H ChatGPT app:** start a new Codex chat, send `Reply with lock-h.`, note
+  the time, archive the chat, note the time, wait 2 minutes, quit the app
+  (Cmd-Q), note the time.
+
+Stop the watcher with Ctrl-C. Curated result:
+`fixtures/codex/0.164.0/1-writer-locks/`.
+
 ## Coverage and handoff
 
 | Question | Runs / evidence |
@@ -263,6 +321,7 @@ Plugin paths containing spaces are covered by the installed-plugin test
 | 6: plugin data path, custom `CODEX_HOME`, re-trust, uninstall | Installed-plugin test (`tools/e2e/codex.md`) |
 | 7: shell startup, silence, byte preservation, paths with spaces, cancellation | 3, 6 on each available platform; plugin-specific paths in the installed-plugin test |
 | 8: rollout format, token metadata, parent links, delayed/null paths | 1–6, collect after exit and again if files were delayed; 5 ephemeral |
+| #5: writer lock files as a session end signal | 7 |
 
 Do not clear captures between runs: async events can arrive out of order. Use
 root session IDs and your notes to separate scenarios. All `captures/` trees are

@@ -1,0 +1,172 @@
+{"ms": 1793031422579, "run": "B", "action": "start", "pid": 56999, "args": ["--no-daemon", "-s", "read-only"]}
+{"ms": 1793031423687, "event": "created", "thread": "01a17900-46a3-7de3-81be-56c8429da567", "inode": 439169860, "mtime_ns": 1793031423684809737, "size": 0}
+{"ms": 1793031423746, "event": "fsevent", "file": "01a16a7a-360b-7e43-aec1-9938a2ae87e7.lock", "flags": ["xattr_mod", "is_file"], "id": 1006669288}
+{"ms": 1793031423746, "event": "fsevent", "file": "01a16a75-7780-71b1-8db9-cb482635386b.lock", "flags": ["xattr_mod", "is_file"], "id": 1006669291}
+{"ms": 1793031423746, "event": "fsevent", "file": "01a17900-46a3-7de3-81be-56c8429da567.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006669300}
+{"ms": 1793031423797, "event": "created", "thread": "01a17900-46f7-7763-b801-e83973ee0690", "inode": 439169861, "mtime_ns": 1793031423788144666, "size": 0}
+{"ms": 1793031423800, "event": "fsevent", "file": "01a17900-46f7-7763-b801-e83973ee0690.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006669315}
+{"ms": 1793031424663, "event": "holder", "thread": "01a17900-46a3-7de3-81be-56c8429da567", "holder": {"pid": 56999, "comm": "codex"}}
+{"ms": 1793031424663, "event": "holder", "thread": "01a17900-46f7-7763-b801-e83973ee0690", "holder": {"pid": 56999, "comm": "codex"}}
+{"ms": 1793031428126, "run": "B", "action": "send", "pid": 56999, "text": "Reply with lock-b."}
+{"ms": 1793031431819, "run": "B", "action": "saw Stop", "pid": 56999, "session_id": "01a17900-46a3-7de3-81be-56c8429da567"}
+{"ms": 1793031432524, "run": "B", "action": "send", "pid": 56999, "text": "/exit"}
+{"ms": 1793031432538, "event": "fsevent", "file": "01a17900-46f7-7763-b801-e83973ee0690.lock", "flags": ["created", "removed", "xattr_mod", "is_file"], "id": 1006670970}
+{"ms": 1793031432538, "event": "fsevent", "file": "01a17900-46a3-7de3-81be-56c8429da567.lock", "flags": ["created", "removed", "xattr_mod", "is_file"], "id": 1006670976}
+{"ms": 1793031432555, "event": "deleted", "thread": "01a17900-46a3-7de3-81be-56c8429da567"}
+{"ms": 1793031432555, "event": "deleted", "thread": "01a17900-46f7-7763-b801-e83973ee0690"}
+{"ms": 1793031433771, "run": "B", "action": "exited", "pid": 56999, "status": 0}
+{"ms": 1793031433771, "run": "B", "action": "wait 10s"}
+{"ms": 1793031458583, "run": "A", "action": "start", "pid": 58525, "args": ["-s", "read-only"]}
+{"ms": 1793031459894, "event": "created", "thread": "01a17900-d3f8-71d1-a99a-21ef53523bde", "inode": 439170755, "mtime_ns": 1793031459879280373, "size": 0}
+{"ms": 1793031459942, "event": "fsevent", "file": "01a17900-d3f8-71d1-a99a-21ef53523bde.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006680284}
+{"ms": 1793031459991, "event": "fsevent", "file": "01a17900-d45c-7b70-ae15-f7e303cfa603.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006680355}
+{"ms": 1793031460001, "event": "created", "thread": "01a17900-d45c-7b70-ae15-f7e303cfa603", "inode": 439170760, "mtime_ns": 1793031459979737166, "size": 0}
+{"ms": 1793031461414, "event": "holder", "thread": "01a17900-d3f8-71d1-a99a-21ef53523bde", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031461414, "event": "holder", "thread": "01a17900-d45c-7b70-ae15-f7e303cfa603", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031466161, "run": "A", "action": "send", "pid": 58525, "text": "/status"}
+{"ms": 1793031470485, "run": "A", "action": "send", "pid": 58525, "text": "Reply with lock-a."}
+{"ms": 1793031473559, "run": "A", "action": "saw Stop", "pid": 58525, "session_id": "01a17900-d3f8-71d1-a99a-21ef53523bde"}
+{"ms": 1793031474262, "run": "A", "action": "send", "pid": 58525, "text": "/exit"}
+{"ms": 1793031474472, "run": "A", "action": "exited", "pid": 58525, "status": 0}
+{"ms": 1793031474473, "run": "A", "action": "wait 120s"}
+{"ms": 1793031500328, "event": "created", "thread": "01a17901-71f6-7ce1-81e8-e7ee1381dd15", "inode": 439171247, "mtime_ns": 1793031500293392276, "size": 0}
+{"ms": 1793031500359, "event": "fsevent", "file": "01a17901-71f6-7ce1-81e8-e7ee1381dd15.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006687044}
+{"ms": 1793031500468, "event": "fsevent", "file": "01a17901-72a4-7ca0-85c9-b98d7b6fa514.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006687842}
+{"ms": 1793031500492, "event": "created", "thread": "01a17901-72a4-7ca0-85c9-b98d7b6fa514", "inode": 439171319, "mtime_ns": 1793031500452895582, "size": 0}
+{"ms": 1793031501176, "event": "holder", "thread": "01a17901-71f6-7ce1-81e8-e7ee1381dd15", "holder": {"pid": 79009, "comm": "codex"}}
+{"ms": 1793031501176, "event": "holder", "thread": "01a17901-72a4-7ca0-85c9-b98d7b6fa514", "holder": {"pid": 79009, "comm": "codex"}}
+{"ms": 1793031514000, "run": "H", "action": "manual: sent (second precision)"}
+{"ms": 1793031531244, "event": "deleted", "thread": "01a17901-71f6-7ce1-81e8-e7ee1381dd15"}
+{"ms": 1793031531244, "event": "deleted", "thread": "01a17901-72a4-7ca0-85c9-b98d7b6fa514"}
+{"ms": 1793031531288, "event": "fsevent", "file": "01a17901-72a4-7ca0-85c9-b98d7b6fa514.lock", "flags": ["removed", "is_file"], "id": 1006693538}
+{"ms": 1793031531289, "event": "fsevent", "file": "01a17901-71f6-7ce1-81e8-e7ee1381dd15.lock", "flags": ["removed", "is_file"], "id": 1006693547}
+{"ms": 1793031531289, "event": "fsevent", "file": "01a17901-71f6-7ce1-81e8-e7ee1381dd15.lock", "flags": ["created", "removed", "xattr_mod", "is_file"], "id": 1006693563}
+{"ms": 1793031579286, "event": "deleted", "thread": "01a16a7a-360b-7e43-aec1-9938a2ae87e7"}
+{"ms": 1793031579334, "event": "fsevent", "file": "01a16a7a-360b-7e43-aec1-9938a2ae87e7.lock", "flags": ["removed", "is_file"], "id": 1006702601}
+{"ms": 1793031579334, "event": "fsevent", "file": "01a16a75-7780-71b1-8db9-cb482635386b.lock", "flags": ["removed", "is_file"], "id": 1006702622}
+{"ms": 1793031579337, "event": "deleted", "thread": "01a16a75-7780-71b1-8db9-cb482635386b"}
+{"ms": 1793031583000, "run": "H", "action": "manual: quit (second precision)"}
+{"ms": 1793031594478, "run": "C", "action": "start", "pid": 63124, "args": ["resume", "01a17900-d3f8-71d1-a99a-21ef53523bde", "-s", "read-only"]}
+{"ms": 1793031595314, "event": "deleted", "thread": "01a17900-d3f8-71d1-a99a-21ef53523bde"}
+{"ms": 1793031595314, "event": "deleted", "thread": "01a17900-d45c-7b70-ae15-f7e303cfa603"}
+{"ms": 1793031595363, "event": "fsevent", "file": "01a17900-d45c-7b70-ae15-f7e303cfa603.lock", "flags": ["removed", "is_file"], "id": 1006706793}
+{"ms": 1793031595363, "event": "fsevent", "file": "01a17900-d3f8-71d1-a99a-21ef53523bde.lock", "flags": ["removed", "is_file"], "id": 1006706799}
+{"ms": 1793031595363, "event": "fsevent", "file": "01a17900-d3f8-71d1-a99a-21ef53523bde.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006706808}
+{"ms": 1793031595366, "event": "created", "thread": "01a17900-d3f8-71d1-a99a-21ef53523bde", "inode": 439172492, "mtime_ns": 1793031595316308049, "size": 0}
+{"ms": 1793031595415, "event": "fsevent", "file": "01a17902-e556-72f2-8c8c-d735d6660434.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006707713}
+{"ms": 1793031595419, "event": "created", "thread": "01a17902-e556-72f2-8c8c-d735d6660434", "inode": 439172567, "mtime_ns": 1793031595394670093, "size": 0}
+{"ms": 1793031596412, "event": "holder", "thread": "01a17902-e556-72f2-8c8c-d735d6660434", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031599727, "run": "C", "action": "wait 10s"}
+{"ms": 1793031610437, "run": "C", "action": "send", "pid": 63124, "text": "Reply with lock-c."}
+{"ms": 1793031613918, "run": "C", "action": "saw Stop", "pid": 63124, "session_id": "01a17900-d3f8-71d1-a99a-21ef53523bde"}
+{"ms": 1793031614623, "run": "C", "action": "send", "pid": 63124, "text": "/exit"}
+{"ms": 1793031614836, "run": "C", "action": "exited", "pid": 63124, "status": 0}
+{"ms": 1793031614836, "run": "C", "action": "wait 120s"}
+{"ms": 1793031734844, "run": "D", "action": "start", "pid": 66853, "args": ["-s", "read-only"]}
+{"ms": 1793031735788, "event": "created", "thread": "01a17905-0996-7ec2-aa60-28e2996c7d1e", "inode": 439174878, "mtime_ns": 1793031735735074491, "size": 0}
+{"ms": 1793031735806, "event": "fsevent", "file": "01a17905-0996-7ec2-aa60-28e2996c7d1e.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006737363}
+{"ms": 1793031735845, "event": "created", "thread": "01a17905-09e8-7603-be8e-26c2985cce20", "inode": 439174880, "mtime_ns": 1793031735836986664, "size": 0}
+{"ms": 1793031735860, "event": "fsevent", "file": "01a17905-09e8-7603-be8e-26c2985cce20.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006737375}
+{"ms": 1793031736224, "event": "holder", "thread": "01a17905-0996-7ec2-aa60-28e2996c7d1e", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031736224, "event": "holder", "thread": "01a17905-09e8-7603-be8e-26c2985cce20", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031740798, "run": "D", "action": "send", "pid": 66853, "text": "Start one subagent that replies with lock-d-child and wait for it, then reply with lock-d. Do not run any commands."}
+{"ms": 1793031745967, "event": "fsevent", "file": "01a17905-3104-7721-b1e0-897fdacd2bd5.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006740532}
+{"ms": 1793031745996, "event": "created", "thread": "01a17905-3104-7721-b1e0-897fdacd2bd5", "inode": 439175151, "mtime_ns": 1793031745955628567, "size": 0}
+{"ms": 1793031746115, "event": "fsevent", "file": "01a17905-31cf-7b80-abeb-b0e2062c0cd9.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006740572}
+{"ms": 1793031746158, "event": "created", "thread": "01a17905-31cf-7b80-abeb-b0e2062c0cd9", "inode": 439175155, "mtime_ns": 1793031746107273842, "size": 0}
+{"ms": 1793031747208, "event": "holder", "thread": "01a17905-3104-7721-b1e0-897fdacd2bd5", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031747208, "event": "holder", "thread": "01a17905-31cf-7b80-abeb-b0e2062c0cd9", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031754159, "run": "D", "action": "saw Stop", "pid": 66853, "session_id": "01a17905-0996-7ec2-aa60-28e2996c7d1e"}
+{"ms": 1793031754860, "run": "D", "action": "send", "pid": 66853, "text": "/exit"}
+{"ms": 1793031755069, "run": "D", "action": "exited", "pid": 66853, "status": 0}
+{"ms": 1793031755070, "run": "D", "action": "wait 120s"}
+{"ms": 1793031875078, "run": "E", "action": "start", "pid": 70928, "args": ["-s", "read-only"]}
+{"ms": 1793031875950, "event": "created", "thread": "01a17907-2d44-7a42-b71e-578795dc2cc5", "inode": 439187228, "mtime_ns": 1793031875948590952, "size": 0}
+{"ms": 1793031876014, "event": "fsevent", "file": "01a17907-2d44-7a42-b71e-578795dc2cc5.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006893708}
+{"ms": 1793031876077, "event": "fsevent", "file": "01a17907-2da0-7280-a6cc-3fc58ccf63fc.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1006893720}
+{"ms": 1793031876115, "event": "created", "thread": "01a17907-2da0-7280-a6cc-3fc58ccf63fc", "inode": 439187230, "mtime_ns": 1793031876064003134, "size": 0}
+{"ms": 1793031877355, "event": "holder", "thread": "01a17907-2d44-7a42-b71e-578795dc2cc5", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031877355, "event": "holder", "thread": "01a17907-2da0-7280-a6cc-3fc58ccf63fc", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793031882262, "run": "E", "action": "send", "pid": 70928, "text": "Reply with lock-e."}
+{"ms": 1793032032346, "run": "E", "action": "saw Stop", "pid": 70928, "session_id": "01a17907-2d44-7a42-b71e-578795dc2cc5"}
+{"ms": 1793033195102, "run": "E", "action": "manual: kill driver, pty master closes"}
+{"ms": 1793033209528, "run": "E", "action": "manual: kill -9 driver, pty master closes"}
+{"ms": 1793033242310, "run": "E", "action": "start", "pid": 97460, "args": ["-s", "read-only"]}
+{"ms": 1793033243251, "event": "created", "thread": "01a1791c-0a1c-7513-9279-149254481caa", "inode": 439221284, "mtime_ns": 1793033243202568266, "size": 0}
+{"ms": 1793033243268, "event": "fsevent", "file": "01a1791c-0a1c-7513-9279-149254481caa.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007332357}
+{"ms": 1793033243341, "event": "fsevent", "file": "01a1791c-0a86-7660-a95c-9ea1929b7dba.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007332390}
+{"ms": 1793033243362, "event": "created", "thread": "01a1791c-0a86-7660-a95c-9ea1929b7dba", "inode": 439221289, "mtime_ns": 1793033243329209667, "size": 0}
+{"ms": 1793033244871, "event": "holder", "thread": "01a1791c-0a1c-7513-9279-149254481caa", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793033244871, "event": "holder", "thread": "01a1791c-0a86-7660-a95c-9ea1929b7dba", "holder": {"pid": 76118, "comm": "codex"}}
+{"ms": 1793033248872, "run": "E", "action": "send", "pid": 97460, "text": "Reply with lock-e."}
+{"ms": 1793033251955, "run": "E", "action": "saw Stop", "pid": 97460, "session_id": "01a1791c-0a1c-7513-9279-149254481caa"}
+{"ms": 1793033251957, "run": "E", "action": "closed terminal", "pid": 97460}
+{"ms": 1793033252057, "run": "E", "action": "exited", "pid": 97460, "status": 1}
+{"ms": 1793033252058, "run": "E", "action": "wait 120s"}
+{"ms": 1793033372065, "run": "F", "action": "start", "pid": 879, "args": ["--no-daemon", "-s", "read-only"]}
+{"ms": 1793033373229, "event": "created", "thread": "01a1791e-05d7-7d02-b380-8198ced021c9", "inode": 439223074, "mtime_ns": 1793033373178136555, "size": 0}
+{"ms": 1793033373242, "event": "fsevent", "file": "01a1791e-05d7-7d02-b380-8198ced021c9.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007451993}
+{"ms": 1793033373284, "event": "created", "thread": "01a1791e-0624-7940-8de4-d8feb0018597", "inode": 439223080, "mtime_ns": 1793033373264426399, "size": 0}
+{"ms": 1793033373294, "event": "fsevent", "file": "01a1791e-0624-7940-8de4-d8feb0018597.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007452066}
+{"ms": 1793033374826, "event": "holder", "thread": "01a1791e-05d7-7d02-b380-8198ced021c9", "holder": {"pid": 879, "comm": "codex"}}
+{"ms": 1793033374826, "event": "holder", "thread": "01a1791e-0624-7940-8de4-d8feb0018597", "holder": {"pid": 879, "comm": "codex"}}
+{"ms": 1793033377614, "run": "F", "action": "send", "pid": 879, "text": "Reply with lock-f."}
+{"ms": 1793033380693, "run": "F", "action": "saw Stop", "pid": 879, "session_id": "01a1791e-05d7-7d02-b380-8198ced021c9"}
+{"ms": 1793033380693, "run": "F", "action": "kill -SIGKILL", "pid": 879}
+{"ms": 1793033380798, "run": "F", "action": "exited", "pid": 879, "status": 9}
+{"ms": 1793033380799, "run": "F", "action": "wait 10s"}
+{"ms": 1793033381397, "event": "holder", "thread": "01a1791e-05d7-7d02-b380-8198ced021c9", "holder": null}
+{"ms": 1793033381397, "event": "holder", "thread": "01a1791e-0624-7940-8de4-d8feb0018597", "holder": null}
+{"ms": 1793033390813, "run": "F2", "action": "start", "pid": 1674, "args": ["--no-daemon", "-s", "read-only"]}
+{"ms": 1793033391768, "event": "created", "thread": "01a1791e-4e73-76e2-83b6-e6a725ae02e0", "inode": 439223367, "mtime_ns": 1793033391761553562, "size": 0}
+{"ms": 1793033391769, "event": "deleted", "thread": "01a1791e-05d7-7d02-b380-8198ced021c9"}
+{"ms": 1793033391769, "event": "deleted", "thread": "01a1791e-0624-7940-8de4-d8feb0018597"}
+{"ms": 1793033391825, "event": "fsevent", "file": "01a1791e-0624-7940-8de4-d8feb0018597.lock", "flags": ["removed", "is_file"], "id": 1007457178}
+{"ms": 1793033391825, "event": "fsevent", "file": "01a1791e-05d7-7d02-b380-8198ced021c9.lock", "flags": ["removed", "is_file"], "id": 1007457181}
+{"ms": 1793033391825, "event": "fsevent", "file": "01a1791e-4e73-76e2-83b6-e6a725ae02e0.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007457187}
+{"ms": 1793033391874, "event": "created", "thread": "01a1791e-4ead-71c2-9d51-9d2b6650a159", "inode": 439223368, "mtime_ns": 1793033391836335657, "size": 0}
+{"ms": 1793033391875, "event": "fsevent", "file": "01a1791e-4ead-71c2-9d51-9d2b6650a159.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007457199}
+{"ms": 1793033393243, "event": "holder", "thread": "01a1791e-4e73-76e2-83b6-e6a725ae02e0", "holder": {"pid": 1674, "comm": "codex"}}
+{"ms": 1793033393243, "event": "holder", "thread": "01a1791e-4ead-71c2-9d51-9d2b6650a159", "holder": {"pid": 1674, "comm": "codex"}}
+{"ms": 1793033395450, "run": "F2", "action": "wait 5s"}
+{"ms": 1793033401162, "run": "F2", "action": "send", "pid": 1674, "text": "Reply with lock-f2."}
+{"ms": 1793033404651, "run": "F2", "action": "saw Stop", "pid": 1674, "session_id": "01a1791e-4e73-76e2-83b6-e6a725ae02e0"}
+{"ms": 1793033405352, "run": "F2", "action": "send", "pid": 1674, "text": "/exit"}
+{"ms": 1793033405357, "event": "deleted", "thread": "01a1791e-4ead-71c2-9d51-9d2b6650a159"}
+{"ms": 1793033405365, "event": "fsevent", "file": "01a1791e-4ead-71c2-9d51-9d2b6650a159.lock", "flags": ["created", "removed", "xattr_mod", "is_file"], "id": 1007460441}
+{"ms": 1793033405365, "event": "fsevent", "file": "01a1791e-4e73-76e2-83b6-e6a725ae02e0.lock", "flags": ["created", "removed", "xattr_mod", "is_file"], "id": 1007460447}
+{"ms": 1793033405412, "event": "deleted", "thread": "01a1791e-4e73-76e2-83b6-e6a725ae02e0"}
+{"ms": 1793033406908, "run": "F2", "action": "exited", "pid": 1674, "status": 0}
+{"ms": 1793033406909, "run": "F2", "action": "wait 10s"}
+{"ms": 1793033414654, "event": "fsevent", "file": "01a17902-e556-72f2-8c8c-d735d6660434.lock", "flags": ["removed", "is_file"], "id": 1007461675}
+{"ms": 1793033414654, "event": "fsevent", "file": "01a17900-d3f8-71d1-a99a-21ef53523bde.lock", "flags": ["removed", "is_file"], "id": 1007461681}
+{"ms": 1793033414656, "event": "deleted", "thread": "01a17900-d3f8-71d1-a99a-21ef53523bde"}
+{"ms": 1793033414656, "event": "deleted", "thread": "01a17902-e556-72f2-8c8c-d735d6660434"}
+{"ms": 1793033416914, "run": "G", "action": "start exec", "args": []}
+{"ms": 1793033417006, "event": "created", "thread": "01a1791e-b101-7490-8f34-07c4d810ef77", "inode": 439223674, "mtime_ns": 1793033416999158803, "size": 0}
+{"ms": 1793033417011, "event": "fsevent", "file": "01a1791e-b101-7490-8f34-07c4d810ef77.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007462132}
+{"ms": 1793033417061, "event": "created", "thread": "01a1791e-b142-76c1-ab53-90f55825f400", "inode": 439223675, "mtime_ns": 1793033417058546386, "size": 0}
+{"ms": 1793033417069, "event": "fsevent", "file": "01a1791e-b142-76c1-ab53-90f55825f400.lock", "flags": ["created", "xattr_mod", "is_file"], "id": 1007462138}
+{"ms": 1793033418377, "event": "holder", "thread": "01a1791e-b101-7490-8f34-07c4d810ef77", "holder": {"pid": 2493, "comm": "codex"}}
+{"ms": 1793033418377, "event": "holder", "thread": "01a1791e-b142-76c1-ab53-90f55825f400", "holder": {"pid": 2493, "comm": "codex"}}
+{"ms": 1793033421699, "event": "fsevent", "file": "01a1791e-b142-76c1-ab53-90f55825f400.lock", "flags": ["created", "removed", "xattr_mod", "is_file"], "id": 1007463103}
+{"ms": 1793033421699, "event": "fsevent", "file": "01a1791e-b101-7490-8f34-07c4d810ef77.lock", "flags": ["created", "removed", "xattr_mod", "is_file"], "id": 1007463109}
+{"ms": 1793033421717, "event": "deleted", "thread": "01a1791e-b101-7490-8f34-07c4d810ef77"}
+{"ms": 1793033421717, "event": "deleted", "thread": "01a1791e-b142-76c1-ab53-90f55825f400"}
+{"ms": 1793033423769, "run": "G", "action": "exec exited", "status": 0}
+{"ms": 1793033423769, "run": "G", "action": "wait 10s"}
+{"ms": 1793033433774, "run": "G2", "action": "start exec", "args": ["--ephemeral"]}
+{"ms": 1793033439704, "run": "G2", "action": "exec exited", "status": 0}
+{"ms": 1793033439704, "run": "G2", "action": "wait 10s"}
+{"ms": 1793033554927, "event": "deleted", "thread": "01a17905-0996-7ec2-aa60-28e2996c7d1e"}
+{"ms": 1793033554928, "event": "deleted", "thread": "01a17905-09e8-7603-be8e-26c2985cce20"}
+{"ms": 1793033555116, "event": "fsevent", "file": "01a17905-09e8-7603-be8e-26c2985cce20.lock", "flags": ["removed", "is_file"], "id": 1007491838}
+{"ms": 1793033555116, "event": "fsevent", "file": "01a17905-0996-7ec2-aa60-28e2996c7d1e.lock", "flags": ["removed", "is_file"], "id": 1007491844}
+{"ms": 1793035009600, "event": "deleted", "thread": "01a17907-2d44-7a42-b71e-578795dc2cc5"}
+{"ms": 1793035009601, "event": "deleted", "thread": "01a17907-2da0-7280-a6cc-3fc58ccf63fc"}
+{"ms": 1793035009639, "event": "fsevent", "file": "01a17907-2da0-7280-a6cc-3fc58ccf63fc.lock", "flags": ["removed", "is_file"], "id": 1008160173}
+{"ms": 1793035009640, "event": "fsevent", "file": "01a17907-2d44-7a42-b71e-578795dc2cc5.lock", "flags": ["removed", "is_file"], "id": 1008160194}
+{"ms": 1793035052011, "event": "deleted", "thread": "01a1791c-0a1c-7513-9279-149254481caa"}
+{"ms": 1793035052011, "event": "deleted", "thread": "01a1791c-0a86-7660-a95c-9ea1929b7dba"}
+{"ms": 1793035052321, "event": "fsevent", "file": "01a1791c-0a86-7660-a95c-9ea1929b7dba.lock", "flags": ["removed", "is_file"], "id": 1008165333}
+{"ms": 1793035052321, "event": "fsevent", "file": "01a1791c-0a1c-7513-9279-149254481caa.lock", "flags": ["removed", "is_file"], "id": 1008165339}
