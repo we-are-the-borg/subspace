@@ -5,9 +5,12 @@
   "author": {
     "name": "Andreas Wehr"
   },
+  "homepage": "https://github.com/we-are-the-borg/subspace",
   "repository": "https://github.com/we-are-the-borg/subspace",
   "license": "MIT",
   "privacyPolicyUrl": "https://github.com/we-are-the-borg/subspace/blob/main/PRIVACY.md",
+  "supportUrl": "https://github.com/we-are-the-borg/subspace/issues",
+  "documentationUrl": "https://github.com/we-are-the-borg/subspace-claude-code#readme",
   "userConfig": {
     "retention_days": {
       "type": "number",
