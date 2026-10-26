@@ -9,6 +9,7 @@
     "permission_mode": "default",
     "last_assistant_message": "Hey! I see you're on the `plugin/scaffold` branch for the subspace project. Looking at your plan, steps 1-3 and 5 are complete. Next up is:\n\n- **#4** — Evaluate captures and store fixtures (needs a user run)\n- **#6** — `spool.sh` with tests\n- **#7** — End-to-end\n\nWhat's on your mind?",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

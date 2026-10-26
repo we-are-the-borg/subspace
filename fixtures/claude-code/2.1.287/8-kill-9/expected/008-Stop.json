@@ -9,6 +9,7 @@
     "permission_mode": "default",
     "last_assistant_message": "Hey! 👋 What can I help you with?",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

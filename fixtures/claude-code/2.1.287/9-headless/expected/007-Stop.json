@@ -9,6 +9,7 @@
     "permission_mode": "default",
     "last_assistant_message": "Hi! 👋 What can I help you with? I see you're on the `chore/capture-session-status` branch with some changes in progress. Want to continue working on those, or something else?",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

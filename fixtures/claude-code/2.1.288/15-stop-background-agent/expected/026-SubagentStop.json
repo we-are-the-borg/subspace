@@ -11,6 +11,7 @@
     "agent_type": "",
     "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e/subagents/agent-a05301f1893065150.jsonl",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

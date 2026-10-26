@@ -9,6 +9,7 @@
     "permission_mode": "auto",
     "last_assistant_message": "Both agents have reported back:\n\n- **Haiku agent:** \"one\"\n- **Default-model agent:** \"two\"",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

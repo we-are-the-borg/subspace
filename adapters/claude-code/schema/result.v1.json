@@ -162,6 +162,9 @@
         "spawned_model": {
           "type": "string"
         },
+        "spawned_shell": {
+          "$ref": "#/$defs/id"
+        },
         "notification_message": {
           "type": "string"
         },
@@ -184,6 +187,12 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/id"
+          }
+        },
+        "background_shells": {
+          "type": "array",
+          "items": {
+            "type": "object"
           }
         },
         "compact_trigger": {

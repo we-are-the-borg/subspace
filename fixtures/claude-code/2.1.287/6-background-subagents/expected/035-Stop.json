@@ -9,6 +9,7 @@
     "permission_mode": "auto",
     "last_assistant_message": "The first agent ran `sleep 10; echo fg` in the foreground and it printed:\n\n```\nfg\n```\n\nThe second agent's `sleep 30; echo bg` was blocked, so it never ran.",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

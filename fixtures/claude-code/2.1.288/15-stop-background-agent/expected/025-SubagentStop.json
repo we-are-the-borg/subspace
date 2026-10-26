@@ -12,6 +12,7 @@
     "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e/subagents/agent-ad232b89a27705b52.jsonl",
     "last_assistant_message": "There's nothing for me to act on in that skills list. The background sleep agent was stopped before it finished, so I have no output from it.",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

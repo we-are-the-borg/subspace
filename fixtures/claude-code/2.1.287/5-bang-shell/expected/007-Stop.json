@@ -9,6 +9,7 @@
     "permission_mode": "default",
     "last_assistant_message": "Hallo! Bereit, um zu helfen. Was möchtest du heute arbeiten?\n\nI can see you're on the `chore/capture-session-status` branch with some modifications and new files. What would you like me to focus on?",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }

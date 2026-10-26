@@ -9,6 +9,7 @@
     "permission_mode": "auto",
     "last_assistant_message": "The second agent didn't run the command. Its Bash tool blocked `sleep 30; echo bg` with a message saying to use Monitor with an until-loop instead of a long sleep. It didn't retry or work around the block, so there is no `bg` output.\n\nThe first agent (`sleep 10; echo fg`) is still running, and I'll report its result when it finishes.",
     "background_tasks": [],
-    "background_agents": []
+    "background_agents": [],
+    "background_shells": []
   }
 }
