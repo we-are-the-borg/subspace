@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "12ce6954-14e0-488c-9478-5e0f9754d416",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416.jsonl",
+    "prompt_id": "74d4933d-67c8-4e96-8996-cf0a540cf1f6",
+    "permission_mode": "default",
+    "prompt": "Use the AskUserQuestion tool once with one question: \"Which layout do you prefer?\", header \"Layout\", multiSelect false, two options \"Grid\" and \"List\", each with a short ASCII-art preview. Then reply with my answer."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "permission.request",
+  "session": "12ce6954-14e0-488c-9478-5e0f9754d416",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "permission.request",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416.jsonl",
+    "prompt_id": "74d4933d-67c8-4e96-8996-cf0a540cf1f6",
+    "permission_mode": "default",
+    "tool_name": "AskUserQuestion",
+    "tool_input": {
+      "questions": [
+        {
+          "question": "Which layout do you prefer?",
+          "header": "Layout",
+          "options": [
+            {
+              "label": "Grid",
+              "description": "Items arranged in rows and columns",
+              "preview": "+------+------+------+\n| item | item | item |\n+------+------+------+\n| item | item | item |\n+------+------+------+"
+            },
+            {
+              "label": "List",
+              "description": "Items stacked one below another",
+              "preview": "+------------------+\n| item             |\n+------------------+\n| item             |\n+------------------+\n| item             |\n+------------------+"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question": "Which layout do you prefer?",
+        "header": "Layout",
+        "options": [
+          {
+            "label": "Grid",
+            "description": "Items arranged in rows and columns",
+            "preview": "+------+------+------+\n| item | item | item |\n+------+------+------+\n| item | item | item |\n+------+------+------+"
+          },
+          {
+            "label": "List",
+            "description": "Items stacked one below another",
+            "preview": "+------------------+\n| item             |\n+------------------+\n| item             |\n+------------------+\n| item             |\n+------------------+"
+          }
+        ],
+        "multiSelect": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "kind": "turn.start",
+  "session": "12ce6954-14e0-488c-9478-5e0f9754d416",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416.jsonl",
+    "prompt_id": "603ad313-b72c-43be-bc60-33c7b749847f",
+    "permission_mode": "default",
+    "prompt": "Reply with the word ok. No tools."
+  }
+}

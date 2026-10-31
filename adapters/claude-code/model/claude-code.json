@@ -1,9 +1,9 @@
 {
   "format": 1,
-  "revision": 6,
+  "revision": 7,
   "source": "claude-code",
   "block": "claude_code",
-  "observed": ["2.1.285", "2.1.287", "2.1.288", "2.1.289"],
+  "observed": ["2.1.285", "2.1.287", "2.1.288", "2.1.289", "2.1.316"],
   "core": {
     "kind": {
       "path": "/hook_event_name",
@@ -226,6 +226,33 @@
       "path": "/tool_response/backgroundTaskId",
       "type": "id",
       "note": "equals the id of the shell's background_shells entry (S6a-016)"
+    },
+    "questions": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse", "PermissionRequest", "PostToolUse"] },
+        { "path": "/tool_name", "in": ["AskUserQuestion"] }
+      ],
+      "path": "/tool_input/questions",
+      "each": { "path": "", "type": "object" },
+      "note": "the questions the agent asks, each entry whole (question, header, options, multiSelect)"
+    },
+    "answers": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PostToolUse"] },
+        { "path": "/tool_name", "in": ["AskUserQuestion"] }
+      ],
+      "path": "/tool_response/answers",
+      "type": "object",
+      "note": "keyed by the question text; a multiSelect answer is one string of labels joined by ', ', a free-text answer the typed text"
+    },
+    "annotations": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PostToolUse"] },
+        { "path": "/tool_name", "in": ["AskUserQuestion"] }
+      ],
+      "path": "/tool_response/annotations",
+      "type": "object",
+      "note": "keyed by the question text: the user's notes on a choice (notes) and the chosen option's preview; {} without notes"
     },
     "notification_message": {
       "when": [{ "path": "/hook_event_name", "in": ["Notification"] }],

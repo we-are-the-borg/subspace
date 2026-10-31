@@ -27,6 +27,23 @@
           "multiSelect": false
         }
       ]
-    }
+    },
+    "questions": [
+      {
+        "question": "Which color do you like?",
+        "header": "Color preference",
+        "options": [
+          {
+            "label": "Red",
+            "description": "A warm, bold color"
+          },
+          {
+            "label": "Blue",
+            "description": "A cool, calm color"
+          }
+        ],
+        "multiSelect": false
+      }
+    ]
   }
 }

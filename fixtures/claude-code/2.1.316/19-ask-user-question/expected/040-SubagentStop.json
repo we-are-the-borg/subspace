@@ -1,0 +1,18 @@
+{
+  "kind": "other",
+  "session": "12ce6954-14e0-488c-9478-5e0f9754d416",
+  "agent": "a9dbfa0b3dd148699",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416.jsonl",
+    "prompt_id": "603ad313-b72c-43be-bc60-33c7b749847f",
+    "permission_mode": "default",
+    "agent_type": "",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416/subagents/agent-a9dbfa0b3dd148699.jsonl",
+    "last_assistant_message": "Tea or coffee? Let me answer directly.",
+    "background_tasks": [],
+    "background_agents": [],
+    "background_shells": []
+  }
+}
