@@ -1,0 +1,65 @@
+{"ms": 1793486504444, "action": "start"}
+{"ms": 1793486504863, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1793486504918, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1793486505088, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1793486505198, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1793486505199, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1793486508564, "action": "send: Use the AskUserQuestion tool once with two questions. Question 1: \"Which fruits do you like?\", header \"Fruits\", multiSelect true, options apple, banana, cherry. Question 2: \"Which pet do you prefer?\", header \"Pet\", multiSelect false, options cat, dog. Then reply with my answers."}
+{"ms": 1793486508630, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1793486508653, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1793486510677, "n": 8, "file": "events/008-PreToolUse.json"}
+{"ms": 1793486510687, "n": 9, "file": "status/009-status.json", "inode_changed": false}
+{"ms": 1793486510726, "n": 10, "file": "events/010-PermissionRequest.json"}
+{"ms": 1793486516737, "n": 11, "file": "events/011-Notification.json"}
+{"ms": 1793486525820, "action": "toggle option 1 (apple)"}
+{"ms": 1793486526824, "action": "down"}
+{"ms": 1793486527827, "action": "down"}
+{"ms": 1793486528833, "action": "toggle option 3 (cherry)"}
+{"ms": 1793486529838, "action": "next question (tab)"}
+{"ms": 1793486530843, "action": "down"}
+{"ms": 1793486531848, "action": "down"}
+{"ms": 1793486532853, "action": "type free-text answer: a parrot"}
+{"ms": 1793486533858, "action": "confirm free-text answer"}
+{"ms": 1793486534862, "action": "submit answers"}
+{"ms": 1793486534944, "n": 12, "file": "status/012-status.json", "inode_changed": false}
+{"ms": 1793486534965, "n": 13, "file": "events/013-PostToolUse.json"}
+{"ms": 1793486535034, "n": 14, "file": "events/014-PostToolBatch.json"}
+{"ms": 1793486536312, "n": 15, "file": "events/015-Stop.json"}
+{"ms": 1793486536339, "n": 16, "file": "status/016-status.json", "inode_changed": false}
+{"ms": 1793486537570, "n": 17, "file": "events/017-SubagentStop.json"}
+{"ms": 1793486539990, "action": "send: Use the AskUserQuestion tool once with one question: \"Which layout do you prefer?\", header \"Layout\", multiSelect false, two options \"Grid\" and \"List\", each with a short ASCII-art preview. Then reply with my answer."}
+{"ms": 1793486540042, "n": 18, "file": "status/018-status.json", "inode_changed": false}
+{"ms": 1793486540139, "n": 19, "file": "events/019-UserPromptSubmit.json"}
+{"ms": 1793486541906, "n": 20, "file": "events/020-PreToolUse.json"}
+{"ms": 1793486541940, "n": 21, "file": "status/021-status.json", "inode_changed": false}
+{"ms": 1793486541958, "n": 22, "file": "events/022-PermissionRequest.json"}
+{"ms": 1793486545034, "action": "down (List)"}
+{"ms": 1793486546036, "action": "add note (n)"}
+{"ms": 1793486547039, "action": "type note: more compact please"}
+{"ms": 1793486548042, "action": "pick List with the note"}
+{"ms": 1793486548098, "n": 23, "file": "status/023-status.json", "inode_changed": false}
+{"ms": 1793486548120, "n": 24, "file": "events/024-PostToolUse.json"}
+{"ms": 1793486548172, "n": 25, "file": "events/025-PostToolBatch.json"}
+{"ms": 1793486549070, "n": 26, "file": "events/026-Stop.json"}
+{"ms": 1793486549086, "n": 27, "file": "status/027-status.json", "inode_changed": false}
+{"ms": 1793486550431, "n": 28, "file": "events/028-SubagentStop.json"}
+{"ms": 1793486552760, "action": "send: Use the AskUserQuestion tool once to ask me \"Tea or coffee?\", header \"Drink\", options tea and coffee. Then reply with my answer."}
+{"ms": 1793486552832, "n": 29, "file": "events/029-UserPromptSubmit.json"}
+{"ms": 1793486552832, "n": 30, "file": "status/030-status.json", "inode_changed": false}
+{"ms": 1793486554312, "n": 31, "file": "events/031-PreToolUse.json"}
+{"ms": 1793486554319, "n": 32, "file": "status/032-status.json", "inode_changed": false}
+{"ms": 1793486554373, "n": 33, "file": "events/033-PermissionRequest.json"}
+{"ms": 1793486560368, "n": 34, "file": "events/034-Notification.json"}
+{"ms": 1793486569397, "action": "dismiss question (esc)"}
+{"ms": 1793486569515, "n": 35, "file": "status/035-status.json", "inode_changed": false}
+{"ms": 1793486579907, "action": "send: Reply with the word ok. No tools."}
+{"ms": 1793486579943, "n": 36, "file": "status/036-status.json", "inode_changed": false}
+{"ms": 1793486579981, "n": 37, "file": "events/037-UserPromptSubmit.json"}
+{"ms": 1793486580829, "n": 38, "file": "status/038-status.json", "inode_changed": false}
+{"ms": 1793486580832, "n": 39, "file": "events/039-Stop.json"}
+{"ms": 1793486581784, "n": 40, "file": "events/040-SubagentStop.json"}
+{"ms": 1793486586437, "action": "send: /exit"}
+{"ms": 1793486586736, "n": 41, "file": "status/041-status.json", "inode_changed": true}
+{"ms": 1793486586786, "n": 42, "file": "events/042-SessionEnd.json"}
+{"ms": 1793486587096, "file_deleted": "6280.json"}
+{"ms": 1793486588448, "action": "exited"}

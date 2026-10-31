@@ -1,0 +1,49 @@
+{
+  "kind": "permission.request",
+  "session": "12ce6954-14e0-488c-9478-5e0f9754d416",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "permission.request",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416.jsonl",
+    "prompt_id": "f9c52eb9-44c2-4164-bba1-2d80058960b8",
+    "permission_mode": "default",
+    "tool_name": "AskUserQuestion",
+    "tool_input": {
+      "questions": [
+        {
+          "question": "Tea or coffee?",
+          "header": "Drink",
+          "options": [
+            {
+              "label": "tea",
+              "description": "Tea"
+            },
+            {
+              "label": "coffee",
+              "description": "Coffee"
+            }
+          ],
+          "multiSelect": false
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question": "Tea or coffee?",
+        "header": "Drink",
+        "options": [
+          {
+            "label": "tea",
+            "description": "Tea"
+          },
+          {
+            "label": "coffee",
+            "description": "Coffee"
+          }
+        ],
+        "multiSelect": false
+      }
+    ]
+  }
+}

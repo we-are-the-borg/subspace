@@ -56,6 +56,27 @@
       },
       "annotations": {}
     },
-    "duration_ms": 0
+    "duration_ms": 0,
+    "questions": [
+      {
+        "question": "Which color do you like?",
+        "header": "Color preference",
+        "options": [
+          {
+            "label": "Red",
+            "description": "A warm, bold color"
+          },
+          {
+            "label": "Blue",
+            "description": "A cool, calm color"
+          }
+        ],
+        "multiSelect": false
+      }
+    ],
+    "answers": {
+      "Which color do you like?": "Red"
+    },
+    "annotations": {}
   }
 }

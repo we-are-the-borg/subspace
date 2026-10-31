@@ -16,12 +16,13 @@ It is a small **core** with the same meaning for every source, plus **one block 
 
 **What the mapping solves and what it doesn't.** It answers "where is the value": a renamed, moved or newly added key is handled by changing the mapping alone. It doesn't answer "what does it mean": when an event changes its meaning or new semantics arrive (for example a link field that enables a new correlation rule), apps still change their logic.
 
-**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/` and `fixtures/codex/0.159.3/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`. The runs:
+**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/`, `fixtures/claude-code/2.1.316/` and `fixtures/codex/0.159.3/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`, S19 in `2.1.316/19-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`. The runs:
 
 - Claude Code 2.1.285: C1 headless parallel subagents; C2 interactive background subagents, compact and exit; C3 permission and Ctrl-C.
 - Claude Code 2.1.287, hook events plus session status files (§12): S1 idle and exit; S2 Esc and Ctrl-C mid-turn; S3 Esc mid-tool; S4 permission and question waits; S5 `!` shell; S6 background subagents; S6a background shell, exit dialog, killed; S7 `--continue`; S8 `kill -9`; S9 `claude -p`; S11 `/exit` without a prompt; S12 failing tool; S13 file tools; S14 terminated before any input.
 - Claude Code 2.1.288, hook events plus session status files: S15 a background agent stopped by the user (Ctrl+X Ctrl+K).
 - Claude Code 2.1.289, hook events plus session status files: S16 two `Agent` calls, one with `model: haiku`, one without; S17 `/model sonnet`, then `/clear` in the same process; S18 `--continue` of S17's session with `--model haiku`.
+- Claude Code 2.1.316, hook events plus session status files: S19 `AskUserQuestion` answered with `multiSelect`, free text and a note, then dismissed with Esc.
 - Codex: X1 parallel and reused children plus a failed command; X2 daemon permission and compact; X3 manual permission and rejection; X4/X5 interrupt before a tool; X6/X7 interrupt of a running shell; X8 resume; X9 ephemeral; X10 cwd with spaces.
 
 ## 1. Principles
@@ -133,6 +134,9 @@ Unobserved hooks get their kind and the fields that hold on every hook (`transcr
 | `spawned_async` | boolean | `tool_response.isAsync` on `PostToolUse` of `Agent` | C2-008 `true` |
 | `spawned_model` | string | `tool_response.resolvedModel` on `PostToolUse` of `Agent`: the full model ID the subagent runs with, also when inherited; the only place an inherited model shows | S16-012 `claude-haiku-4-5-20251001` (alias `haiku`), S16-011 `claude-sonnet-5-5` (inherited); C1-016, C2-008, S15-010 |
 | `spawned_shell` | non-empty string | `tool_response.backgroundTaskId` on `PostToolUse` of `Bash`: a call with `run_in_background` started a background shell; equals that shell's `id` in `background_shells`. Absent for foreground calls | S6a-016; absent S6a-018 |
+| `questions` | array of objects | every `tool_input.questions` entry, whole, on `PreToolUse`, `PermissionRequest`, `PostToolUse` of `AskUserQuestion`: the questions the agent asks the user. Entries are Claude Code's; observed keys `question`, `header`, `options` (each `label`, `description`, optionally `preview`), `multiSelect`; read them defensively | S4-026, S4-028, S4-031, S19-008, S19-020 (`preview`), S19-024 |
+| `answers` | object | `tool_response.answers` on `PostToolUse` of `AskUserQuestion`: one string per answered question, **keyed by the question text** (`questions[].question`). See §3.3 "Questions" | S4-031 `Red`, S19-013, S19-024 |
+| `annotations` | object | `tool_response.annotations` on `PostToolUse` of `AskUserQuestion`: keyed by the question text like `answers`; observed `{"preview", "notes"}` when the user added a note to a choice, else `{}` | S19-024; `{}` S4-031, S19-013 |
 | `notification_message`, `notification_type` | string | `message`, `notification_type` on `Notification` | C3-007 |
 | `agent_transcript_path` | string | `agent_transcript_path` on `SubagentStop` | C1-015 |
 | `parent_tool_use_id` | non-empty string | `parent_tool_use_id` on `SubagentStart`/`SubagentStop`; **documented, not sent by 2.1.285** | – |
@@ -173,6 +177,10 @@ Left in `payload` because no app uses them today: `scratchpad_dir`, `Instruction
   - **`resume` doesn't.** `--continue`/`--resume` starts a new process whose model comes from its own flags and settings, not from the resumed session (S18: S17's session last ran on Sonnet; resumed with `--model haiku`, it answered with `claude-haiku-4-5-20251001`, and S18-003 has no `model`). Never take the model from earlier events of that `session`. It stays unknown until a `model.change` of the new process.
   - Headless sessions name no model at all (C1-001, S9-004).
   - Subagents name their own model (`spawn_model`, `spawned_model`); it is never the session's.
+- **Questions** (`AskUserQuestion`, S4, S19). The call's `tool.pre` and its `permission.request` both carry `questions`; the session waits for the user from then on (session status `waiting`, `input needed`, §12). A `notification` with `notification_type: permission_prompt` follows only after about 6 s (S19-011), none when the user answers sooner (S19, second call). Rules for apps:
+  - **Answered:** the `tool.post` (block `tool.post`, same `tool_call`) carries `questions` again plus `answers` and `annotations`. Tie an answer to its question by the question text: `answers[questions[i].question]`. A question without a key in `answers` is unanswered.
+  - An answer is **one string** in every case: a single choice is its `label` (S19-024 `List`); a `multiSelect` answer joins the chosen labels with `", "` (S19-013 `apple, cherry`), so a label containing `", "` can't be split back reliably; a free-text answer ("Type something") is the typed text, with no marker (S19-013 `a parrot`). Compare with the option labels to tell them apart, never assume a match.
+  - **Dismissed** with Esc: **no hook event at all**, no `tool.post`, no `tool.failure`, no `turn.stop` (S19, third call). Only the session status file shows it, going from `waiting` to `idle` (S19-035). Without it, the question stays open until a later event of the session (the next `turn.start`) or a timeout.
 - **Session end.** `session.end` is sticky. After a crash it may be missing; the envelope `pid` is the `claude` process (contract §6).
 
 ## 4. Codex (`codex`)
@@ -327,7 +335,7 @@ fixtures/<source>/<version>/<run>/
 ```
 
 - Content: the result object (§5), pretty-printed with two spaces, LF line endings and a trailing newline. Comparison is semantic (as JSON values).
-- All 394 fixture events (286 Claude Code, 108 Codex) and all 92 status snapshots (Claude Code 2.1.287 to 2.1.289) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
+- All 420 fixture events (312 Claude Code, 108 Codex) and all 108 status snapshots (Claude Code 2.1.287 to 2.1.316) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
 - The existing globs (`fixtures/*/*/*/events/*.json` in CI and `tools/e2e/check.sh`) don't see `expected/`.
 
 **CI check** (`tests/model.test.py`): for every `events/F`, apply `model/<source>.json` with the reference interpreter `tools/model/apply.py` and compare with `expected/F`; fail if an `events/` file has no `expected/` file or the other way round. Likewise `status/F` with `model/<source>-session.json` and `status-expected/F`. The same test covers each rule of §5.1 and checks that every adapter ships its own mapping unchanged. CI also validates the mapping documents and golden files against their schemas (§11). The reference interpreter runs only in CI and tests, never in the hook. The golden files are also the test suite for each app's interpreter: both apps run their own interpreter over the same fixtures and mappings.
@@ -367,6 +375,7 @@ Checked against today's logic in The Collective (`ClaudeCodeAdapter.swift`) and 
 | Subagent tree, title, prompt, background, model | core `agent`; Claude Code `spawn_*`, `spawned_agent`, `spawned_async`, `spawned_model`; Codex `spawn_name`, `spawn_task` |
 | Internal agents | Claude Code `agent_type: ""` |
 | Waiting for the user | core `permission.request`; Claude Code `notification_type` |
+| Questions to the user and their answers | Claude Code `questions` (while open), `answers`, `annotations` on the post (§3.3 "Questions") |
 | Done | core `turn.stop` plus open agents; Claude Code `background_agents` (also ends agents stopped by the user, which send no `agent.stop`) |
 | Background shells, count and description | Claude Code `background_shells`, `spawned_shell`; session status `shell` (§12.2) |
 | Touched files | Claude Code `file_path` of `Write`/`Edit` (S13-008, S13-011); Codex writes through the shell without a path (X2-003) |
@@ -383,6 +392,7 @@ Anything else an app wants is still in `payload`; reading it there couples that 
 - The session's model is missing after `/clear`, on `resume` and in headless sessions (S17, S18, C1, S9); apps carry it over on `clear` only (§3.3).
 - Subagent resume ("the same task-id may notify more than once", C2-021) is unobserved.
 - A background agent stopped by the user has no end event; only its absence from `background_agents` shows it (S15). Stopping a single agent from the task list, rather than all with Ctrl+X Ctrl+K, is unobserved.
+- A question dismissed with Esc has no end event (S19); only the session status file shows it. Whether a `multiSelect` answer lists its labels in option order or in the order the user picked them is open (S19 picked them in option order). An equivalent question tool in Codex is unchecked.
 - A background shell has no end event either. Only a killed session is captured (S6a); a shell that ends on its own, one the user stops, and whether its end starts a `<task-notification>` turn as for background agents are unobserved.
 
 **Codex**
@@ -430,8 +440,8 @@ Left in the file: `procStart`, `peerProtocol`, `peerFeatures`, `pidDomain`, `mes
 ### 12.2 Meaning of `state`
 
 - `working`: a turn runs, including tools, `!` shell commands (S5-006) and background subagents (S6: `working` across two `turn.stop`s until the last hand-back turn ended). `shell` (S6a-025) means no turn but a background shell still running; it maps to `working` too, the raw value stays in `status`. Which shells run, with their descriptions, is in the hook events' `background_shells` (§3.2).
-- `waiting`: the session needs the user: a permission dialog (S4-008), a question (`AskUserQuestion`, S4-027), a dialog such as the exit confirmation (S6a-026). The hooks show the first two as well (`permission.request`, S4-010, S4-028), the dialog only here.
-- `idle`: no turn runs. Reached after a normal end and, **without any hook event**, after Esc or Ctrl-C mid-turn (S2-008, S2-011) or mid-tool (S3-009) and after a rejected permission (S4-023).
+- `waiting`: the session needs the user: a permission dialog (S4-008), a question (`AskUserQuestion`, S4-027, S19-009), a dialog such as the exit confirmation (S6a-026). The hooks show the first two as well (`permission.request`, S4-010, S4-028), the dialog only here.
+- `idle`: no turn runs. Reached after a normal end and, **without any hook event**, after Esc or Ctrl-C mid-turn (S2-008, S2-011) or mid-tool (S3-009), after a rejected permission (S4-023) and after a question dismissed with Esc (S19-035).
 
 ### 12.3 Rules
 

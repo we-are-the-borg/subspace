@@ -165,6 +165,18 @@
         "spawned_shell": {
           "$ref": "#/$defs/id"
         },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "answers": {
+          "type": "object"
+        },
+        "annotations": {
+          "type": "object"
+        },
         "notification_message": {
           "type": "string"
         },

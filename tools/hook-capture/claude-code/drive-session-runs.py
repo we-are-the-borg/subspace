@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plays the runs S1-S18 of README.md without a human (#58).
+"""Plays the runs S1-S19 of README.md without a human (#58).
 
 Starts watch-sessions.py, then drives interactive `claude` sessions in a
 pseudo-terminal: types prompts, presses Enter, Esc and Ctrl-C, and waits for
@@ -418,10 +418,85 @@ def s18():
     s.exit()
 
 
+def s19():
+    """AskUserQuestion: multiSelect, free text, a note, dismissed with Esc (#13).
+
+    Keys of the question dialog (2.1.316): Enter toggles an option of a
+    multiSelect question and picks one of a single-choice question, Tab goes to
+    the next question, typing on the last option ("Type something") enters a
+    free-text answer, `n` adds a note to an option with a preview, Esc cancels.
+    Several questions end on a review screen, submitted with Enter.
+    """
+    def ask(prompt):
+        s.out = b""
+        t = s.send(prompt)
+        s.wait("PreToolUse", t, pred=lambda e: e.get("tool_name") == "AskUserQuestion")
+        return t
+
+    def press(what, keys, pause=1):
+        s.keys(what, keys)
+        time.sleep(pause)
+
+    def dialog(marker):
+        deadline = time.time() + 20
+        while marker not in s.out:
+            if time.time() > deadline:
+                raise TimeoutError(f"dialog without {marker.decode()}")
+            time.sleep(0.2)
+
+    down = "\x1b[B"
+    s = Session("S19", ["--permission-mode", "default"])
+    s.ready()
+    t = ask('Use the AskUserQuestion tool once with two questions. Question 1: "Which fruits '
+            'do you like?", header "Fruits", multiSelect true, options apple, banana, cherry. '
+            'Question 2: "Which pet do you prefer?", header "Pet", multiSelect false, options '
+            'cat, dog. Then reply with my answers.')
+    dialog(b"Whichfruitsdoyoulike?")
+    time.sleep(15)  # past the permission_prompt notification
+    press("toggle option 1 (apple)", ENTER)
+    press("down", down)
+    press("down", down)
+    press("toggle option 3 (cherry)", ENTER)
+    press("next question (tab)", "\t")
+    dialog(b"Whichpetdoyouprefer?")
+    press("down", down)
+    press("down", down)
+    press("type free-text answer: a parrot", "a parrot")
+    press("confirm free-text answer", ENTER)
+    dialog(b"Reviewyouranswers")
+    press("submit answers", ENTER)
+    s.wait("PostToolUse", t, 20, lambda e: e.get("tool_name") == "AskUserQuestion")
+    s.wait("Stop", t)
+    time.sleep(3)
+    t = ask('Use the AskUserQuestion tool once with one question: "Which layout do you '
+            'prefer?", header "Layout", multiSelect false, two options "Grid" and "List", '
+            'each with a short ASCII-art preview. Then reply with my answer.')
+    dialog(b"pressntoaddnotes")
+    time.sleep(3)
+    press("down (List)", down)
+    press("add note (n)", "n")
+    press("type note: more compact please", "more compact please")
+    press("pick List with the note", ENTER)
+    s.wait("PostToolUse", t, 20, lambda e: e.get("tool_name") == "AskUserQuestion")
+    s.wait("Stop", t)
+    time.sleep(3)
+    ask('Use the AskUserQuestion tool once to ask me "Tea or coffee?", header "Drink", '
+        'options tea and coffee. Then reply with my answer.')
+    dialog(b"Teaorcoffee?")
+    time.sleep(15)
+    press("dismiss question (esc)", ESC, 10)
+    ok = "Reply with the word ok. No tools."
+    t = s.send(ok)
+    n = s.wait("UserPromptSubmit", t, 60, lambda e: e.get("prompt") == ok)
+    s.wait("Stop", t, 120, lambda e: e.get("prompt_id") == n.get("prompt_id"))
+    time.sleep(5)
+    s.exit()
+
+
 RUNS = {"S1": s1, "S2": s2, "S3": s3, "S4": s4, "S5": s5, "S6": s6, "S7": s7,
         "S8": s8, "S9": s9, "S10": s10, "S11": s11, "S12": s12, "S13": s13,
         "S14": s14, "S15": s15, "S16": s16,
-        "S17": s17, "S18": s18}
+        "S17": s17, "S18": s18, "S19": s19}
 
 
 def main():

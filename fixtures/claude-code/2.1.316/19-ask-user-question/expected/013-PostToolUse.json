@@ -1,0 +1,142 @@
+{
+  "kind": "tool.post",
+  "session": "12ce6954-14e0-488c-9478-5e0f9754d416",
+  "tool_call": "toolu_01MNW86sGoW8YK1M6F4KFWYw",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416.jsonl",
+    "prompt_id": "e3c84793-9c8d-4698-8d68-573cdeb08734",
+    "permission_mode": "default",
+    "tool_name": "AskUserQuestion",
+    "tool_input": {
+      "questions": [
+        {
+          "question": "Which fruits do you like?",
+          "header": "Fruits",
+          "options": [
+            {
+              "label": "apple",
+              "description": "Apple"
+            },
+            {
+              "label": "banana",
+              "description": "Banana"
+            },
+            {
+              "label": "cherry",
+              "description": "Cherry"
+            }
+          ],
+          "multiSelect": true
+        },
+        {
+          "question": "Which pet do you prefer?",
+          "header": "Pet",
+          "options": [
+            {
+              "label": "cat",
+              "description": "Cat"
+            },
+            {
+              "label": "dog",
+              "description": "Dog"
+            }
+          ],
+          "multiSelect": false
+        }
+      ],
+      "answers": {
+        "Which fruits do you like?": "apple, cherry",
+        "Which pet do you prefer?": "a parrot"
+      },
+      "annotations": {}
+    },
+    "tool_response": {
+      "questions": [
+        {
+          "question": "Which fruits do you like?",
+          "header": "Fruits",
+          "options": [
+            {
+              "label": "apple",
+              "description": "Apple"
+            },
+            {
+              "label": "banana",
+              "description": "Banana"
+            },
+            {
+              "label": "cherry",
+              "description": "Cherry"
+            }
+          ],
+          "multiSelect": true
+        },
+        {
+          "question": "Which pet do you prefer?",
+          "header": "Pet",
+          "options": [
+            {
+              "label": "cat",
+              "description": "Cat"
+            },
+            {
+              "label": "dog",
+              "description": "Dog"
+            }
+          ],
+          "multiSelect": false
+        }
+      ],
+      "answers": {
+        "Which fruits do you like?": "apple, cherry",
+        "Which pet do you prefer?": "a parrot"
+      },
+      "annotations": {}
+    },
+    "duration_ms": 0,
+    "questions": [
+      {
+        "question": "Which fruits do you like?",
+        "header": "Fruits",
+        "options": [
+          {
+            "label": "apple",
+            "description": "Apple"
+          },
+          {
+            "label": "banana",
+            "description": "Banana"
+          },
+          {
+            "label": "cherry",
+            "description": "Cherry"
+          }
+        ],
+        "multiSelect": true
+      },
+      {
+        "question": "Which pet do you prefer?",
+        "header": "Pet",
+        "options": [
+          {
+            "label": "cat",
+            "description": "Cat"
+          },
+          {
+            "label": "dog",
+            "description": "Dog"
+          }
+        ],
+        "multiSelect": false
+      }
+    ],
+    "answers": {
+      "Which fruits do you like?": "apple, cherry",
+      "Which pet do you prefer?": "a parrot"
+    },
+    "annotations": {}
+  }
+}
