@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.0.1...claude-code-1.1.0) (2026-10-31)
+
+
+### Features
+
+* **contract:** AskUserQuestion questions and answers for Claude Code ([#15](https://github.com/we-are-the-borg/subspace/issues/15)) ([83552bb](https://github.com/we-are-the-borg/subspace/commit/83552bb705c99160e6373da0907094dc8d02bcbe)), closes [#13](https://github.com/we-are-the-borg/subspace/issues/13)
+* **contract:** background_shells and spawned_shell for Claude Code ([#9](https://github.com/we-are-the-borg/subspace/issues/9)) ([721b55f](https://github.com/we-are-the-borg/subspace/commit/721b55f024ab10e134cf1b18099e081080b67649)), closes [#8](https://github.com/we-are-the-borg/subspace/issues/8)
+
+
+### Bug Fixes
+
+* add homepage, support and documentation links to the Claude Code… ([#11](https://github.com/we-are-the-borg/subspace/issues/11)) ([321f70a](https://github.com/we-are-the-borg/subspace/commit/321f70a90520161e25d51541a1f9c4ac36fd720a)), closes [#4](https://github.com/we-are-the-borg/subspace/issues/4)
+
 ## [1.0.1](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.0.0...claude-code-1.0.1) (2026-10-08)
 
 
