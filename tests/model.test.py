@@ -126,6 +126,14 @@ class SessionStatusGoldenFiles(unittest.TestCase):
         self.assertEqual(result, {"state": "waiting", "claude_code_session": {
             "status": "waiting", "waiting_text": "something new"}})
 
+    def test_spare_flag_only_as_boolean(self):
+        # spare: true is observed only outside the fixtures (docs/model.md §12.1)
+        mapping = load(REPO / "model" / "claude-code-session.json")
+        result = model.apply(mapping, {"kind": "bg", "spare": True})
+        self.assertEqual(result["claude_code_session"], {"process_kind": "bg", "spare": True})
+        result = model.apply(mapping, {"kind": "bg", "spare": "yes"})
+        self.assertEqual(result["claude_code_session"], {"process_kind": "bg"})
+
 
 def doc(fields=None, core=None, fmt=1):
     return {"format": fmt, "source": "t", "block": "t", "core": core or {},
