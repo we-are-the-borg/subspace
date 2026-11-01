@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.1.0...claude-code-1.2.0) (2026-11-01)
+
+
+### Features
+
+* **contract:** add a spare field to Claude Code session mapping ([#19](https://github.com/we-are-the-borg/subspace/issues/19)) ([41bf5f5](https://github.com/we-are-the-borg/subspace/commit/41bf5f5de011ea0df0dc7ea75d0dd72d35dcb00e)), closes [#17](https://github.com/we-are-the-borg/subspace/issues/17)
+* **contract:** Add command fields to Claude Code Bash events ([#21](https://github.com/we-are-the-borg/subspace/issues/21)) ([27fa6d2](https://github.com/we-are-the-borg/subspace/commit/27fa6d21bd0e1633061b2f1445a0ebb911190123)), closes [#14](https://github.com/we-are-the-borg/subspace/issues/14)
+
 ## [1.1.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.0.1...claude-code-1.1.0) (2026-10-31)
 
 
