@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "revision": 1,
+  "revision": 2,
   "source": "claude-code",
   "document": "session-status",
   "block": "claude_code_session",
@@ -29,6 +29,7 @@
     },
     "pid": { "path": "/pid", "type": "integer" },
     "process_kind": { "path": "/kind", "type": "string" },
+    "spare": { "path": "/spare", "type": "boolean" },
     "entrypoint": { "path": "/entrypoint", "type": "string" },
     "name": { "path": "/name", "type": "string" },
     "version": { "path": "/version", "type": "string" },
