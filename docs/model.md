@@ -393,6 +393,7 @@ Anything else an app wants is still in `payload`; reading it there couples that 
 - Subagent resume ("the same task-id may notify more than once", C2-021) is unobserved.
 - A background agent stopped by the user has no end event; only its absence from `background_agents` shows it (S15). Stopping a single agent from the task list, rather than all with Ctrl+X Ctrl+K, is unobserved.
 - A question dismissed with Esc has no end event (S19); only the session status file shows it. Whether a `multiSelect` answer lists its labels in option order or in the order the user picked them is open (S19 picked them in option order). An equivalent question tool in Codex is unchecked.
+- A short-lived session status file of a `claude bg-spare` process that names another process's session (contract §13) is observed only by its effect; a raw capture of a `claude attach` would make it a fixture.
 - A background shell has no end event either. Only a killed session is captured (S6a); a shell that ends on its own, one the user stops, and whether its end starts a `<task-notification>` turn as for background agents are unobserved.
 
 **Codex**
@@ -430,7 +431,7 @@ Claude Code keeps one **session status file** per running process, `<config dir>
 | `waiting_for` | `permission`, `input` or `dialog` | `waitingFor` via a table (`permission prompt`, `input needed`, `dialog open`), only while `status` is `waiting`; absent for an unknown value | S4-008, S4-027, S6a-026 |
 | `waiting_text` | string | `waitingFor`, raw, only while `status` is `waiting` | S4-008 |
 | `pid` | integer | `pid`: the `claude` process, equals the file name and the hooks' envelope `pid` | S1-001 |
-| `process_kind` | string | `kind`: `interactive`, also for `claude -p` (S9-001); `bg` for background sessions (outside the fixtures) | S1-001 |
+| `process_kind` | string | `kind`: `interactive`, also for `claude -p` (S9-001); `bg` for background sessions and the daemon's `claude bg-spare` processes (outside the fixtures) | S1-001 |
 | `entrypoint` | string | `entrypoint`: `cli`, `sdk-cli` for `claude -p` | S1-001, S9-001 |
 | `name`, `version` | string | `name` (display name), `version` (Claude Code version) | S1-001 |
 | `started_at`, `updated_at` | integer (Unix ms) | `startedAt`, `updatedAt` (any change of the file, not only `status`) | S1-001 |
@@ -445,7 +446,8 @@ Left in the file: `procStart`, `peerProtocol`, `peerFeatures`, `pidDomain`, `mes
 
 ### 12.3 Rules
 
-- **Key by `session`, never by `pid`.** A process can carry another session over time (`--continue` S7-001/002; `/clear` S17-012/013; `claude bg-spare` processes take on new sessions).
+- **Key by `session`, never by the file name.** A process can carry another session over time (`--continue` S7-001/002; `/clear` S17-012/013; `claude bg-spare` processes take on new sessions).
+- **Only the session's own process counts.** A file is the session's state only if its `pid` equals the envelope `pid` of the session's latest hook event. A file whose `pid` has no event of that session yet is pending: it neither renames the session nor sets its `state` until such an event arrives (a new process writes its file before `SessionStart`, S1-001, also on a resume, S7-002; after `/clear` the file names the new session before its `SessionStart`, S17-013). Short-lived files of the daemon's `claude bg-spare` processes (`kind: bg`) can name another process's session (contract §13; observed outside the fixtures); this rule keeps them from renaming it or reporting it `idle`.
 - **Newer wins.** Compare `status_at` with the hook events' times; the newer source says whether the session is working. A hook can't undo an `idle` that is newer than it.
 - **Deleted file = process ended.** Deleted on `/exit` and at the end of `claude -p`. After a crash (`kill -9`) it stays until the next `claude` process starts (S8, S6a), so a present file whose `pid` is not alive is stale.
 - **Missing, unparseable or `state` absent → unknown.** Fall back to the hooks and a timeout. Never guess from an unknown `status`.
