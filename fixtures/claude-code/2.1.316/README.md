@@ -1,12 +1,13 @@
 # Fixtures: Claude Code 2.1.316
 
-Real hook payloads and session status files, recorded on 2026-10-31 on macOS with `tools/hook-capture/claude-code/drive-session-runs.py S19`. Layout, numbering and `timeline.jsonl` as in [`../2.1.287/README.md`](../2.1.287/README.md). Payloads and status files are unchanged, anonymized as described in [`../../README.md`](../../README.md#anonymization). Transcripts are not included.
+Real hook payloads and session status files, recorded on macOS with `tools/hook-capture/claude-code/drive-session-runs.py`: S19 on 2026-10-31, S20 on 2026-11-01. Layout, numbering and `timeline.jsonl` as in [`../2.1.287/README.md`](../2.1.287/README.md). Payloads and status files are unchanged, anonymized as described in [`../../README.md`](../../README.md#anonymization). Transcripts are not included.
 
 ## Runs
 
 | Run | What happened | Status sequence |
 |---|---|---|
 | `19-ask-user-question` | Haiku, `--permission-mode default`. Three `AskUserQuestion` calls, one per prompt: (1) two questions, a `multiSelect` one answered with two options and a single-choice one answered with free text ("Type something"), submitted on the review screen after 15 s; (2) one question whose options have a `preview`, answered with a note on the chosen option within 6 s; (3) one question dismissed with Esc after 15 s. Then one prompt without tools, `/exit` | – idle busy **waiting** (`input needed`) busy idle busy **waiting** busy idle busy **waiting** **idle** busy idle busy, deleted |
+| `20-multiline-command` | Haiku, `--permission-mode default`. One `Bash` call with a four-line heredoc (`cat > captures/s20.txt <<'EOF'` … `EOF`), approved at the permission dialog after 3 s; `/exit` | – idle busy **waiting** (`permission prompt`) busy idle busy, deleted |
 
 – = the first snapshot, written before `status` is set.
 
@@ -22,3 +23,4 @@ Real hook payloads and session status files, recorded on 2026-10-31 on macOS wit
 - `PostToolBatch` (014, 025) has a prose `tool_response` ("Your questions have been answered: …"), as in 2.1.287.
 - After each `Stop` an internal agent stops (`SubagentStop` with `agent_type: ""`, 017, 028, 040), as in 2.1.285 C2-025.
 - **Drift against 2.1.289** (no target field affected): `PermissionRequest` has `effort` and no `permission_suggestions`; the status file has a new key `asksForConvertedSkills`. `SessionStart` (`startup`) has `model: claude-haiku-5-5`.
+- **Multi-line commands** (S20, `PreToolUse` 009, `PermissionRequest` 010, `PostToolUse` 012, `PostToolBatch` 013): `tool_input.command` is the whole heredoc as one string with `\n` line breaks, the same in all four; `tool_input.description` is the model's one-line label. `PermissionRequest` carries `permission_suggestions` again (an `addDirectories` entry for `captures/`); approved within 6 s, so no `Notification`.

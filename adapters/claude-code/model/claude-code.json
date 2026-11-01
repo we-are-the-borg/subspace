@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "revision": 7,
+  "revision": 8,
   "source": "claude-code",
   "block": "claude_code",
   "observed": ["2.1.285", "2.1.287", "2.1.288", "2.1.289", "2.1.316"],
@@ -150,6 +150,24 @@
       ],
       "path": "/tool_input/file_path",
       "type": "string"
+    },
+    "command": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest"] },
+        { "path": "/tool_name", "in": ["Bash"] }
+      ],
+      "path": "/tool_input/command",
+      "type": "string",
+      "note": "the whole command, line breaks kept (S20-009); same name and shape as in the codex mapping"
+    },
+    "command_description": {
+      "when": [
+        { "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure", "PermissionRequest"] },
+        { "path": "/tool_name", "in": ["Bash"] }
+      ],
+      "path": "/tool_input/description",
+      "type": "string",
+      "note": "the agent's one-line label for the command; absent when the call has none (C1-009, S15-012)"
     },
     "spawn_description": {
       "when": [

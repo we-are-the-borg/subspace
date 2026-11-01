@@ -1,0 +1,16 @@
+{
+  "session": "b57f0fcd-6655-4fac-b576-4e6053746794",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "state": "idle",
+  "claude_code_session": {
+    "status": "idle",
+    "status_at": 1793550714952,
+    "pid": 8529,
+    "process_kind": "interactive",
+    "entrypoint": "cli",
+    "name": "claude-code-ce",
+    "version": "2.1.316",
+    "started_at": 1793550698257,
+    "updated_at": 1793550714952
+  }
+}

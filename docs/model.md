@@ -16,13 +16,13 @@ It is a small **core** with the same meaning for every source, plus **one block 
 
 **What the mapping solves and what it doesn't.** It answers "where is the value": a renamed, moved or newly added key is handled by changing the mapping alone. It doesn't answer "what does it mean": when an event changes its meaning or new semantics arrive (for example a link field that enables a new correlation rule), apps still change their logic.
 
-**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/`, `fixtures/claude-code/2.1.316/` and `fixtures/codex/0.159.3/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`, S19 in `2.1.316/19-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`. The runs:
+**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/`, `fixtures/claude-code/2.1.316/` and `fixtures/codex/0.159.3/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`, S19 and S20 in `2.1.316/19-…` and `20-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`. The runs:
 
 - Claude Code 2.1.285: C1 headless parallel subagents; C2 interactive background subagents, compact and exit; C3 permission and Ctrl-C.
 - Claude Code 2.1.287, hook events plus session status files (§12): S1 idle and exit; S2 Esc and Ctrl-C mid-turn; S3 Esc mid-tool; S4 permission and question waits; S5 `!` shell; S6 background subagents; S6a background shell, exit dialog, killed; S7 `--continue`; S8 `kill -9`; S9 `claude -p`; S11 `/exit` without a prompt; S12 failing tool; S13 file tools; S14 terminated before any input.
 - Claude Code 2.1.288, hook events plus session status files: S15 a background agent stopped by the user (Ctrl+X Ctrl+K).
 - Claude Code 2.1.289, hook events plus session status files: S16 two `Agent` calls, one with `model: haiku`, one without; S17 `/model sonnet`, then `/clear` in the same process; S18 `--continue` of S17's session with `--model haiku`.
-- Claude Code 2.1.316, hook events plus session status files: S19 `AskUserQuestion` answered with `multiSelect`, free text and a note, then dismissed with Esc.
+- Claude Code 2.1.316, hook events plus session status files: S19 `AskUserQuestion` answered with `multiSelect`, free text and a note, then dismissed with Esc; S20 a multi-line `Bash` command (heredoc) behind a permission prompt.
 - Codex: X1 parallel and reused children plus a failed command; X2 daemon permission and compact; X3 manual permission and rejection; X4/X5 interrupt before a tool; X6/X7 interrupt of a running shell; X8 resume; X9 ephemeral; X10 cwd with spaces.
 
 ## 1. Principles
@@ -123,6 +123,8 @@ Unobserved hooks get their kind and the fields that hold on every hook (`transcr
 | `tool_name` | string | `tool_name` on `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PermissionRequest` | C1-005, C3-006, S12-009 |
 | `tool_input` | **opaque** | `tool_input`, same hooks | C1-005, C3-006 |
 | `file_path` | string | `tool_input.file_path` of `Write`, `Edit`, `Read`, same hooks: the file a tool writes or reads | S13-008, S13-011, S13-014, C3-005 |
+| `command` | string | `tool_input.command` of `Bash`, same hooks: the whole command, **multi-line kept** (a heredoc stays one string with its line breaks). Same name and shape as Codex's `command`; apps show it wrapped, never truncated | S4-009, S4-010, S4-013, S12-009, S20-009, S20-010, S20-012 |
+| `command_description` | string | `tool_input.description` of `Bash`, same hooks: the agent's one-line label for the command, written by the model. Absent when the call has none | S4-009, S20-010; absent C1-009, S15-012 |
 | `tool_response` | **opaque** | `tool_response` on `PostToolUse` | C1-011, C1-016 |
 | `duration_ms` | integer | `duration_ms` on `PostToolUse`, `PostToolUseFailure` | C1-013, S12-009 |
 | `error` | string | `error` on `PostToolUseFailure`, e.g. `Exit code 1` plus stderr | S12-009 |
@@ -335,7 +337,7 @@ fixtures/<source>/<version>/<run>/
 ```
 
 - Content: the result object (§5), pretty-printed with two spaces, LF line endings and a trailing newline. Comparison is semantic (as JSON values).
-- All 420 fixture events (312 Claude Code, 108 Codex) and all 108 status snapshots (Claude Code 2.1.287 to 2.1.316) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
+- All 431 fixture events (323 Claude Code, 108 Codex) and all 115 status snapshots (Claude Code 2.1.287 to 2.1.316) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
 - The existing globs (`fixtures/*/*/*/events/*.json` in CI and `tools/e2e/check.sh`) don't see `expected/`.
 
 **CI check** (`tests/model.test.py`): for every `events/F`, apply `model/<source>.json` with the reference interpreter `tools/model/apply.py` and compare with `expected/F`; fail if an `events/` file has no `expected/` file or the other way round. Likewise `status/F` with `model/<source>-session.json` and `status-expected/F`. The same test covers each rule of §5.1 and checks that every adapter ships its own mapping unchanged. CI also validates the mapping documents and golden files against their schemas (§11). The reference interpreter runs only in CI and tests, never in the hook. The golden files are also the test suite for each app's interpreter: both apps run their own interpreter over the same fixtures and mappings.
@@ -370,7 +372,7 @@ Checked against today's logic in The Collective (`ClaudeCodeAdapter.swift`) and 
 | Session start, `cwd`, end | core `session.start`, `cwd`; Claude Code `session.end`, `end_reason` |
 | Session model | Claude Code `model`, `to_model`, carried over per `pid` on `clear` (§3.3 "Session model") |
 | Prompt text, notification prompts | block `prompt`; Claude Code `<task-notification>` / `<agent-message ` prefix |
-| Tool activity and a one-line detail | core `tool.pre`, `tool`; block `tool_name`, `tool_input` (`command`, `file_path`, …), Codex `command` |
+| Tool activity and a one-line detail | core `tool.pre`, `tool`; block `tool_name`, `tool_input` (`file_path`, …); `command` in both sources, Claude Code `command_description` |
 | Tool pairing, late pre | core `tool_call` |
 | Subagent tree, title, prompt, background, model | core `agent`; Claude Code `spawn_*`, `spawned_agent`, `spawned_async`, `spawned_model`; Codex `spawn_name`, `spawn_task` |
 | Internal agents | Claude Code `agent_type: ""` |

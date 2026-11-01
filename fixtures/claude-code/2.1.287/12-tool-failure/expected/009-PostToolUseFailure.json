@@ -16,6 +16,8 @@
     },
     "duration_ms": 578,
     "error": "Exit code 1\nls: captures/nonexistent-dir: No such file or directory",
-    "is_interrupt": false
+    "is_interrupt": false,
+    "command": "ls captures/nonexistent-dir",
+    "command_description": "List files in captures/nonexistent-dir"
   }
 }

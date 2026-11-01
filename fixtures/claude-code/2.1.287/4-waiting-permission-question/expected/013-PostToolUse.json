@@ -21,6 +21,8 @@
       "isImage": false,
       "noOutputExpected": true
     },
-    "duration_ms": 565
+    "duration_ms": 565,
+    "command": "touch captures/perm-one",
+    "command_description": "Create file captures/perm-one"
   }
 }
