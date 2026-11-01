@@ -14,6 +14,8 @@
       "command": "sleep 30; echo bg",
       "description": "Background command that sleeps 30 seconds then echoes",
       "run_in_background": true
-    }
+    },
+    "command": "sleep 30; echo bg",
+    "command_description": "Background command that sleeps 30 seconds then echoes"
   }
 }

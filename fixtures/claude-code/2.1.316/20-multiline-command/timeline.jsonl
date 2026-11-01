@@ -1,0 +1,24 @@
+{"ms": 1793550697814, "action": "start"}
+{"ms": 1793550698294, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1793550698362, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1793550698512, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1793550698671, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1793550698686, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1793550701934, "action": "send: Make exactly one Bash call and nothing else. Its command has four lines, keep the line breaks: line 1 cat > captures/s20.txt <<'EOF', line 2 alpha, line 3 beta, line 4 EOF"}
+{"ms": 1793550702004, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1793550702077, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1793550704117, "n": 8, "file": "status/008-status.json", "inode_changed": false}
+{"ms": 1793550704126, "n": 9, "file": "events/009-PreToolUse.json"}
+{"ms": 1793550704166, "n": 10, "file": "events/010-PermissionRequest.json"}
+{"ms": 1793550707197, "action": "approve permission"}
+{"ms": 1793550707266, "n": 11, "file": "status/011-status.json", "inode_changed": false}
+{"ms": 1793550713327, "n": 12, "file": "events/012-PostToolUse.json"}
+{"ms": 1793550713400, "n": 13, "file": "events/013-PostToolBatch.json"}
+{"ms": 1793550714570, "n": 14, "file": "events/014-Stop.json"}
+{"ms": 1793550714990, "n": 15, "file": "status/015-status.json", "inode_changed": false}
+{"ms": 1793550715817, "n": 16, "file": "events/016-SubagentStop.json"}
+{"ms": 1793550718275, "action": "send: /exit"}
+{"ms": 1793550718579, "n": 17, "file": "status/017-status.json", "inode_changed": true}
+{"ms": 1793550718669, "n": 18, "file": "events/018-SessionEnd.json"}
+{"ms": 1793550719007, "file_deleted": "8529.json"}
+{"ms": 1793550720281, "action": "exited"}

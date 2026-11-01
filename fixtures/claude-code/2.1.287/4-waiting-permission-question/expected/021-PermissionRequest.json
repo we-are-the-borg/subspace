@@ -12,6 +12,8 @@
     "tool_input": {
       "command": "touch captures/perm-two",
       "description": "Create file captures/perm-two"
-    }
+    },
+    "command": "touch captures/perm-two",
+    "command_description": "Create file captures/perm-two"
   }
 }

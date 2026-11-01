@@ -23,6 +23,8 @@
       "isImage": false,
       "noOutputExpected": false
     },
-    "duration_ms": 10398
+    "duration_ms": 10398,
+    "command": "sleep 10; echo fg",
+    "command_description": "Sleep then echo"
   }
 }

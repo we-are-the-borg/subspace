@@ -13,6 +13,8 @@
     "tool_input": {
       "command": "sleep 20; echo done",
       "description": "Run sleep for 20 seconds then echo done"
-    }
+    },
+    "command": "sleep 20; echo done",
+    "command_description": "Run sleep for 20 seconds then echo done"
   }
 }

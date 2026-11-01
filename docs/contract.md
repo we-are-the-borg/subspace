@@ -153,6 +153,7 @@ Events with empty stdin are dropped.
 - **Liveness:** in the capture `SessionEnd` arrived async after `/exit` and after Ctrl-C (`reason: prompt_input_exit`) and at the end of `claude -p` (`reason: other`). It can still be missing after a crash or a killed terminal, so apps check `pid` and fall back to a timeout on the last event.
 - **Working, waiting, interrupted:** a user interrupt (Esc, Ctrl-C) sends no hook event. The session status file (§13) shows it, and whether the session waits for the user; prefer it where present.
 - **Questions to the user (`AskUserQuestion`):** `PreToolUse` and `PermissionRequest` carry the questions, the `PostToolUse` the answers, keyed by the question text; the target fields are `questions`, `answers` and `annotations` (`docs/model.md` §3.2). Every answer is one string, also for `multiSelect` (labels joined by `", "`) and free text. A question dismissed with Esc sends no hook event at all (observed in 2.1.316); only the session status file (§13) leaves `waiting`. Rules: `docs/model.md` §3.3 ("Questions").
+- **Shell commands (`Bash`):** `PreToolUse`, `PermissionRequest`, `PostToolUse` and `PostToolUseFailure` carry the whole command in `tool_input.command`, multi-line commands (heredocs) with their line breaks (observed in 2.1.316), and usually a one-line `tool_input.description` written by the model. The target fields are `command`, with the same name and shape as Codex's, and `command_description` (`docs/model.md` §3.2). `command_description` is absent when a call has no description.
 
 ### Codex (CLI 0.159.3)
 

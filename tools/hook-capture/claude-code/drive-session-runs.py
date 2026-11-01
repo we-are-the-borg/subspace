@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plays the runs S1-S19 of README.md without a human (#58).
+"""Plays the runs S1-S20 of README.md without a human (#58).
 
 Starts watch-sessions.py, then drives interactive `claude` sessions in a
 pseudo-terminal: types prompts, presses Enter, Esc and Ctrl-C, and waits for
@@ -493,10 +493,26 @@ def s19():
     s.exit()
 
 
+def s20():
+    """A multi-line Bash command (heredoc) behind a permission prompt (#14)."""
+    s = Session("S20", ["--permission-mode", "default"])
+    s.ready()
+    t = s.send("Make exactly one Bash call and nothing else. Its command has four lines, "
+               "keep the line breaks: line 1 cat > captures/s20.txt <<'EOF', line 2 alpha, "
+               "line 3 beta, line 4 EOF")
+    s.wait("PermissionRequest", t)
+    time.sleep(3)
+    s.keys("approve permission", ENTER)
+    s.wait("PostToolUse", t, 30, lambda e: e.get("tool_name") == "Bash")
+    s.wait("Stop", t)
+    time.sleep(3)
+    s.exit()
+
+
 RUNS = {"S1": s1, "S2": s2, "S3": s3, "S4": s4, "S5": s5, "S6": s6, "S7": s7,
         "S8": s8, "S9": s9, "S10": s10, "S11": s11, "S12": s12, "S13": s13,
         "S14": s14, "S15": s15, "S16": s16,
-        "S17": s17, "S18": s18, "S19": s19}
+        "S17": s17, "S18": s18, "S19": s19, "S20": s20}
 
 
 def main():

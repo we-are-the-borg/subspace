@@ -138,6 +138,12 @@
         "file_path": {
           "type": "string"
         },
+        "command": {
+          "type": "string"
+        },
+        "command_description": {
+          "type": "string"
+        },
         "spawn_description": {
           "type": "string"
         },

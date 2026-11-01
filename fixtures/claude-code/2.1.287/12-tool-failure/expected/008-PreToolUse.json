@@ -13,6 +13,8 @@
     "tool_input": {
       "command": "ls captures/nonexistent-dir",
       "description": "List files in captures/nonexistent-dir"
-    }
+    },
+    "command": "ls captures/nonexistent-dir",
+    "command_description": "List files in captures/nonexistent-dir"
   }
 }

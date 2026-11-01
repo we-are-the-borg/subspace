@@ -24,6 +24,8 @@
       "backgroundTaskId": "b1030i5uk"
     },
     "duration_ms": 11,
+    "command": "sleep 30; echo bg",
+    "command_description": "Background command that sleeps 30 seconds then echoes",
     "spawned_shell": "b1030i5uk"
   }
 }
