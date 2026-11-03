@@ -82,7 +82,7 @@ $ROOT/
 **Envelope**, one JSON document per file:
 
 ```json
-{"v":1,"source":"claude-code","ts":1790000000,"pid":12345,"payload":{…hook JSON unchanged…}}
+{"v":1,"source":"claude-code","ts":1790000000,"pid":12345,"terminal":{"TERM_PROGRAM":"WarpTerminal","WARP_FOCUS_URL":"warp://session/…"},"payload":{…hook JSON unchanged…}}
 ```
 
 | Field | Meaning |
@@ -91,7 +91,25 @@ $ROOT/
 | `source` | Agent that produced the event, one of the registry below. Apps ignore sources they don't know. |
 | `ts` | Unix seconds when the plugin saw the event. With async hooks this is not the exact moment of the event. |
 | `pid` | The process that starts the hook (`$PPID` of the script), described per source in §6. Claude Code: the session's `claude` process. Codex without the daemon: the session's `codex` process; with it: a shared `app-server`, unsuitable for session liveness. |
+| `terminal` | Optional. Terminal identifiers from the hook's environment (below), so apps can bring the agent's terminal tab or pane to the front. Absent when none is set. |
 | `payload` | The hook's stdin JSON, byte for byte. Apps parse the file as one JSON document, not line by line. |
+
+Apps ignore envelope fields they don't know (§9).
+
+**Terminal identifiers.** The hook copies the environment variables on this closed list into `terminal`, keyed by their name, and nothing else from the environment, because the environment can hold secrets. Adding a name is a contract change. A variable is copied only if it is set to a non-empty value of printable ASCII (`0x20`–`0x7e`); others are left out. Values are unchanged (JSON-escaped, so the decoded string is the variable's value). Apps ignore names inside `terminal` they don't know. The hook inherits the environment of the agent process that starts it, which is the session's terminal for Claude Code but not always for Codex (§6).
+
+| Variable | Set by | Focus from outside (for apps) |
+|---|---|---|
+| `TERM_PROGRAM`, `TERM_PROGRAM_VERSION` | most terminals and IDEs | identifies the app (`WarpTerminal`, `iTerm.app`, `Apple_Terminal`, `WezTerm`, `ghostty`, `vscode`, `tmux` …) |
+| `__CFBundleIdentifier` | macOS, for the app that started the shell | bring that app to the front; the fallback for terminals without a per-tab ID |
+| `WARP_FOCUS_URL`, `WARP_TERMINAL_SESSION_UUID` | Warp | open the URL (`warp://session/<id>`, the session ID, 32 hex digits); this route is not in Warp's documented URI scheme |
+| `ITERM_SESSION_ID` | iTerm2 | AppleScript or the Python API, by session ID |
+| `TERM_SESSION_ID` | Terminal.app (and iTerm2) | AppleScript |
+| `WEZTERM_PANE` | WezTerm | `wezterm cli activate-pane --pane-id` |
+| `KITTY_WINDOW_ID`, `KITTY_LISTEN_ON` | kitty | `kitty @ --to <listen_on> focus-window --match id:<id>` |
+| `TMUX`, `TMUX_PANE` | tmux (inside any terminal) | `tmux select-pane -t <pane>` on the server in `TMUX`; the outer terminal's variables are usually inherited as well |
+
+Ghostty and VS Code-family editors set no per-tab ID in the environment (Ghostty's terminal `id` exists only in its AppleScript dictionary); apps can only bring the app to the front. Captured so far: Warp with Claude Code (`fixtures/claude-code/2.1.317/21-terminal-env/`). The other rows come from the terminals' documentation.
 
 Events with empty stdin are dropped.
 
@@ -151,6 +169,7 @@ Events with empty stdin are dropped.
   - Rules and evidence: `docs/model.md` §3.3 ("Session model"). The transcript's `message.model` (§8) names the model of every response, for apps that read it.
 - **Internal agents:** Claude Code runs agents of its own, e.g. for `/compact`. They send a `SubagentStop` with an empty `agent_type` and no `SubagentStart`, and their `agent_transcript_path` may not exist. Apps don't show them as subagents.
 - **Liveness:** in the capture `SessionEnd` arrived async after `/exit` and after Ctrl-C (`reason: prompt_input_exit`) and at the end of `claude -p` (`reason: other`). It can still be missing after a crash or a killed terminal, so apps check `pid` and fall back to a timeout on the last event.
+- **Terminal:** `terminal` (§4) is the environment of the session's `claude` process, i.e. of the shell it was started from. It stays the same for every event of that process, so presumably also across `/clear`, and a session resumed in another tab gets that tab's identifiers (both inferred from the process model, not captured yet). Sessions started without a terminal (an IDE extension, a script) may carry none or only the app's.
 - **Working, waiting, interrupted:** a user interrupt (Esc, Ctrl-C) sends no hook event. The session status file (§13) shows it, and whether the session waits for the user; prefer it where present.
 - **Questions to the user (`AskUserQuestion`):** `PreToolUse` and `PermissionRequest` carry the questions, the `PostToolUse` the answers, keyed by the question text; the target fields are `questions`, `answers` and `annotations` (`docs/model.md` §3.2). Every answer is one string, also for `multiSelect` (labels joined by `", "`) and free text. A question dismissed with Esc sends no hook event at all (observed in 2.1.316); only the session status file (§13) leaves `waiting`. Rules: `docs/model.md` §3.3 ("Questions").
 - **Shell commands (`Bash`):** `PreToolUse`, `PermissionRequest`, `PostToolUse` and `PostToolUseFailure` carry the whole command in `tool_input.command`, multi-line commands (heredocs) with their line breaks (observed in 2.1.316), and usually a one-line `tool_input.description` written by the model. The target fields are `command`, with the same name and shape as Codex's, and `command_description` (`docs/model.md` §3.2). `command_description` is absent when a call has no description.
@@ -164,6 +183,7 @@ Events with empty stdin are dropped.
 - **Turn completion:** `SubagentStop` fires per child turn. A reused child has one start and multiple stops; a stop does not destroy the child thread. Completion is sticky for that particular turn, and a later turn can become active. `Stop` likewise completes a root turn, not the session.
 - **Interrupt:** the user's confirmed permission action “Reject and tell Codex what to do instead” produced `Interrupt` with no post or `Stop` for that turn. This observation applies to that UI action. Interrupting a wait on a running shell call can leave the command running: a late `PostToolUse` arrived for the interrupted turn after the following turn's `Stop`. Do not reopen the interrupted turn on a late post, or infer process termination from `Interrupt`.
 - **Session liveness:** there is no subscribed `SessionEnd`. Async work can be cancelled during teardown; final events may be lost. With the daemon, multiple sessions share the hook's `pid` (`app-server`); apps **must not use Codex `pid` to establish session liveness**. Use a timeout since the last event, tolerate missing terminal events, and label this as inferred inactivity. No timeout duration is imposed by this contract. Codex's writer lock files (§14) confirm a session's end, with a delay of up to Codex's thread unload delay (30 minutes by default) when the TUI runs on the shared daemon.
+- **Terminal:** without the daemon `terminal` (§4) comes from the session's `codex` process. With the daemon it is the environment of the shared `app-server`, i.e. of whichever terminal started it, not the session's; apps **must not use it to focus a Codex session on the daemon**, the same limit as for `pid`. Not yet captured for Codex.
 
 ## 7. Subscribed events
 
@@ -193,7 +213,8 @@ Apps may read transcripts, read-only. Each agent's transcript format is internal
 
 ## 9. Versioning
 
-- Changes to the envelope or layout increase `v` and come with a new `schema/envelope.v<v>.json`. The plugin writes one version only.
+- Removing, renaming or redefining an envelope field, or changing the layout, increases `v` and comes with a new `schema/envelope.v<v>.json`. The plugin writes one version only.
+- New **optional** envelope fields (such as `terminal`) may be added within a `v`; the schema of that `v` is extended with them. Apps ignore envelope fields they don't know and must not reject a file for having one.
 - Subscribing to new events is backwards compatible; apps ignore unknown `hook_event_name`s.
 - Mapping documents have their own `format` version and compatibility rules (§12). A new mapping arrives with a plugin release; it never changes `v`.
 

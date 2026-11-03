@@ -26,6 +26,19 @@
       "type": "integer",
       "minimum": 1
     },
+    "terminal": {
+      "description": "Terminal identifiers from the hook's environment: only allowlisted names that were set to a non-empty printable ASCII value, unchanged. Absent when none was set. Source-specific meaning in contract §4 and §6. Apps ignore names they don't know.",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "enum": [
+          "TERM_PROGRAM", "TERM_PROGRAM_VERSION", "__CFBundleIdentifier", "TERM_SESSION_ID",
+          "ITERM_SESSION_ID", "WARP_FOCUS_URL", "WARP_TERMINAL_SESSION_UUID", "WEZTERM_PANE",
+          "KITTY_WINDOW_ID", "KITTY_LISTEN_ON", "TMUX", "TMUX_PANE"
+        ]
+      },
+      "additionalProperties": { "type": "string", "pattern": "^[ -~]+$" }
+    },
     "payload": {
       "description": "The hook's stdin JSON, byte for byte. Fields depend on source and hook_event_name; see docs/events/ and fixtures/<source>/<version>/.",
       "type": "object",

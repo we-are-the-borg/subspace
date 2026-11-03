@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plays the runs S1-S20 of README.md without a human (#58).
+"""Plays the runs S1-S21 of README.md without a human (#58).
 
 Starts watch-sessions.py, then drives interactive `claude` sessions in a
 pseudo-terminal: types prompts, presses Enter, Esc and Ctrl-C, and waits for
@@ -509,10 +509,22 @@ def s20():
     s.exit()
 
 
+def s21():
+    """Terminal identifiers in the hooks' environment (#22): the shell's, unchanged?
+
+    Runs in whatever terminal starts the driver; log.sh records the values.
+    """
+    s = Session("S21")
+    s.ready()
+    s.wait("Stop", s.send("Reply with the single word ok."))
+    time.sleep(3)
+    s.exit()
+
+
 RUNS = {"S1": s1, "S2": s2, "S3": s3, "S4": s4, "S5": s5, "S6": s6, "S7": s7,
         "S8": s8, "S9": s9, "S10": s10, "S11": s11, "S12": s12, "S13": s13,
         "S14": s14, "S15": s15, "S16": s16,
-        "S17": s17, "S18": s18, "S19": s19, "S20": s20}
+        "S17": s17, "S18": s18, "S19": s19, "S20": s20, "S21": s21}
 
 
 def main():

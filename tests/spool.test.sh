@@ -12,6 +12,12 @@ models="$here/../adapters/claude-code/model"
 run_sh=${SPOOL_SH:-sh}
 # Don't inherit a real plugin environment (e.g. when run from Claude Code).
 unset SUBSPACE_DIR CLAUDE_PLUGIN_DATA CLAUDE_PLUGIN_OPTION_RETENTION_DAYS
+# Nor the terminal's identifiers (contract §4), e.g. Warp's or tmux's.
+terminal_vars="TERM_PROGRAM TERM_PROGRAM_VERSION __CFBundleIdentifier TERM_SESSION_ID
+  ITERM_SESSION_ID WARP_FOCUS_URL WARP_TERMINAL_SESSION_UUID WEZTERM_PANE
+  KITTY_WINDOW_ID KITTY_LISTEN_ON TMUX TMUX_PANE"
+# shellcheck disable=SC2086
+unset $terminal_vars
 
 tmp=$(mktemp -d)
 trap 'chmod -R u+w "$tmp" 2>/dev/null; rm -rf "$tmp"' EXIT
@@ -98,6 +104,58 @@ for p in special big; do
   { head -n 1 "$f" | sed 's/"payload":.*/"payload":/' | tr -d '\n'; cat "$tmp/$p"; printf '}'; } > "$tmp/expected"
   check 'cmp -s "$f" "$tmp/expected"' "$p: payload changed"
 done
+done_test
+
+setup terminal
+# Set, in an order other than the allowlist's: the envelope follows the allowlist.
+(
+  export TMUX_PANE=%3 TERM_PROGRAM=WarpTerminal \
+    WARP_FOCUS_URL=warp://session/00000000-0000-0000-0000-000000000000 __CFBundleIdentifier=dev.warp.Warp-Stable
+  payload '{"hook_event_name":"Stop"}'
+)
+f=$(events)
+check 'grep -Eqx "\{\"v\":1,\"source\":\"claude-code\",\"ts\":[0-9]+,\"pid\":[0-9]+,\"terminal\":\{\"TERM_PROGRAM\":\"WarpTerminal\",\"__CFBundleIdentifier\":\"dev.warp.Warp-Stable\",\"WARP_FOCUS_URL\":\"warp://session/00000000-0000-0000-0000-000000000000\",\"TMUX_PANE\":\"%3\"\},\"payload\":\{\"hook_event_name\":\"Stop\"\}\}" "$f"' \
+  "bad terminal: $(cat "$f")"
+done_test
+
+setup terminal-every-name
+(
+  for n in $terminal_vars; do export "$n=v-$n"; done
+  payload '{"hook_event_name":"Stop"}'
+)
+f=$(events)
+want=
+for n in $terminal_vars; do want="$want${want:+,}\"$n\":\"v-$n\""; done
+check 'grep -Fq ",\"terminal\":{$want},\"payload\":" "$f"' "not every name copied: $(cat "$f")"
+done_test
+
+setup terminal-skipped
+# Empty, not printable ASCII (tab, newline, UTF-8, DEL) or not on the allowlist: never copied.
+(
+  export TERM_PROGRAM= TMUX="$(printf 'a\tb')" TMUX_PANE="$(printf 'a\nb')" WEZTERM_PANE='ä' \
+    KITTY_WINDOW_ID="$(printf 'a\177')" WARP_USE_SSH_WRAPPER=1 SECRET_TOKEN=x TERM=xterm
+  payload '{"hook_event_name":"Stop"}'
+)
+f=$(events)
+check 'grep -Eqx "\{\"v\":1,\"source\":\"claude-code\",\"ts\":[0-9]+,\"pid\":[0-9]+,\"payload\":\{\"hook_event_name\":\"Stop\"\}\}" "$f"' \
+  "copied a skipped variable: $(cat "$f")"
+done_test
+
+setup terminal-escaped
+# \ and " are escaped, so the decoded value is the variable's value.
+(
+  export KITTY_LISTEN_ON='unix:/tmp/a"b\c\\d"' TERM_SESSION_ID='\'
+  payload '{"hook_event_name":"Stop"}'
+)
+f=$(events)
+check 'grep -Fq ",\"terminal\":{\"TERM_SESSION_ID\":\"\\\\\",\"KITTY_LISTEN_ON\":\"unix:/tmp/a\\\"b\\\\c\\\\\\\\d\\\"\"},\"payload\":" "$f"' \
+  "bad escaping: $(cat "$f")"
+done_test
+
+setup terminal-empty-stdin
+: > "$tmp/empty"
+(export TERM_PROGRAM=WarpTerminal TMUX=/private/tmp/tmux-501/default,1,0; spool "$tmp/empty")
+check '[ "$(count)" = 0 ]' "empty stdin was written"
 done_test
 
 setup retention-default

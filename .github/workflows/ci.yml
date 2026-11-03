@@ -80,11 +80,24 @@ jobs:
       - name: Envelopes of all fixtures match the schema
         run: |
           # fixtures/<source>/<version>/<run>/events/*.json
+          i=0
           for f in fixtures/*/*/*/events/*.json; do
             source=${f#fixtures/}; source=${source%%/*}
             # Written by the assembled adapter, i.e. what users install.
-            SUBSPACE_DIR="$RUNNER_TEMP/root" sh "$RUNNER_TEMP/dist/$source/scripts/spool.sh" "$source" < "$f"
+            # Every other one with terminal identifiers (contract §4).
+            i=$((i + 1))
+            if [ $((i % 2)) -eq 0 ]; then
+              TERM_PROGRAM=ci TMUX_PANE=%0 WARP_FOCUS_URL='warp://session/a"b\c' \
+                SUBSPACE_DIR="$RUNNER_TEMP/root" sh "$RUNNER_TEMP/dist/$source/scripts/spool.sh" "$source" < "$f"
+            else
+              env -u TERM_PROGRAM -u TERM_PROGRAM_VERSION -u __CFBundleIdentifier -u TERM_SESSION_ID \
+                -u ITERM_SESSION_ID -u WARP_FOCUS_URL -u WARP_TERMINAL_SESSION_UUID -u WEZTERM_PANE \
+                -u KITTY_WINDOW_ID -u KITTY_LISTEN_ON -u TMUX -u TMUX_PANE \
+                SUBSPACE_DIR="$RUNNER_TEMP/root" sh "$RUNNER_TEMP/dist/$source/scripts/spool.sh" "$source" < "$f"
+            fi
           done
+          grep -l '^{"v":1,"source":"[a-z-]*","ts":[0-9]*,"pid":[0-9]*,"terminal":' "$RUNNER_TEMP"/root/events/*/*.json | grep -q .
+          grep -L '^{"v":1,"source":"[a-z-]*","ts":[0-9]*,"pid":[0-9]*,"terminal":' "$RUNNER_TEMP"/root/events/*/*.json | grep -q .
           npx -y ajv-cli@5 validate --spec=draft2020 -s schema/envelope.v1.json -d "$RUNNER_TEMP/root/events/*/*.json"
       - name: Changed mapping documents bump their revision
         if: github.event_name == 'pull_request'
