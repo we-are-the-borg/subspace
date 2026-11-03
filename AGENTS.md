@@ -27,6 +27,7 @@ In this repo:
 - `tools/sync.sh`: copies `core/`, the shared `schema/*.json` plus `schema/<source>/` and each adapter's `model/<source>*.json` into the adapters. Keep source-specific things out of the shared files: every change to them releases every adapter
 - `tools/e2e/check.sh`: checks a day folder of a real install against the contract and the fixtures' payload keys (Claude Code)
 - `tools/hook-capture/<source>/`: throwaway project that records the subscribed hook events under `captures/` (source of the fixtures). Claude Code also records the session status files (`watch-sessions.py`) and has a driver that plays the runs in a pseudo-terminal (`drive-session-runs.py`); Codex also records the writer lock files (`watch-locks.py`, runs played by `drive-lock-runs.py`)
+- `.claude/workflow.md`, `.codex/agents/`: optional maintainer tooling, not needed to contribute. The profile of this repo for `/grmlin:ticket` from the Claude Code plugin `grmlin` (`.claude/README.md`), and an implementer and reviewer for Codex. It never commits or pushes; it ends with a proposed PR title and body
 
 ## Rules
 
@@ -39,6 +40,23 @@ In this repo:
 - **Agent drift** (contract §12, `docs/model.md` §6): capture the new version into `fixtures/<source>/<version>/`, add its golden files, then change only `model/<source>.json` (fallback paths, table entries, new fields; never drop a path older captures need) until `python3 tests/model.test.py` passes, increase its `revision` (CI checks it), add the version to `observed`, release. New semantics also need a contract note for the apps.
 - **No personal data in the repository.** Anonymize every capture before it goes into `fixtures/` as `fixtures/README.md` describes (home paths, remotes, account identifiers, content of files read from the user's machine; no full transcripts) and run `python3 tests/fixtures-privacy.test.py`. The repository is public.
 - Derive assumptions about payloads only from real captures. Claude Code captures: agents may run `tools/hook-capture/claude-code/drive-session-runs.py` (real sessions, haiku, a few cents) and extend it with new runs. Other captures the user starts themselves (`codex exec` …).
+
+## Verification
+
+The one place for the checks; agents and the reviewer run what applies to the touched parts, the full list before a PR. CI runs the same (`.github/workflows/ci.yml`).
+
+```sh
+a=$(mktemp -d) && cp -R adapters "$a" && sh tools/sync.sh && diff -r "$a/adapters" adapters   # copies were in sync (sync changes nothing)
+sh tests/spool.test.sh                  # the hook as shipped
+SPOOL_SH=dash sh tests/spool.test.sh    # under another shell, if dash is installed
+python3 tests/model.test.py             # mapping documents reproduce the golden files
+python3 tests/codex-adapter.test.py
+python3 tests/codex-capture.test.py     # needs ps; may fail inside a sandbox
+python3 tests/fixtures-privacy.test.py  # no personal data anywhere in the repo
+shellcheck core/spool.sh                # if installed
+```
+
+Changes to `schema/`, `model/` or `fixtures/` also need the schema checks of CI's `validate` job (`npx -y ajv-cli@5 validate --spec=draft2020 …`, see `ci.yml` for the exact calls). A change to a mapping document also needs `python3 tools/model/revision-check.py origin/main`.
 
 ## Workflow
 
