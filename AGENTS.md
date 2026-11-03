@@ -27,7 +27,7 @@ In this repo:
 - `tools/sync.sh`: copies `core/`, the shared `schema/*.json` plus `schema/<source>/` and each adapter's `model/<source>*.json` into the adapters. Keep source-specific things out of the shared files: every change to them releases every adapter
 - `tools/e2e/check.sh`: checks a day folder of a real install against the contract and the fixtures' payload keys (Claude Code)
 - `tools/hook-capture/<source>/`: throwaway project that records the subscribed hook events under `captures/` (source of the fixtures). Claude Code also records the session status files (`watch-sessions.py`) and has a driver that plays the runs in a pseudo-terminal (`drive-session-runs.py`); Codex also records the writer lock files (`watch-locks.py`, runs played by `drive-lock-runs.py`)
-- `.claude/workflow.md`, `.codex/agents/`: optional maintainer tooling, not needed to contribute. The profile of this repo for `/grmlin:ticket` from the Claude Code plugin `grmlin` (`.claude/README.md`), and an implementer and reviewer for Codex. It never commits or pushes; it ends with a proposed PR title and body
+- `.claude/workflow.md`: optional maintainer tooling, not needed to contribute. The profile of this repo for `/grmlin:ticket` from the Claude Code plugin `grmlin` (`.claude/README.md`). It never commits or pushes; it ends with a proposed PR title and body
 
 ## Rules
 

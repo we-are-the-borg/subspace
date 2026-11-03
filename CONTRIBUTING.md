@@ -8,6 +8,6 @@ Thanks for helping. subspace is small on purpose: hooks that only observe, a POS
 - **Don't edit the copies** in `adapters/*/scripts/`, `adapters/*/schema/` and `adapters/*/model/`. Change `core/`, `schema/` or `model/` and run `sh tools/sync.sh`.
 - **Tests:** the commands are listed under "Verification" in [`AGENTS.md`](AGENTS.md). CI runs them on Linux and macOS.
 - **Fixtures come from real captures only**, and they are public: anonymize them as [`fixtures/README.md`](fixtures/README.md) describes before you add them. Never commit full transcripts, home paths, account identifiers or the content of your own files.
-- **Maintainer tooling** in `.claude/` and `.codex/agents/` (the `/grmlin:ticket` workflow, see [`.claude/README.md`](.claude/README.md)) is optional; you don't need it to contribute.
+- **Maintainer tooling** in `.claude/` (the `/grmlin:ticket` workflow, see [`.claude/README.md`](.claude/README.md)) is optional; you don't need it to contribute.
 
 Security problems: see [`SECURITY.md`](SECURITY.md).
