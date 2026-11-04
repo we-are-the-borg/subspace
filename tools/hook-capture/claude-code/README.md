@@ -2,7 +2,7 @@
 
 Throwaway Claude Code project that records every subscribed hook event (see `docs/events/claude-code.md`) under the same conditions as the real plugin: `async: true`, no output, exit 0.
 
-- `log.sh` writes one file per event to `captures/events/`: `<name>.json` is the raw payload, `<name>.meta` holds `$PPID`, `$CLAUDE_PID`, the parent process chain, the names (not values) of exported `CLAUDE_*` variables and the names and values of the terminal identifiers the plugin copies (contract §4).
+- `log.sh` writes one file per event to `captures/events/`: `<name>.json` is the raw payload, `<name>.meta` holds `$PPID`, `$CLAUDE_PID`, the parent process chain, the names (not values) of exported `CLAUDE_*` variables, the values of `CLAUDE_CODE_SESSION_KIND` and `CLAUDE_BG_BACKEND` (background sessions), and the names and values of the terminal identifiers the plugin copies (contract §4).
 - `collect.sh` copies every transcript the events reference, including `subagents/`, to `captures/transcripts/`.
 
 `captures/` is git-ignored; curated payloads go to `fixtures/claude-code/<version>/`.
@@ -44,7 +44,7 @@ Start `claude --model haiku`, send `hi`, wait for the answer, then press Ctrl-C 
 
 Claude Code keeps one status file per process in `<config dir>/sessions/<pid>.json` (`status` `busy`/`idle`/…). `watch-sessions.py` records it next to the hook events: every change of content or inode as a snapshot in `captures/sessions/NNNNNN-<pid>.json`, every observation (created, changed, deleted, other names such as temp files) in `captures/sessions/log.jsonl` with wall-clock ms. Only files whose `cwd` lies in this directory are recorded; `*.key` files are never read.
 
-**Automated:** `./drive-session-runs.py [S1 …]` plays S1–S21 below without a human. It starts the watcher, drives `claude` in a pseudo-terminal (prompts, Enter, Esc, Ctrl-C, Ctrl+X Ctrl+K, the question dialog's keys, `kill -9`), waits for the hook events (never for the status file under test), logs every action with wall-clock ms to `captures/sessions/actions.jsonl` and each run's terminal output to `captures/tty/<run>.log`, and runs `collect.sh` at the end. It answers the startup dialog "Allow external CLAUDE.md file imports?" (the repo's `CLAUDE.md` imports `AGENTS.md`, outside this directory) with its default "No"; any other dialog makes the run fail. About 10 minutes, haiku.
+**Automated:** `./drive-session-runs.py [S1 …]` plays S1–S22 below without a human. It starts the watcher, drives `claude` in a pseudo-terminal (prompts, Enter, Esc, Ctrl-C, Ctrl+X Ctrl+K, the question dialog's keys, `kill -9`; S22 instead runs `claude --bg`, `claude stop` and `claude rm` as plain subprocesses, and its terminal output is that of `claude logs`), waits for the hook events (never for the status file under test), logs every action with wall-clock ms to `captures/sessions/actions.jsonl` and each run's terminal output to `captures/tty/<run>.log`, and runs `collect.sh` at the end. It answers the startup dialog "Allow external CLAUDE.md file imports?" (the repo's `CLAUDE.md` imports `AGENTS.md`, outside this directory) with its default "No"; any other dialog makes the run fail. About 10 minutes, haiku.
 
 **By hand:** start the watcher in a **second terminal**, before `claude` and from this directory, and stop it with Ctrl-C a few seconds after the last run ended. A hook can't start it: the file appears before `SessionStart` and vanishes after it. One watcher covers all runs below.
 
@@ -75,6 +75,7 @@ Runs, each in the first terminal from this directory with `claude --model haiku`
 - **S19 questions:** start with `--permission-mode default`. Send `Use the AskUserQuestion tool once with two questions. Question 1: "Which fruits do you like?", header "Fruits", multiSelect true, options apple, banana, cherry. Question 2: "Which pet do you prefer?", header "Pet", multiSelect false, options cat, dog. Then reply with my answers.` Wait 15 s, pick apple and cherry (Enter toggles), Tab, type `a parrot` on "Type something", Enter, submit on the review screen. Then send `Use the AskUserQuestion tool once with one question: "Which layout do you prefer?", header "Layout", multiSelect false, two options "Grid" and "List", each with a short ASCII-art preview. Then reply with my answer.`, pick List, press `n`, type `more compact please`, Enter. Then send `Use the AskUserQuestion tool once to ask me "Tea or coffee?", header "Drink", options tea and coffee. Then reply with my answer.`, wait 15 s, press Esc. Wait 10 s, send `Reply with the word ok. No tools.`, `/exit`.
 - **S20 multi-line command:** start with `--permission-mode default`. Send `Make exactly one Bash call and nothing else. Its command has four lines, keep the line breaks: line 1 cat > captures/s20.txt <<'EOF', line 2 alpha, line 3 beta, line 4 EOF`, wait 3 s at the permission dialog, approve, `/exit`.
 - **S21 terminal identifiers:** start in the terminal under test (the driver passes its environment on), send `Reply with the single word ok.`, `/exit`. Compare the `terminal:` lines in `.meta` with the shell's environment.
+- **S22 background session:** from the terminal under test, `claude --bg --model haiku "Reply with the single word ok."` (prints the session's short id). The session runs in a process of Claude Code's background daemon; its cwd is this directory, so `log.sh` and the watcher record it. Wait for its `Stop`, then `claude stop <id>` and `claude rm <id>`. The driver also logs its own terminal variables and the daemon's processes (`claude daemon run`, `bg-pty-host`, `bg-spare`) before and after. Compare the `terminal:` and `session kind:` lines in `.meta` with the driver's terminal, and the status file's `kind`.
 
 Afterwards `./collect.sh` as usual.
 
@@ -87,4 +88,4 @@ Questions: which `status` values appear (`waiting`? `shell`?) and when; does Esc
 - Does `SessionEnd` arrive async after `/exit` (run 2) and Ctrl-C (run 3)?
 - How far does arrival order (file mtime) deviate from the transcript timestamps?
 - Payload sizes, especially outliers.
-- Do the hooks see the terminal identifiers of the shell `claude` was started from, unchanged (driver run S21)?
+- Do the hooks see the terminal identifiers of the shell `claude` was started from, unchanged (driver run S21)? And a background session's hooks (S22): the daemon's terminal or the one `claude --bg` ran in?

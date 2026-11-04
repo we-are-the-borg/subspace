@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Plays the runs S1-S21 of README.md without a human (#58).
+"""Plays the runs S1-S22 of README.md without a human (#58).
 
 Starts watch-sessions.py, then drives interactive `claude` sessions in a
 pseudo-terminal: types prompts, presses Enter, Esc and Ctrl-C, and waits for
 the hook events in captures/events/ (never for the status file under test).
+S22 is the exception: it starts a background session with `claude --bg` as a
+plain subprocess, without a pseudo-terminal.
 Every action goes to captures/sessions/actions.jsonl with wall-clock ms, the
 terminal output of each run to captures/tty/<run>.log. Runs collect.sh at
 the end. Uses haiku; costs a few cents.
@@ -521,10 +523,111 @@ def s21():
     s.exit()
 
 
+def daemon_processes():
+    """Claude Code's background daemon and its pty hosts and spares.
+
+    Only pid, ppid, start time, role and version: the full command lines carry
+    home paths and the cwd of whatever session spawned the daemon.
+    """
+    ps = subprocess.run(["ps", "-axo", "pid=,ppid=,lstart=,command="],
+                        capture_output=True, text=True).stdout
+    found = []
+    for line in ps.splitlines():
+        m = re.match(r"\s*(\d+)\s+(\d+)\s+(\w+ \w+ +\d+ [\d:]+ \d+)\s+(\S+) (\S+)(.*)", line)
+        if not m or os.path.basename(m[4]) != "claude" or not (
+                m[5].startswith("bg-") or m[5] == "daemon"):
+            continue
+        version = re.search(r"/versions/([\d.]+)", m[6])
+        found.append({"pid": int(m[1]), "ppid": int(m[2]), "started": m[3], "role": m[5],
+                      **({"version": version[1]} if version else {})})
+    return found
+
+
+def s22_jobs(since_ms):
+    """Background jobs in this directory started since since_ms, by `claude agents`.
+
+    The fallback when `claude --bg` gave no id, so S22 can still clean up.
+    """
+    try:
+        agents = json.loads(subprocess.run(["claude", "agents", "--json"], env=clean_env(),
+                                           stdin=subprocess.DEVNULL, capture_output=True,
+                                           text=True, timeout=30).stdout)
+    except Exception as e:
+        action("S22", "claude agents failed", error=str(e))
+        return []
+    jobs = [a["id"] for a in agents if isinstance(a, dict) and a.get("id")
+            and os.path.realpath(a.get("cwd") or "") == HERE
+            and isinstance(a.get("startedAt"), int) and a["startedAt"] >= since_ms]
+    action("S22", "jobs found for cleanup", ids=jobs)
+    return jobs
+
+
+def s22():
+    """A background session (`claude --bg`, #27): whose terminal do its hooks see?
+
+    The session runs in a process of Claude Code's daemon, not under this
+    driver. Its cwd is this directory, so the project hooks (log.sh) and the
+    watcher record it like any other run.
+    """
+    names = ("TERM_PROGRAM", "TERM_PROGRAM_VERSION", "__CFBundleIdentifier", "TERM_SESSION_ID",
+             "ITERM_SESSION_ID", "WARP_FOCUS_URL", "WARP_TERMINAL_SESSION_UUID", "WEZTERM_PANE",
+             "KITTY_WINDOW_ID", "KITTY_LISTEN_ON", "TMUX", "TMUX_PANE")
+    action("S22", "driver terminal", terminal={n: os.environ[n] for n in names if n in os.environ})
+    action("S22", "daemon processes before", processes=daemon_processes())
+    started = now_ms()
+    bg = None
+    try:
+        p = subprocess.run(["claude", "--bg", "--model", MODEL, "Reply with the single word ok."],
+                           cwd=HERE, env=clean_env(), stdin=subprocess.DEVNULL,
+                           capture_output=True, text=True, timeout=60)
+        action("S22", "claude --bg", status=p.returncode, stdout=p.stdout, stderr=p.stderr)
+        # 2.1.318 prints "backgrounded · <id>" as its first line, then usage hints.
+        m = re.search(r"^backgrounded · ([0-9a-f]{8})$", p.stdout, re.M)
+        bg = m.group(1) if m else None
+        if not bg:
+            raise RuntimeError("claude --bg printed no id")
+        start = wait_event("SessionStart", started, 90, lambda e: e.get("cwd") == HERE)
+        sid = start.get("session_id")
+        action("S22", "saw SessionStart", session=sid)
+        agents = json.loads(subprocess.run(["claude", "agents", "--json"], env=clean_env(),
+                                           stdin=subprocess.DEVNULL, capture_output=True,
+                                           text=True, timeout=30).stdout)
+        action("S22", "claude agents", entry=[a for a in agents if a.get("id") == bg])
+        action("S22", "daemon processes after start", processes=daemon_processes())
+        wait_event("Stop", started, 90, lambda e: e.get("session_id") == sid)
+        action("S22", "saw Stop", session=sid)
+        time.sleep(3)
+        logs = subprocess.run(["claude", "logs", bg], env=clean_env(), stdin=subprocess.DEVNULL,
+                              capture_output=True, timeout=30).stdout
+        with open(os.path.join(TTY, "S22.log"), "ab") as f:
+            f.write(logs)
+    finally:
+        # Leave nothing behind in the user's daemon, even after a failure: also
+        # when `claude --bg` timed out or printed no id after creating a job.
+        jobs = [bg] if bg else s22_jobs(started)
+        if not jobs:
+            print("S22: no background job found to clean up; check `claude agents`",
+                  file=sys.stderr, flush=True)
+        for job in jobs:
+            for cmd in ("stop", "rm"):  # each on its own: a failed stop must not skip rm
+                try:
+                    c = subprocess.run(["claude", cmd, job], env=clean_env(),
+                                       stdin=subprocess.DEVNULL, capture_output=True,
+                                       text=True, timeout=60)
+                    action("S22", f"claude {cmd}", id=job, status=c.returncode,
+                           stdout=c.stdout, stderr=c.stderr)
+                except Exception as e:
+                    action("S22", f"claude {cmd} failed", id=job, error=str(e))
+                    print(f"S22: claude {cmd} {job} failed ({e}); check `claude agents`",
+                          file=sys.stderr, flush=True)
+                time.sleep(3)
+        action("S22", "daemon processes after cleanup", processes=daemon_processes())
+
+
 RUNS = {"S1": s1, "S2": s2, "S3": s3, "S4": s4, "S5": s5, "S6": s6, "S7": s7,
         "S8": s8, "S9": s9, "S10": s10, "S11": s11, "S12": s12, "S13": s13,
         "S14": s14, "S15": s15, "S16": s16,
-        "S17": s17, "S18": s18, "S19": s19, "S20": s20, "S21": s21}
+        "S17": s17, "S18": s18, "S19": s19, "S20": s20, "S21": s21, "S22": s22}
 
 
 def main():

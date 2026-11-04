@@ -13,7 +13,7 @@ An event is subscribed only if **registering it alone** changes nothing about Cl
 
 | Event | Matcher | What it tells us (examples) | Note |
 |---|---|---|---|
-| `SessionStart` | – | session started or resumed, `source`, `model` only on an interactive `startup` and on `compact` (not on `clear`, `resume`, `claude -p`; contract §6) | Sync would delay Claude's first response; async doesn't. |
+| `SessionStart` | – | session started or resumed, `source`, `model` only on a `startup` of an interactive or background session (not headless) and on `compact` (not on `clear`, `resume`, `claude -p`; contract §6) | Sync would delay Claude's first response; async doesn't. |
 | `SessionEnd` | – | session ended, `reason` | All SessionEnd hooks share a 1.5 s budget. Async delivery after `/exit` and Ctrl-C is covered by the captures. |
 | `Setup` | – | only with `--init`/`--init-only`/`--maintenance` | Rare, harmless. |
 | `InstructionsLoaded` | – | which `CLAUDE.md`/rules were loaded | "runs asynchronously for observability purposes". |
