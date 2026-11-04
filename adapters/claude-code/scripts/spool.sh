@@ -16,6 +16,8 @@
 exec > /dev/null 2>&1
 # Files and folders are private to the user (0600/0700); other accounts can't read them.
 umask 077
+# Byte semantics: ${#var} counts bytes and [[:print:]] is printable ASCII.
+export LC_ALL=C
 # use $SUBSPACE_DIR if set, else $CLAUDE_PLUGIN_DATA if set, else empty string
 root=${SUBSPACE_DIR:-${CLAUDE_PLUGIN_DATA:-}}
 source=${1:-}
@@ -58,7 +60,32 @@ name="$ts-$PPID-$1$2$3$4"
 
 # Envelope around the payload, byte for byte. Written under a dot name and
 # renamed, so apps never see a partial file. Empty stdin is dropped.
-head="{\"v\":1,\"source\":\"$source\",\"ts\":$ts,\"pid\":$PPID,\"payload\":"
+#
+# Terminal identifiers (contract §4): only the names on this closed list, only
+# when set, non-empty and printable ASCII, never anything else from the
+# environment. Values are kept as they are, with \ and " escaped for JSON.
+term=
+for n in TERM_PROGRAM TERM_PROGRAM_VERSION __CFBundleIdentifier TERM_SESSION_ID \
+  ITERM_SESSION_ID WARP_FOCUS_URL WARP_TERMINAL_SESSION_UUID WEZTERM_PANE \
+  KITTY_WINDOW_ID KITTY_LISTEN_ON TMUX TMUX_PANE; do
+  eval "val=\${$n-}"
+  case $val in '' | *[![:print:]]*) continue ;; esac
+  out=
+  while :; do
+    case $val in
+      *[\\\"]*)
+        pre=${val%%[\\\"]*}
+        val=${val#"$pre"}
+        out="$out$pre\\${val%"${val#?}"}"
+        val=${val#?}
+        ;;
+      *) out=$out$val && break ;;
+    esac
+  done
+  term="$term,\"$n\":\"$out\""
+done
+[ -n "$term" ] && term=",\"terminal\":{${term#,}}"
+head="{\"v\":1,\"source\":\"$source\",\"ts\":$ts,\"pid\":$PPID$term,\"payload\":"
 [ -d "$dir" ] || mkdir -p "$dir"
 tmp="$dir/.$name.tmp"
 if { printf '%s' "$head" && cat && printf '}'; } > "$tmp" &&

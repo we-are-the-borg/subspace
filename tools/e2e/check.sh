@@ -38,7 +38,13 @@ for f in "$day"/*.json; do
   out=$(jq -r -s '
     if length != 1 then "FAIL not one JSON document"
     else .[0]
-    | if (keys != ["payload","pid","source","ts","v"]) then "FAIL envelope keys \(keys)"
+    | if ((keys - ["terminal"]) != ["payload","pid","source","ts","v"]) then "FAIL envelope keys \(keys)"
+    elif has("terminal") and ((.terminal | type) != "object" or (.terminal | length) == 0
+      or ([.terminal | keys[] | select(IN("TERM_PROGRAM","TERM_PROGRAM_VERSION","__CFBundleIdentifier",
+        "TERM_SESSION_ID","ITERM_SESSION_ID","WARP_FOCUS_URL","WARP_TERMINAL_SESSION_UUID","WEZTERM_PANE",
+        "KITTY_WINDOW_ID","KITTY_LISTEN_ON","TMUX","TMUX_PANE") | not)] | length) > 0
+      or ([.terminal[] | select((type != "string") or (test("^[ -~]+$") | not))] | length) > 0)
+      then "FAIL terminal \(.terminal)"
     elif .v != 1 then "FAIL v \(.v)"
     elif (.source | type) != "string" or .source == "" then "FAIL source type/value"
     elif (.ts | type) != "number" or .ts < 0 or .ts != (.ts | floor) then "FAIL ts type/value"

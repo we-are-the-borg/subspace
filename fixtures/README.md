@@ -11,6 +11,7 @@ Payloads, status files and rollout excerpts are kept byte for byte, with these r
 - Opaque values nobody can inspect, such as Codex's encrypted spawn `message` → `<encrypted message omitted>`.
 - Account identifiers and e-mail addresses → zero UUIDs, `user-REDACTED`, `user@example.com`.
 - Files a run read from the user's machine (not the capture's own files): content → a short placeholder with line counts adjusted, path → a neutral one.
+- Terminal identifiers (`terminal.json`, contract §4) are kept as they are where they are random per tab or pane (session and pane IDs, like session IDs). Socket paths (`TMUX`, `KITTY_LISTEN_ON`) follow the home-path rule above.
 - Full transcripts are not included: they carry the agent's system prompt, the user's instruction files and account data.
 
 `tests/fixtures-privacy.test.py` (CI) fails on home paths other than `/Users/user/`, per-user temp folders, e-mail addresses other than placeholders, unredacted account identifiers, credentials and instruction-file dumps. Anonymize a new capture before adding it, then run that test.

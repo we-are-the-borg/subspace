@@ -7,7 +7,7 @@ The plugin consists of hooks only, so it works in Claude Code (terminal, IDE and
 ## What it does
 
 - Runs one POSIX `sh` script (`scripts/spool.sh`) as an `async` command hook. It always exits 0, prints nothing and returns no decision, so it never blocks or steers Claude Code.
-- Writes only into its plugin data folder: `~/.claude/plugins/data/subspace-subspace/` (or under `$CLAUDE_CONFIG_DIR`). Each event lands in `events/<UTC day>/` with the hook payload as Claude Code passed it, including prompts, tool input and tool output.
+- Writes only into its plugin data folder: `~/.claude/plugins/data/subspace-subspace/` (or under `$CLAUDE_CONFIG_DIR`). Each event lands in `events/<UTC day>/` with the hook payload as Claude Code passed it, including prompts, tool input and tool output. Next to it, it stores your terminal's identifiers (a fixed list of variables such as `TERM_PROGRAM` or `WARP_FOCUS_URL`, so apps can jump to your terminal tab) and never anything else from the environment.
 - Keeps events for 3 days by default and deletes older day folders (`retention_days`, 1–30, see [Settings](#settings)).
 - Sends nothing anywhere: no network access, no other files read or written, no runtime dependencies.
 
