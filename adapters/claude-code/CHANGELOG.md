@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.2.0...claude-code-1.3.0) (2026-11-04)
+
+
+### Features
+
+* **contract:** terminal identifiers in the envelope ([#25](https://github.com/we-are-the-borg/subspace/issues/25)) ([e0cadc0](https://github.com/we-are-the-borg/subspace/commit/e0cadc0c5a7c1de6a3d8b6bb2996c3b560516228)), closes [#22](https://github.com/we-are-the-borg/subspace/issues/22)
+
 ## [1.2.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.1.0...claude-code-1.2.0) (2026-11-03)
 
 

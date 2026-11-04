@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/we-are-the-borg/subspace/compare/codex-1.0.1...codex-1.1.0) (2026-11-04)
+
+
+### Features
+
+* **contract:** terminal identifiers in the envelope ([#25](https://github.com/we-are-the-borg/subspace/issues/25)) ([e0cadc0](https://github.com/we-are-the-borg/subspace/commit/e0cadc0c5a7c1de6a3d8b6bb2996c3b560516228)), closes [#22](https://github.com/we-are-the-borg/subspace/issues/22)
+
 ## [1.0.1](https://github.com/we-are-the-borg/subspace/compare/codex-1.0.0...codex-1.0.1) (2026-10-08)
 
 
