@@ -1,7 +1,8 @@
 #!/bin/sh
 # Captures one hook event into captures/events/: <name>.json holds the raw
-# payload, <name>.meta the parent process chain, exported CLAUDE_* names and
-# the terminal identifiers with their values.
+# payload, <name>.meta the parent process chain, exported CLAUDE_* names, the
+# values of the two that mark a background session, and the terminal
+# identifiers with their values.
 # Like the real plugin it prints nothing and always exits 0.
 {
   dir="$(dirname "$0")/captures/events"
@@ -19,6 +20,13 @@
     done
     printf 'env:\n'
     env | sed -n 's/^\(CLAUDE[A-Z0-9_]*\)=.*/  \1/p' | sort
+    # Values only for these two (bg session vs. interactive, #27); never secrets.
+    printf 'session kind:\n'
+    for n in CLAUDE_CODE_SESSION_KIND CLAUDE_BG_BACKEND; do
+      set='' val=''
+      eval "set=\${$n+x} val=\${$n-}"
+      [ -z "$set" ] || printf '  %s=%s\n' "$n" "$val"
+    done
     # Names and values of the terminal identifiers the plugin copies (contract §4).
     printf 'terminal:\n'
     for n in TERM_PROGRAM TERM_PROGRAM_VERSION __CFBundleIdentifier TERM_SESSION_ID \

@@ -1,0 +1,16 @@
+{
+  "session": "35ad01b4-0462-42d7-b0da-f38201cfa319",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "state": "working",
+  "claude_code_session": {
+    "status": "busy",
+    "status_at": 1793778258616,
+    "pid": 39661,
+    "process_kind": "bg",
+    "entrypoint": "cli",
+    "name": "Reply with the single word ok.",
+    "version": "2.1.318",
+    "started_at": 1793778258467,
+    "updated_at": 1793778258616
+  }
+}

@@ -1,0 +1,22 @@
+{"ms": 1793778257008, "action": "driver terminal", "terminal": {"TERM_PROGRAM": "WarpTerminal", "TERM_PROGRAM_VERSION": "v0.2026.10.07.08.29.stable_00", "__CFBundleIdentifier": "dev.warp.Warp-Stable", "WARP_FOCUS_URL": "warp://session/16e5a860f58d4186bd579a30d87d0d18", "WARP_TERMINAL_SESSION_UUID": "16e5a860f58d4186bd579a30d87d0d18"}}
+{"ms": 1793778257106, "action": "daemon processes before", "processes": [{"pid": 39632, "ppid": 1, "started": "Wed Nov  4 01:11:12 2026", "role": "daemon"}, {"pid": 39658, "ppid": 39632, "started": "Wed Nov  4 01:11:15 2026", "role": "bg-pty-host", "version": "2.1.318"}, {"pid": 39661, "ppid": 39658, "started": "Wed Nov  4 01:11:15 2026", "role": "bg-spare"}]}
+{"ms": 1793778258082, "action": "claude --bg", "status": 0, "stdout": "backgrounded · 35ad01b4\n  claude agents             list sessions\n  claude attach 35ad01b4    open in this terminal\n  claude logs 35ad01b4      show recent output\n  claude stop 35ad01b4      stop this session\n"}
+{"ms": 1793778258518, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1793778258582, "n": 2, "file": "status/002-status.json", "inode_changed": false}
+{"ms": 1793778258700, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1793778258891, "n": 4, "file": "events/004-SessionStart.json"}
+{"ms": 1793778259089, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1793778259101, "n": 6, "file": "events/006-InstructionsLoaded.json"}
+{"ms": 1793778259108, "action": "saw SessionStart", "session": "35ad01b4-0462-42d7-b0da-f38201cfa319"}
+{"ms": 1793778259493, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1793778259959, "action": "claude agents", "entry": [{"pid": 39661, "id": "35ad01b4", "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code", "kind": "background", "startedAt": 1793778258467, "sessionId": "35ad01b4-0462-42d7-b0da-f38201cfa319", "name": "Reply with the single word ok.", "status": "busy", "state": "working"}]}
+{"ms": 1793778260128, "action": "daemon processes after start", "processes": [{"pid": 39632, "ppid": 1, "started": "Wed Nov  4 01:11:12 2026", "role": "daemon"}, {"pid": 39658, "ppid": 39632, "started": "Wed Nov  4 01:11:15 2026", "role": "bg-pty-host", "version": "2.1.318"}, {"pid": 63991, "ppid": 39632, "started": "Wed Nov  4 08:44:17 2026", "role": "bg-pty-host", "version": "2.1.318"}, {"pid": 63994, "ppid": 63991, "started": "Wed Nov  4 08:44:17 2026", "role": "bg-spare"}, {"pid": 39661, "ppid": 39658, "started": "Wed Nov  4 01:11:15 2026", "role": "bg-spare"}]}
+{"ms": 1793778263608, "n": 8, "file": "events/008-Stop.json"}
+{"ms": 1793778263618, "action": "saw Stop", "session": "35ad01b4-0462-42d7-b0da-f38201cfa319"}
+{"ms": 1793778263970, "n": 9, "file": "status/009-status.json", "inode_changed": false}
+{"ms": 1793778265077, "n": 10, "file": "status/010-status.json", "inode_changed": false}
+{"ms": 1793778268146, "file_deleted": "39661.json"}
+{"ms": 1793778268240, "n": 11, "file": "events/011-SessionEnd.json"}
+{"ms": 1793778268606, "action": "claude stop", "id": "35ad01b4", "status": 0, "stdout": "stopped 35ad01b4\n"}
+{"ms": 1793778272477, "action": "claude rm", "id": "35ad01b4", "status": 0, "stdout": "removed 35ad01b4\n"}
+{"ms": 1793778275624, "action": "daemon processes after cleanup", "processes": [{"pid": 39632, "ppid": 1, "started": "Wed Nov  4 01:11:12 2026", "role": "daemon"}, {"pid": 63991, "ppid": 39632, "started": "Wed Nov  4 08:44:17 2026", "role": "bg-pty-host", "version": "2.1.318"}, {"pid": 63994, "ppid": 63991, "started": "Wed Nov  4 08:44:17 2026", "role": "bg-spare"}]}
