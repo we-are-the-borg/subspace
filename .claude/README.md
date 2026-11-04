@@ -8,5 +8,3 @@ The maintainer works tickets with `/grmlin:ticket <issue> [--go]`. It comes from
 claude plugin marketplace add grmlin/agent-skills
 claude plugin install grmlin@grmlin --scope user
 ```
-
-`.codex/agents/` holds the implementer and reviewer for Codex, which the plugin doesn't cover.
