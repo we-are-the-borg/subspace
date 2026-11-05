@@ -62,6 +62,9 @@
         "spare": {
           "type": "boolean"
         },
+        "job_id": {
+          "$ref": "#/$defs/id"
+        },
         "entrypoint": {
           "type": "string"
         },

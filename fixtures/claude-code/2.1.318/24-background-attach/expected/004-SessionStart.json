@@ -1,0 +1,11 @@
+{
+  "kind": "session.start",
+  "session": "a7741313-3478-40d9-b7db-416f72329e7f",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "session.start",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/a7741313-3478-40d9-b7db-416f72329e7f.jsonl",
+    "start_source": "startup",
+    "model": "claude-haiku-5-5"
+  }
+}

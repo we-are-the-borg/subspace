@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Plays the runs S1-S23 of README.md without a human (#58).
+"""Plays the runs S1-S24 of README.md without a human (#58).
 
 Starts watch-sessions.py, then drives interactive `claude` sessions in a
 pseudo-terminal: types prompts, presses Enter, Esc and Ctrl-C, and waits for
 the hook events in captures/events/ (never for the status file under test).
 S22 and S23 are the exceptions: S22 starts a background session with
 `claude --bg`, S23 also repeats `claude -p`, both as plain subprocesses
-without a pseudo-terminal.
+without a pseudo-terminal. S24 starts a background session the same way and
+drives `claude attach <job>` in the pseudo-terminal.
 Every action goes to captures/sessions/actions.jsonl with wall-clock ms, the
 terminal output of each run to captures/tty/<run>.log. Runs collect.sh at
 the end. Uses haiku; costs a few cents.
@@ -40,6 +41,12 @@ ANSI = re.compile(rb"\x1b\[[0-9;?]*[a-zA-Z]|\x1b\][^\x07]*\x07|\x1b[=>]|\s")
 DIALOGS = (b"AllowexternalCLAUDE.mdfileimports",)
 EXIT_DIALOG = b"Backgroundworkisrunning"  # on /exit; default stops the tasks
 LIVE = []  # sessions to kill if a run fails
+# The terminal identifiers the plugin copies (contract §4); never other env values.
+TERMINAL_NAMES = ("TERM_PROGRAM", "TERM_PROGRAM_VERSION", "__CFBundleIdentifier",
+                  "TERM_SESSION_ID", "ITERM_SESSION_ID", "WARP_FOCUS_URL",
+                  "WARP_TERMINAL_SESSION_UUID", "WEZTERM_PANE", "KITTY_WINDOW_ID",
+                  "KITTY_LISTEN_ON", "TMUX", "TMUX_PANE")
+CONFIG = os.environ.get("CLAUDE_CONFIG_DIR") or os.path.expanduser("~/.claude")
 
 
 def now_ms():
@@ -82,19 +89,22 @@ def wait_event(name, since_ms, timeout, pred=None):
 
 
 class Session:
-    def __init__(self, run, args=(), model=MODEL, env=None):
+    def __init__(self, run, args=(), model=MODEL, env=None, cmd=None):
+        """cmd replaces `claude --model <model> <args>` (S24: `claude attach <job>`)."""
         self.run = run
+        argv = cmd or ["claude", "--model", model, *args]
         self.pid, self.fd = pty.fork()
         if self.pid == 0:
             os.chdir(HERE)
-            os.execvpe("claude", ["claude", "--model", model, *args], {**clean_env(), **(env or {})})
+            os.execvpe(argv[0], argv, {**clean_env(), **(env or {})})
         fcntl.ioctl(self.fd, termios.TIOCSWINSZ, struct.pack("HHHH", 40, 120, 0, 0))
         self.log = open(os.path.join(TTY, f"{run}.log"), "ab")
         self.out = b""
         LIVE.append(self)
         threading.Thread(target=self._drain, daemon=True).start()
         self.started = now_ms()
-        action(run, "start", pid=self.pid, model=model, args=list(args))
+        action(run, "start", pid=self.pid,
+               **({"cmd": cmd} if cmd else {"model": model, "args": list(args)}))
 
     def _drain(self):
         while True:
@@ -544,22 +554,23 @@ def daemon_processes():
     return found
 
 
-def s22_jobs(since_ms):
+def s22_jobs(since_ms, run="S22"):
     """Background jobs in this directory started since since_ms, by `claude agents`.
 
-    The fallback when `claude --bg` gave no id, so S22 can still clean up.
+    The fallback when `claude --bg` gave no id, so S22 and S24 can still clean up;
+    `run` labels the actions.
     """
     try:
         agents = json.loads(subprocess.run(["claude", "agents", "--json"], env=clean_env(),
                                            stdin=subprocess.DEVNULL, capture_output=True,
                                            text=True, timeout=30).stdout)
     except Exception as e:
-        action("S22", "claude agents failed", error=str(e))
+        action(run, "claude agents failed", error=str(e))
         return []
     jobs = [a["id"] for a in agents if isinstance(a, dict) and a.get("id")
             and os.path.realpath(a.get("cwd") or "") == HERE
             and isinstance(a.get("startedAt"), int) and a["startedAt"] >= since_ms]
-    action("S22", "jobs found for cleanup", ids=jobs)
+    action(run, "jobs found for cleanup", ids=jobs)
     return jobs
 
 
@@ -570,10 +581,8 @@ def s22():
     driver. Its cwd is this directory, so the project hooks (log.sh) and the
     watcher record it like any other run.
     """
-    names = ("TERM_PROGRAM", "TERM_PROGRAM_VERSION", "__CFBundleIdentifier", "TERM_SESSION_ID",
-             "ITERM_SESSION_ID", "WARP_FOCUS_URL", "WARP_TERMINAL_SESSION_UUID", "WEZTERM_PANE",
-             "KITTY_WINDOW_ID", "KITTY_LISTEN_ON", "TMUX", "TMUX_PANE")
-    action("S22", "driver terminal", terminal={n: os.environ[n] for n in names if n in os.environ})
+    action("S22", "driver terminal",
+           terminal={n: os.environ[n] for n in TERMINAL_NAMES if n in os.environ})
     action("S22", "daemon processes before", processes=daemon_processes())
     started = now_ms()
     bg = None
@@ -623,6 +632,307 @@ def s22():
                           file=sys.stderr, flush=True)
                 time.sleep(3)
         action("S22", "daemon processes after cleanup", processes=daemon_processes())
+
+
+def bg_job_id(stdout):
+    """The id `claude --bg` printed: 2.1.318 starts with "backgrounded · <id>"."""
+    m = re.search(r"^backgrounded · ([0-9a-f]{8})$", stdout, re.M)
+    return m.group(1) if m else None
+
+
+def status_files_of(sessions, session_id):
+    """(name, content) of the status files in sessions/ that carry session_id.
+
+    Reads only *.json; the *.key files next to them are secrets.
+    """
+    found = []
+    try:
+        names = sorted(os.listdir(sessions))
+    except FileNotFoundError:
+        return found
+    for n in names:
+        if not n.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(sessions, n)) as f:
+                doc = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if isinstance(doc, dict) and doc.get("sessionId") == session_id:
+            found.append((n, doc))
+    return found
+
+
+def session_names(sessions):
+    """The names in sessions/, with the hash in key file names masked."""
+    try:
+        names = os.listdir(sessions)
+    except FileNotFoundError:
+        return []
+    return sorted(re.sub(r"^(\d+)\..+\.key$", r"\1.*.key", n) for n in names)
+
+
+def terminal_from_ps_env(out):
+    """The allowlisted terminal variables in `ps -E` output; every other value is dropped."""
+    found = {}
+    for token in out.split():
+        name, eq, value = token.partition("=")
+        if eq and name in TERMINAL_NAMES:
+            found[name] = value
+    return found
+
+
+def anonymize(text, home):
+    """Home paths (also Claude Code's encoded ones) and per-user temp folders."""
+    user = os.path.basename(home)
+    text = text.replace(home + "/", "/Users/user/").replace(f"-Users-{user}-", "-Users-user-")
+    if text == home:
+        text = "/Users/user"
+    return re.sub(r"/var/folders/[^/]+/[^/]+/", "/var/folders/<user temp>/", text)
+
+
+def lsof_open(out, home):
+    """Sockets, ttys and files outside /System/, /usr/ and /Library/ in `lsof -F ftn`
+    output, paths anonymized.
+
+    Network connections keep only their type: their addresses name the machine.
+    """
+    entries, cur = [], None
+    for line in out.splitlines():
+        tag, value = line[:1], line[1:]
+        if tag == "f":
+            cur = {"fd": value}
+            entries.append(cur)
+        elif cur is not None and tag == "t":
+            cur["type"] = value
+        elif cur is not None and tag == "n":
+            cur["name"] = value
+    kept = []
+    for e in entries:
+        kind, name = e.get("type"), e.get("name", "")
+        if kind in ("IPv4", "IPv6"):
+            kept.append({"fd": e["fd"], "type": kind})
+        elif kind in ("unix", "CHR") or (kind in ("REG", "DIR") and not name.startswith(
+                ("/System/", "/usr/", "/Library/"))):
+            kept.append({"fd": e["fd"], "type": kind, "name": anonymize(name, home)})
+    return kept
+
+
+def key_paths(doc, path=""):
+    """The structure of a JSON document, "<path>: <type>", without any value."""
+    if isinstance(doc, dict):
+        return sorted(p for k, v in doc.items() for p in key_paths(v, f"{path}/{k}"))
+    if isinstance(doc, list):
+        return sorted({p for v in doc for p in key_paths(v, f"{path}[]")}) or [f"{path}[]"]
+    return [f"{path}: {'null' if doc is None else type(doc).__name__}"]
+
+
+def ps_table(out):
+    """{pid: (ppid, command basename)} from `ps -axo pid=,ppid=,comm=`."""
+    rows = {}
+    for line in out.splitlines():
+        parts = line.split(None, 2)
+        if len(parts) == 3 and parts[0].isdigit() and parts[1].isdigit():
+            rows[int(parts[0])] = (int(parts[1]), os.path.basename(parts[2].strip()))
+    return rows
+
+
+def process_chain(rows, pid):
+    """"pid ppid comm" from pid up to launchd."""
+    chain = []
+    while pid in rows and len(chain) < 20:
+        ppid, comm = rows[pid]
+        chain.append(f"{pid} {ppid} {comm}")
+        if ppid == pid or ppid == 0:
+            break
+        pid = ppid
+    return chain
+
+
+def children(rows, pid):
+    return [f"{p} {pid} {comm}" for p, (ppid, comm) in sorted(rows.items()) if ppid == pid]
+
+
+def tree_names(root):
+    """Every name below root, relative, sorted; nothing is opened."""
+    found = []
+    for d, dirs, files in os.walk(root):
+        rel = os.path.relpath(d, root)
+        found += [n if rel == "." else os.path.join(rel, n) for n in dirs + files]
+    return sorted(found)
+
+
+def read_json(path):
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def agents_entry(run, job):
+    """The job's entry in `claude agents --json`; the user's other sessions are dropped."""
+    try:
+        agents = json.loads(subprocess.run(["claude", "agents", "--json"], env=clean_env(),
+                                           stdin=subprocess.DEVNULL, capture_output=True,
+                                           text=True, timeout=30).stdout)
+    except Exception as e:
+        action(run, "claude agents failed", error=str(e))
+        return None
+    return [a for a in agents if isinstance(a, dict) and a.get("id") == job]
+
+
+def attach_client(pid):
+    """What ps and lsof show of the `claude attach` client: no env value but the allowlist."""
+    home = os.path.expanduser("~")
+
+    def run(*cmd):
+        return subprocess.run(cmd, capture_output=True, text=True).stdout
+
+    p = str(pid)
+    rows = ps_table(run("ps", "-axo", "pid=,ppid=,comm="))
+    tty = run("ps", "-o", "tty=,stat=", "-p", p).split()
+    return {"pid": pid,
+            "command": anonymize(run("ps", "-ww", "-o", "command=", "-p", p).strip(), home),
+            "tty": " ".join(tty[:1]), "stat": " ".join(tty[1:]),
+            "chain": process_chain(rows, pid), "children": children(rows, pid),
+            "terminal": terminal_from_ps_env(run("ps", "-E", "-ww", "-o", "command=", "-p", p)),
+            "open": lsof_open(run("lsof", "-nP", "-F", "ftn", "-p", p), home)}
+
+
+def observe(run, what, job, client=None, journal_before=()):
+    """Names (and only names or key paths) of what Claude Code exposes about a job.
+
+    Read only, never a socket: sessions/, /tmp/cc-socks, the daemon's socket
+    folder, the attach journal (new entries in full: ids, pids, flags), the
+    job's folder and its roster entry, `claude agents --json`, and, while
+    attached, the attach client (attach_client).
+    """
+    journal = os.path.join(CONFIG, "daemon", "attach-journal")
+    roster = (read_json(os.path.join(CONFIG, "daemon", "roster.json")) or {}).get("workers")
+    worker = roster.get(job) if isinstance(roster, dict) else None
+    state = read_json(os.path.join(CONFIG, "jobs", job, "state.json"))
+    data = {
+        "sessions": session_names(os.path.join(CONFIG, "sessions")),
+        "cc_socks": session_names("/tmp/cc-socks"),
+        "daemon_dir": tree_names(f"/tmp/cc-daemon-{os.getuid()}"),
+        "attach_journal": session_names(journal),
+        "attach_journal_new": {n: read_json(os.path.join(journal, n))
+                               for n in session_names(journal) if n not in journal_before},
+        "job_dir": tree_names(os.path.join(CONFIG, "jobs", job)),
+        "job_state_keys": key_paths(state) if state is not None else None,
+        "job_state": {k: state.get(k) for k in ("state", "backend")} if isinstance(
+            state, dict) else None,
+        "roster_worker_keys": key_paths(worker) if worker is not None else None,
+        "roster_worker_pids": {k: worker.get(k) for k in ("pid", "replPid")} if isinstance(
+            worker, dict) else None,
+        "agents": agents_entry(run, job),
+        "daemon_processes": daemon_processes(),
+    }
+    if client is not None:
+        data["attach_client"] = attach_client(client)
+    action(run, what, **data)
+    return data
+
+
+def s24():
+    """`claude attach` to a background session (#30): can an app learn its tab?
+
+    Starts a job like S22, attaches to it in a pseudo-terminal with the
+    `jobId` of its status file, records what Claude Code exposes about the
+    attach client (observe), sends one prompt through it, detaches with
+    Ctrl+Z (`claude attach --help`: "Ctrl+Z drops back to your shell"), then
+    stops and removes the job.
+    """
+    run = "S24"
+    action(run, "driver terminal",
+           terminal={n: os.environ[n] for n in TERMINAL_NAMES if n in os.environ})
+    action(run, "daemon processes before", processes=daemon_processes())
+    started = now_ms()
+    bg, a = None, None
+    ok = "Reply with the single word ok."
+    try:
+        p = subprocess.run(["claude", "--bg", "--model", MODEL, ok], cwd=HERE, env=clean_env(),
+                           stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=60)
+        action(run, "claude --bg", status=p.returncode, stdout=p.stdout, stderr=p.stderr)
+        bg = bg_job_id(p.stdout)
+        if not bg:
+            raise RuntimeError("claude --bg printed no id")
+        start = wait_event("SessionStart", started, 90, lambda e: e.get("cwd") == HERE)
+        sid = start.get("session_id")
+        action(run, "saw SessionStart", session=sid)
+        wait_event("Stop", started, 90, lambda e: e.get("session_id") == sid)
+        action(run, "saw Stop", session=sid)
+        time.sleep(3)
+        files = status_files_of(os.path.join(CONFIG, "sessions"), sid)
+        job = next((d.get("jobId") for _, d in files if d.get("jobId")), None)
+        action(run, "status file job id", files=[
+            {"file": n, "pid": d.get("pid"), "kind": d.get("kind"), "jobId": d.get("jobId")}
+            for n, d in files], job_id=job, equals_printed_id=job == bg)
+        if not job:
+            raise RuntimeError("no jobId in the session's status file")
+        journal = os.path.join(CONFIG, "daemon", "attach-journal")
+        journal_before = set(session_names(journal))
+        observe(run, "observe before attach", bg, journal_before=journal_before)
+
+        a = Session(run, cmd=["claude", "attach", job])
+        deadline = time.time() + 30
+        while not a.out and time.time() < deadline:
+            time.sleep(0.2)
+        time.sleep(5)  # let it draw the conversation
+        observe(run, "observe attached", bg, a.pid, journal_before)
+        t = a.send(ok)
+        a.wait("UserPromptSubmit", t, 60, lambda e: e.get("session_id") == sid)
+        a.wait("Stop", t, 90, lambda e: e.get("session_id") == sid)
+        time.sleep(3)
+        observe(run, "observe attached after the turn", bg, a.pid, journal_before)
+
+        os.write(a.fd, b"\x1a")
+        action(run, "detach (ctrl+z)", pid=a.pid)
+        deadline, outcome = time.time() + 15, None
+        while time.time() < deadline and outcome is None:
+            done, status = os.waitpid(a.pid, os.WNOHANG | os.WUNTRACED)
+            if done:
+                outcome = "stopped" if os.WIFSTOPPED(status) else "exited"
+                action(run, f"attach client {outcome}", pid=a.pid, status=status)
+            else:
+                time.sleep(0.2)
+        if outcome == "exited":
+            LIVE.remove(a)
+        else:
+            action(run, "attach client still there after ctrl+z", pid=a.pid, outcome=outcome)
+        time.sleep(3)
+        observe(run, "observe after detach", bg, journal_before=journal_before)
+    finally:
+        # Leave nothing behind: the attach client, then the job in the user's daemon.
+        if a is not None and a in LIVE:
+            try:
+                os.kill(a.pid, signal.SIGKILL)
+                os.waitpid(a.pid, 0)
+            except OSError:
+                pass
+            LIVE.remove(a)
+            action(run, "attach client killed", pid=a.pid)
+        jobs = [bg] if bg else s22_jobs(started, run)
+        if not jobs:
+            print("S24: no background job found to clean up; check `claude agents`",
+                  file=sys.stderr, flush=True)
+        for job in jobs:
+            for cmd in ("stop", "rm"):  # each on its own: a failed stop must not skip rm
+                try:
+                    c = subprocess.run(["claude", cmd, job], env=clean_env(),
+                                       stdin=subprocess.DEVNULL, capture_output=True,
+                                       text=True, timeout=60)
+                    action(run, f"claude {cmd}", id=job, status=c.returncode,
+                           stdout=c.stdout, stderr=c.stderr)
+                except Exception as e:
+                    action(run, f"claude {cmd} failed", id=job, error=str(e))
+                    print(f"S24: claude {cmd} {job} failed ({e}); check `claude agents`",
+                          file=sys.stderr, flush=True)
+                time.sleep(3)
+        action(run, "sessions after cleanup",
+               sessions=session_names(os.path.join(CONFIG, "sessions")))
+        action(run, "daemon processes after cleanup", processes=daemon_processes())
 
 
 def read_meta(path):
@@ -740,7 +1050,7 @@ RUNS = {"S1": s1, "S2": s2, "S3": s3, "S4": s4, "S5": s5, "S6": s6, "S7": s7,
         "S8": s8, "S9": s9, "S10": s10, "S11": s11, "S12": s12, "S13": s13,
         "S14": s14, "S15": s15, "S16": s16,
         "S17": s17, "S18": s18, "S19": s19, "S20": s20, "S21": s21, "S22": s22,
-        "S23": s23}
+        "S23": s23, "S24": s24}
 
 
 def main():

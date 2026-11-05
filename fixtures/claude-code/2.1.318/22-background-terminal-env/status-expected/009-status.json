@@ -7,6 +7,7 @@
     "status_at": 1793778263949,
     "pid": 39661,
     "process_kind": "bg",
+    "job_id": "35ad01b4",
     "entrypoint": "cli",
     "name": "Reply with the single word ok.",
     "version": "2.1.318",

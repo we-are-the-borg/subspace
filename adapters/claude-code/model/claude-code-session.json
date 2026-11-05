@@ -1,10 +1,10 @@
 {
   "format": 1,
-  "revision": 2,
+  "revision": 3,
   "source": "claude-code",
   "document": "session-status",
   "block": "claude_code_session",
-  "observed": ["2.1.287"],
+  "observed": ["2.1.287", "2.1.318"],
   "core": {
     "session": { "path": "/sessionId", "type": "id" },
     "cwd": { "path": "/cwd", "type": "string" },
@@ -30,6 +30,7 @@
     "pid": { "path": "/pid", "type": "integer" },
     "process_kind": { "path": "/kind", "type": "string" },
     "spare": { "path": "/spare", "type": "boolean" },
+    "job_id": { "path": "/jobId", "type": "id" },
     "entrypoint": { "path": "/entrypoint", "type": "string" },
     "name": { "path": "/name", "type": "string" },
     "version": { "path": "/version", "type": "string" },
