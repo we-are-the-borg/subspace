@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.3.0...claude-code-1.4.0) (2026-11-05)
+
+
+### Features
+
+* **contract:** Add job_id for Claude Code background sessions ([#32](https://github.com/we-are-the-borg/subspace/issues/32)) ([8ef4016](https://github.com/we-are-the-borg/subspace/commit/8ef4016e1d7cec60217d28d90350c16ab26b46f5)), refs [#30](https://github.com/we-are-the-borg/subspace/issues/30)
+
 ## [1.3.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.2.0...claude-code-1.3.0) (2026-11-04)
 
 
