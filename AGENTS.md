@@ -51,6 +51,7 @@ sh tests/spool.test.sh                  # the hook as shipped
 SPOOL_SH=dash sh tests/spool.test.sh    # under another shell, if dash is installed
 python3 tests/model.test.py             # mapping documents reproduce the golden files
 python3 tests/codex-adapter.test.py
+python3 tests/claude-code-capture.test.py
 python3 tests/codex-capture.test.py     # needs ps; may fail inside a sandbox
 python3 tests/fixtures-privacy.test.py  # no personal data anywhere in the repo
 shellcheck core/spool.sh                # if installed
