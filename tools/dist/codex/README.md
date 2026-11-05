@@ -5,7 +5,7 @@ Observe-only hooks for the Codex CLI. On every subscribed hook event the plugin 
 ## What it does
 
 - Runs one POSIX `sh` script (`scripts/spool.sh`) as an `async` command hook on eleven lifecycle events (no `SessionEnd`, which Codex runs synchronously). It always exits 0, prints nothing and returns no decision, so it never blocks or steers Codex.
-- Writes only into its plugin data folder: `~/.codex/plugins/data/subspace-subspace/` (or under `$CODEX_HOME`). Each event lands in `events/<UTC day>/` with the hook payload as Codex passed it, including prompts, tool input and tool output. Next to it, it stores your terminal's identifiers (a fixed list of variables such as `TERM_PROGRAM` or `WARP_FOCUS_URL`, so apps can jump to your terminal tab) and never anything else from the environment.
+- Writes only into its plugin data folder: `~/.codex/plugins/data/subspace-subspace/` (or under `$CODEX_HOME`). Each event lands in `events/<UTC day>/` with the hook payload as Codex passed it, including prompts, tool input and tool output. Next to it, it stores your terminal's identifiers (a fixed list of variables such as `TERM_PROGRAM` or `WARP_FOCUS_URL`, so apps can bring your terminal app to the front) and never anything else from the environment.
 - Keeps events for 3 days and deletes older day folders while hooks run.
 - Sends nothing anywhere: no network access, no other files read or written, no runtime dependencies.
 

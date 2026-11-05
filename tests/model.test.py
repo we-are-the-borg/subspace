@@ -113,7 +113,7 @@ class SessionStatusGoldenFiles(unittest.TestCase):
         for run in self.runs():
             with self.subTest(run=str(run.relative_to(REPO))):
                 with open(run / "timeline.jsonl", encoding="utf-8") as f:
-                    named = sorted(json.loads(line)["file"] for line in f if '"file"' in line)
+                    named = sorted(e["file"] for e in map(json.loads, f) if "file" in e)
                 files = sorted(f"{d}/{p.name}" for d in ("events", "status")
                                for p in (run / d).glob("*.json"))
                 self.assertEqual(named, files)
@@ -133,6 +133,13 @@ class SessionStatusGoldenFiles(unittest.TestCase):
         self.assertEqual(result["claude_code_session"], {"process_kind": "bg", "spare": True})
         result = model.apply(mapping, {"kind": "bg", "spare": "yes"})
         self.assertEqual(result["claude_code_session"], {"process_kind": "bg"})
+
+    def test_job_id_only_as_non_empty_string(self):
+        # an empty or non-string jobId names no job `claude attach` could take
+        mapping = load(REPO / "model" / "claude-code-session.json")
+        for job in ("", 35, None):
+            result = model.apply(mapping, {"kind": "bg", "jobId": job})
+            self.assertEqual(result["claude_code_session"], {"process_kind": "bg"})
 
 
 def doc(fields=None, core=None, fmt=1):
