@@ -27,6 +27,7 @@ jobs:
       - run: python3 tests/codex-capture.test.py
         env:
           CAPTURE_SH: ${{ matrix.shell }}
+      - run: python3 tests/claude-code-capture.test.py
       - run: python3 tests/codex-adapter.test.py
         env:
           ADAPTER_SH: ${{ matrix.shell }}

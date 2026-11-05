@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Plays the runs S1-S22 of README.md without a human (#58).
+"""Plays the runs S1-S23 of README.md without a human (#58).
 
 Starts watch-sessions.py, then drives interactive `claude` sessions in a
 pseudo-terminal: types prompts, presses Enter, Esc and Ctrl-C, and waits for
 the hook events in captures/events/ (never for the status file under test).
-S22 is the exception: it starts a background session with `claude --bg` as a
-plain subprocess, without a pseudo-terminal.
+S22 and S23 are the exceptions: S22 starts a background session with
+`claude --bg`, S23 also repeats `claude -p`, both as plain subprocesses
+without a pseudo-terminal.
 Every action goes to captures/sessions/actions.jsonl with wall-clock ms, the
 terminal output of each run to captures/tty/<run>.log. Runs collect.sh at
 the end. Uses haiku; costs a few cents.
@@ -624,10 +625,122 @@ def s22():
         action("S22", "daemon processes after cleanup", processes=daemon_processes())
 
 
+def read_meta(path):
+    """ppid and process chain lines of one log.sh .meta file."""
+    ppid, chain, in_chain = None, [], False
+    try:
+        with open(path) as f:
+            lines = f.read().splitlines()
+    except OSError:
+        return ppid, chain
+    for line in lines:
+        if line.startswith("ppid="):
+            ppid = int(line[5:]) if line[5:].isdigit() else None
+        elif line.startswith("process chain"):
+            in_chain = True
+        elif in_chain and line.startswith("  "):
+            chain.append(line.strip())
+        else:
+            in_chain = False
+    return ppid, chain
+
+
+def read_events(events_dir, since_ms):
+    """(file, session_id, event, ppid, chain) of every event captured since since_ms."""
+    events = []
+    for n in sorted(os.listdir(events_dir)):
+        p = os.path.join(events_dir, n)
+        if not n.endswith(".json") or os.stat(p).st_mtime_ns // 1_000_000 < since_ms:
+            continue
+        try:
+            with open(p) as f:
+                ev = json.load(f)
+        except (OSError, ValueError):
+            continue
+        ppid, chain = read_meta(p[:-5] + ".meta")
+        events.append((n, ev.get("session_id"), ev.get("hook_event_name"), ppid, chain))
+    return events
+
+
+def pid_tally(events_dir, since_ms, modes):
+    """pid_counts over the events captured since since_ms."""
+    return {"since_ms": since_ms, **pid_counts(read_events(events_dir, since_ms), modes)}
+
+
+def pid_counts(events, modes):
+    """Per mode and hook event: how many events saw their claude pid as ppid (#28).
+
+    events are (file, session_id, event, ppid, chain) records; modes maps each
+    started claude pid to its mode. A session belongs to the pid that one of
+    its events saw as ppid; an event whose session has none has mode `unknown`.
+    """
+    owner = {sid: ppid for _, sid, _, ppid, _ in events if ppid in modes}
+    names = sorted({name for _, _, name, _, _ in events}, key=str)
+    # Every known mode lists every event seen, so an event a mode never had shows as missing.
+    counts = {m: {name: {"claude_pid": 0, "pid_1": 0, "other": 0, "missing": 0} for name in names}
+              for m in sorted(set(modes.values()))}
+    seen, outliers = set(), []
+    for n, sid, name, ppid, chain in events:
+        pid = owner.get(sid)
+        mode = modes.get(pid, "unknown")
+        c = counts.setdefault(mode, {}).setdefault(
+            name, {"claude_pid": 0, "pid_1": 0, "other": 0, "missing": 0})
+        kind = "claude_pid" if pid is not None and ppid == pid else "pid_1" if ppid == 1 else "other"
+        c[kind] += 1
+        seen.add((pid, name))
+        if kind != "claude_pid":
+            outliers.append({"file": n, "mode": mode, "event": name, "session_id": sid,
+                             "ppid": ppid, "chain": chain})
+    for pid, mode in modes.items():
+        for name in names:
+            counts[mode][name]["missing"] += (pid, name) not in seen
+    return {"repetitions": {
+        m: sum(1 for v in modes.values() if v == m) for m in sorted(set(modes.values()))},
+        "counts": counts, "outliers": outliers}
+
+
+def s23():
+    """Does a hook started after claude exited see pid 1 (#28)?
+
+    Hooks run async; one started after its claude process exited was
+    reparented, so $PPID (the envelope's pid) is 1. Repeats `/exit` without a
+    prompt and `claude -p`, then tallies the ppid of every event since.
+    """
+    started = now_ms()
+    modes = {}
+    for _ in range(20):
+        try:
+            s = Session("S23")
+            modes[s.pid] = "interactive"
+            s.ready()
+            s.exit()
+        except Exception as e:  # one failed repetition must not lose the tally
+            action("S23", "repetition failed", error=str(e))
+            for live in list(LIVE):
+                live.exit_hard()
+        time.sleep(3)
+    for _ in range(20):
+        p = subprocess.Popen(["claude", "-p", "Reply with the single word ok.", "--model", MODEL],
+                             cwd=HERE, env=clean_env(), stdin=subprocess.DEVNULL,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        modes[p.pid] = "headless"
+        action("S23", "start claude -p", pid=p.pid)
+        try:
+            out, _ = p.communicate(timeout=120)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            out, _ = p.communicate()
+        action("S23", "exited", pid=p.pid, status=p.returncode, stdout=out.decode(errors="replace"))
+        time.sleep(3)
+    time.sleep(5)
+    action("S23", "pid tally", **pid_tally(EVENTS, started, modes))
+
+
 RUNS = {"S1": s1, "S2": s2, "S3": s3, "S4": s4, "S5": s5, "S6": s6, "S7": s7,
         "S8": s8, "S9": s9, "S10": s10, "S11": s11, "S12": s12, "S13": s13,
         "S14": s14, "S15": s15, "S16": s16,
-        "S17": s17, "S18": s18, "S19": s19, "S20": s20, "S21": s21, "S22": s22}
+        "S17": s17, "S18": s18, "S19": s19, "S20": s20, "S21": s21, "S22": s22,
+        "S23": s23}
 
 
 def main():
