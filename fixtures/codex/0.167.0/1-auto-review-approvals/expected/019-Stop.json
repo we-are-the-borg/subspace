@@ -1,0 +1,13 @@
+{
+  "kind": "turn.stop",
+  "session": "01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "turn.stop",
+    "turn_id": "01a1b6e3-d44b-7c11-84b6-f35589595c0c",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/07/rollout-2026-11-07T17-41-36-01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "last_assistant_message": "Both ran concurrently and succeeded:\n\n- `one 200` — exit code 0.\n- `two 200` — exit code 0.\n\nBoth escalation requests were approved by the automatic approval reviewer (`auto_review`)."
+  }
+}

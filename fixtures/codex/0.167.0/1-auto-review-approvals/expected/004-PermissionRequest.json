@@ -1,0 +1,19 @@
+{
+  "kind": "permission.request",
+  "session": "01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "permission.request",
+    "turn_id": "01a1b6e3-32c3-7c51-856d-747fe4f0a6d4",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/07/rollout-2026-11-07T17-41-36-01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "printf 'auto-review-probe\\n' > \"$HOME/subspace-auto-review-probe.txt\"",
+      "description": "May I run this exact approval-hook probe command to write $HOME/subspace-auto-review-probe.txt outside the workspace?"
+    },
+    "command": "printf 'auto-review-probe\\n' > \"$HOME/subspace-auto-review-probe.txt\""
+  }
+}

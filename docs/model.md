@@ -16,7 +16,7 @@ It is a small **core** with the same meaning for every source, plus **one block 
 
 **What the mapping solves and what it doesn't.** It answers "where is the value": a renamed, moved or newly added key is handled by changing the mapping alone. It doesn't answer "what does it mean": when an event changes its meaning or new semantics arrive (for example a link field that enables a new correlation rule), apps still change their logic.
 
-**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/`, `fixtures/claude-code/2.1.316/`, `fixtures/claude-code/2.1.318/` and `fixtures/codex/0.159.3/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`, S19 and S20 in `2.1.316/19-…` and `20-…`, S22 and S24 in `2.1.318/22-…` and `24-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`. The runs:
+**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/`, `fixtures/claude-code/2.1.316/`, `fixtures/claude-code/2.1.318/`, `fixtures/codex/0.159.3/` and `fixtures/codex/0.167.0/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`, S19 and S20 in `2.1.316/19-…` and `20-…`, S22 and S24 in `2.1.318/22-…` and `24-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`, **R2-004** is `fixtures/codex/0.167.0/2-…/events/004-*.json`. The runs:
 
 - Claude Code 2.1.285: C1 headless parallel subagents; C2 interactive background subagents, compact and exit; C3 permission and Ctrl-C.
 - Claude Code 2.1.287, hook events plus session status files (§12): S1 idle and exit; S2 Esc and Ctrl-C mid-turn; S3 Esc mid-tool; S4 permission and question waits; S5 `!` shell; S6 background subagents; S6a background shell, exit dialog, killed; S7 `--continue`; S8 `kill -9`; S9 `claude -p`; S11 `/exit` without a prompt; S12 failing tool; S13 file tools; S14 terminated before any input.
@@ -24,7 +24,8 @@ It is a small **core** with the same meaning for every source, plus **one block 
 - Claude Code 2.1.289, hook events plus session status files: S16 two `Agent` calls, one with `model: haiku`, one without; S17 `/model sonnet`, then `/clear` in the same process; S18 `--continue` of S17's session with `--model haiku`.
 - Claude Code 2.1.316, hook events plus session status files: S19 `AskUserQuestion` answered with `multiSelect`, free text and a note, then dismissed with Esc; S20 a multi-line `Bash` command (heredoc) behind a permission prompt.
 - Claude Code 2.1.318, hook events plus session status files: S22 a background session (`claude --bg`), ended with `claude stop`; S24 another one, attached with `claude attach <job>`, one prompt sent through the attach client, detached with Ctrl+Z, ended with `claude stop`.
-- Codex: X1 parallel and reused children plus a failed command; X2 daemon permission and compact; X3 manual permission and rejection; X4/X5 interrupt before a tool; X6/X7 interrupt of a running shell; X8 resume; X9 ephemeral; X10 cwd with spaces.
+- Codex 0.159.3: X1 parallel and reused children plus a failed command; X2 daemon permission and compact; X3 manual permission and rejection; X4/X5 interrupt before a tool; X6/X7 interrupt of a running shell; X8 resume; X9 ephemeral; X10 cwd with spaces.
+- Codex 0.167.0, hook events plus rollout excerpts: R1 automatic review, four approvals, two of them concurrent in one turn; R2 automatic review, one rejection and two approvals; R3 manual reviewer, one approval and one denial.
 
 ## 1. Principles
 
@@ -195,7 +196,7 @@ Left in `payload` because no app uses them today: `scratchpad_dir`, `Instruction
 | `SessionStart` | `session.start` | `session.start` | X1-001, X2-014, X8-001 |
 | `UserPromptSubmit` | `turn.start` | `turn.start` | X1-002 |
 | `PreToolUse` | `tool.pre` | `tool.pre` | X1-003 |
-| `PermissionRequest` | `permission.request` | `permission.request` | X2-004 |
+| `PermissionRequest` | `permission.request` | `permission.request` | X2-004, R1-004 |
 | `PostToolUse` | `tool.post` | `tool.post` | X1-004 |
 | `PreCompact` / `PostCompact` | `compact.start` / `compact.end` | same | X2-012 / X2-013 |
 | `SubagentStart` | `agent.start` | `agent.start` | X1-009, X1-015 |
@@ -205,6 +206,8 @@ Left in `payload` because no app uses them today: `scratchpad_dir`, `Instruction
 | anything else | `unknown` | `unknown` | – |
 
 ### 4.2 Fields, Codex 0.159.3
+
+Unchanged in 0.167.0 for the hooks R1–R3 cover (no children or spawns).
 
 | Block field | Type | From the payload, on which hooks | Evidence |
 |---|---|---|---|
@@ -235,7 +238,14 @@ Left in `payload`: `stop_hook_active`, and `tool_input.message` of spawns, which
   - Child turns close with `agent.turn.stop`. A child can be reused: it becomes active again under a new `turn_id` without a new `agent.start` (X1-014 closes `…221c…`, X1-024 opens `…804b…`, X1-026 closes it).
   - A late `tool.post` for a closed turn closes only its call (X6-009, after X6-008).
 - **Tool result: unknown, always.** There is no outcome field. The failed `sh -c "exit 7"` has `tool_response: ""` (X1-006), exactly like successful calls (X1-022, X2-005). Exit codes exist only in the rollout.
-- **Permissions.** Match a `permission.request` to the call with equal (`session`, `agent`, `turn_id`, `tool_name`, `command`), regardless of arrival order (before the pre: X2-008/009, X3-003/004; after: X2-003/004). Don't compare `tool_input` whole: the request adds `description`. Several candidates → leave it unmatched. A rejection ends the turn with `turn.interrupt` (X3-008…010). A remembered approval sends no request (X3-017).
+- **Permissions.** Match a `permission.request` to the call with equal (`session`, `agent`, `turn_id`, `tool_name`, `command`), regardless of arrival order (before the pre: X2-008/009, X3-003/004; after: X2-003/004, and every request in 0.167.0, R1-003/004, R3-003/004). Concurrent calls in one turn: both pres, then both requests in the opposite order (R1-013…016); distinct commands keep them apart. Don't compare `tool_input` whole: the request adds `description`. Several candidates → leave it unmatched. A remembered approval sends no request (X3-017).
+- **Who answers a request.** Codex asks its automatic reviewer instead of the user when `approvals_reviewer` is `auto_review` (`--approve-for-me`, or set in the config). No payload field tells, and no hook marks the decision (`permission_mode: default` under both, R1-004, R3-004). The turn's rollout does: its `turn_context` record with the same `turn_id` has `payload.approvals_reviewer`, `auto_review` (R1, R2) or `user` (R3) (`rollouts/excerpt.jsonl` of each run). That is app work, like the child ↔ spawn link: read it from the event's `rollout_path`.
+  - `auto_review`: Codex is reviewing. Show the request as such and don't notify the user.
+  - `user`, any other value, no such record, no readable rollout, or `rollout_path: null` (ephemeral): the request waits for the user.
+  - Approved (either reviewer): the call's `tool.post` follows once the command has run (R1-005, R3-005); close the request there.
+  - Rejected by the automatic reviewer: **no `tool.post` and no `turn.interrupt`**; the turn goes on and ends with `turn.stop` (R2-003…005). Close the request at the latest with that `turn.stop`. The rollout has the rejection only as the call's output text (`Rejected(…)`, R2 excerpt).
+  - Denied by the user: `turn.interrupt` ends the turn (X3-008…010, R3-008…010).
+  - Unobserved: the automatic reviewer handing a request to the user, and further calls in a turn after a rejection.
 - **Child ↔ spawn** (core `tool: spawn_agent`): the spawn's post has `spawn_task` (`/root/alpha`). No child event names its task path or spawning call (X1-009 … X1-026). The link needs the child rollout's first `session_meta` line (`payload.source.subagent.thread_spawn.agent_path`); the child's `rollout_path` points to that file (X1-009, `rollouts/session_meta.jsonl` of X1). That is app work. In ephemeral sessions (`rollout_path: null`, X9) children stay unassigned. The parent is the core `agent` of the spawning call (absent: the root). Never assign by order: X1-015 arrives after X1-014.
 - **Session end.** There is no end event (`SessionEnd` is never subscribed). Apps infer inactivity from a timeout; the envelope `pid` can be a shared app-server (contract §6).
 
@@ -338,7 +348,7 @@ fixtures/<source>/<version>/<run>/
 ```
 
 - Content: the result object (§5), pretty-printed with two spaces, LF line endings and a trailing newline. Comparison is semantic (as JSON values).
-- All 445 fixture events (337 Claude Code, 108 Codex) and all 127 status snapshots (Claude Code 2.1.287 to 2.1.318) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
+- All 494 fixture events (337 Claude Code, 157 Codex) and all 127 status snapshots (Claude Code 2.1.287 to 2.1.318) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
 - The existing globs (`fixtures/*/*/*/events/*.json` in CI and `tools/e2e/check.sh`) don't see `expected/`.
 
 **CI check** (`tests/model.test.py`): for every `events/F`, apply `model/<source>.json` with the reference interpreter `tools/model/apply.py` and compare with `expected/F`; fail if an `events/` file has no `expected/` file or the other way round. Likewise `status/F` with `model/<source>-session.json` and `status-expected/F`. The same test covers each rule of §5.1 and checks that every adapter ships its own mapping unchanged. CI also validates the mapping documents and golden files against their schemas (§11). The reference interpreter runs only in CI and tests, never in the hook. The golden files are also the test suite for each app's interpreter: both apps run their own interpreter over the same fixtures and mappings.
@@ -350,6 +360,7 @@ fixtures/<source>/<version>/<run>/
 | Root/subagent attribution | core `agent` | – |
 | Tool pairing | core `tool_call` | pairing across files |
 | Permission ↔ call | the match fields (§3.3, §4.3) | matching, ambiguity |
+| Who answers a permission, Codex | `turn_id`, `rollout_path` | reading `turn_context.approvals_reviewer` from the rollout (§4.3) |
 | Subagent ↔ spawn, Claude Code | `spawned_agent` on the `Agent` post; `parent_tool_use_id` once sent | earlier link via `meta.json` |
 | Child ↔ spawn, Codex | `spawn_task`, child `rollout_path` | reading `session_meta` from the rollout |
 | Turn/agent state | block kinds and turn IDs | sticky state, timeouts |
@@ -377,7 +388,7 @@ Checked against today's logic in The Collective (`ClaudeCodeAdapter.swift`) and 
 | Tool pairing, late pre | core `tool_call` |
 | Subagent tree, title, prompt, background, model | core `agent`; Claude Code `spawn_*`, `spawned_agent`, `spawned_async`, `spawned_model`; Codex `spawn_name`, `spawn_task` |
 | Internal agents | Claude Code `agent_type: ""` |
-| Waiting for the user | core `permission.request`; Claude Code `notification_type` |
+| Waiting for the user | core `permission.request`; Claude Code `notification_type`; Codex: unless the rollout names the automatic reviewer (§4.3) |
 | Questions to the user and their answers | Claude Code `questions` (while open), `answers`, `annotations` on the post (§3.3 "Questions") |
 | Done | core `turn.stop` plus open agents; Claude Code `background_agents` (also ends agents stopped by the user, which send no `agent.stop`) |
 | Background shells, count and description | Claude Code `background_shells`, `spawned_shell`; session status `shell` (§12.2) |
@@ -403,6 +414,7 @@ Anything else an app wants is still in `payload`; reading it there couples that 
 **Codex**
 - Child ↔ spawn needs the rollout, and is impossible in ephemeral sessions. Nested spawning and reuse across resume are unobserved.
 - There is no tool outcome at all.
+- No hook tells who answers a permission request or what the automatic reviewer decided; only the rollout's `turn_context` names the reviewer, and a rejection ends nothing (R2, §4.3). A hand-over from the automatic reviewer to the user is unobserved.
 - A child announces only its first turn.
 - There is no session end and no background snapshot.
 - Code-mode and MCP tool names are unobserved.
