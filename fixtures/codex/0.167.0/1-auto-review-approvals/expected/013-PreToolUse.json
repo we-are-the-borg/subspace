@@ -1,0 +1,19 @@
+{
+  "kind": "tool.pre",
+  "session": "01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0",
+  "tool_call": "exec-df55e9d0-3e02-4683-a896-5c837625ca21",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a1b6e3-d44b-7c11-84b6-f35589595c0c",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/07/rollout-2026-11-07T17-41-36-01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -sS -o /dev/null -w 'one %{http_code}\\n' https://example.com"
+    },
+    "command": "curl -sS -o /dev/null -w 'one %{http_code}\\n' https://example.com"
+  }
+}

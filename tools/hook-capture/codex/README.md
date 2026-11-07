@@ -169,6 +169,34 @@ this version excludes this `-c` override from daemon attachment.
 4. Finish with `/exit`, then `sh ./collect.sh`. Keep the probes until their
    presence/absence has been checked and the notes updated.
 
+### 2c–2e. Automatic review (#34)
+
+Who answers a `PermissionRequest` with automatic review (`codex --approve-for-me`)?
+`drive-review-runs.py [2c|2d|2e]` plays these runs without a human, like
+`drive-lock-runs.py` (section 7): from the **repository root**, in a
+pseudo-terminal, waiting for each turn's root `Stop` or `Interrupt` in the installed subspace
+plugin's spool. It writes `captures/review/<run>/` (actions, terminal log, the
+run's envelopes with file times in ns, the rollout) and removes its probe
+file in `$HOME` afterwards. The default model answers; a few requests per run.
+Run it only with the user's go: it uses their Codex account and home.
+
+- **2c**, `--approve-for-me`: four requests the reviewer approves (a write
+  outside the workspace, a network call with `sleep 10`, two concurrent
+  network calls, a POST of a missing file).
+- **2d**, `--approve-for-me`: requests it may reject, each harmless if
+  approved (`curl -fsSL` of a URL that answers 404 piped to `sh`, `rm -rf` and
+  `chmod -R` of a directory that doesn't exist).
+- **2e**, `--no-daemon -a on-request -s workspace-write -c
+  'approvals_reviewer="user"'`: the manual reviewer; the driver approves once
+  (`y`) and denies once (Esc). The denial ends the turn with `Interrupt`
+  instead of `Stop`.
+
+Codex offers updates at startup with "Update now" preselected; Enter there
+runs `brew upgrade --cask codex` and brew's cleanup. The driver skips the
+dialog with Esc and stops if it stays, and starts Codex with
+`HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1`. Curated result:
+`fixtures/codex/0.167.0/`.
+
 ## 3. Interactive without daemon: interrupt and normal exit
 
 Answers open questions **1, 2, 5, 7, 8**; compare `.meta` with run 2.
@@ -316,6 +344,7 @@ Stop the watcher with Ctrl-C. Curated result:
 | 1: delivery across modes, failure, denial, interrupt, exit, resume, compact | 1–5; 2 normal daemon exit, 3 settled vs immediate interrupt shutdown |
 | 2: raw bytes, fields, tool coverage and outer vs nested/parallel calls | 1–6; retain CLI JSONL, try a read-only MCP/code-mode tool if already available and record absence otherwise |
 | 3: manual/remembered approvals, denials, request correlation | 2 and supplemental 2b if inherited auto-review handled requests; note dialogs, retries and reviewer behavior |
+| #34: who answers a permission request, automatic review | 2c–2e |
 | 4: concurrent/nested children, reused child turns and transcript paths | 1, 2, 4 |
 | 5: host PID with/without shared daemon | 2 vs 3; complete `.meta` chains, 1 as headless comparison |
 | 6: plugin data path, custom `CODEX_HOME`, re-trust, uninstall | Installed-plugin test (`tools/e2e/codex.md`) |

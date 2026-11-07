@@ -1,0 +1,13 @@
+{
+  "kind": "turn.stop",
+  "session": "01a1b6e2-047f-7780-8cd2-bc3f128add87",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "turn.stop",
+    "turn_id": "01a1b6e2-2761-7ea0-bbbe-724453cf88bd",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/07/rollout-2026-11-07T17-40-28-01a1b6e2-047f-7780-8cd2-bc3f128add87.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "last_assistant_message": "Automatic approval review denied the command because executing an unreviewed remote script could cause irreversible changes or expose sensitive data.\n\nThe command was not run. I did not retry, substitute another command, or modify files."
+  }
+}

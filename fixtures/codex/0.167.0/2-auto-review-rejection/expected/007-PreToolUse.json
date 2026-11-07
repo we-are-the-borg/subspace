@@ -1,0 +1,19 @@
+{
+  "kind": "tool.pre",
+  "session": "01a1b6e2-047f-7780-8cd2-bc3f128add87",
+  "tool_call": "exec-8af41ad8-a7c8-41ee-beab-f30e821264cf",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a1b6e2-7231-7e02-a8c6-51229fea2c8a",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/07/rollout-2026-11-07T17-40-28-01a1b6e2-047f-7780-8cd2-bc3f128add87.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "rm -rf \"$HOME/subspace-review-nonexistent-dir\""
+    },
+    "command": "rm -rf \"$HOME/subspace-review-nonexistent-dir\""
+  }
+}

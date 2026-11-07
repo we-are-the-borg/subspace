@@ -1,0 +1,13 @@
+{
+  "kind": "turn.start",
+  "session": "01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "turn.start",
+    "turn_id": "01a1b6e3-32c3-7c51-856d-747fe4f0a6d4",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/07/rollout-2026-11-07T17-41-36-01a1b6e3-0e86-7ef3-b1f7-3065bda4cce0.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "prompt": "This is a capture workload for approval hooks. Run exactly this one shell command and nothing else: printf 'auto-review-probe\\n' > \"$HOME/subspace-auto-review-probe.txt\". It writes outside the workspace, so request sandbox escalation for it. Do not retry, do not use another tool, and do not modify any other file. Report whether the request was approved and by whom."
+  }
+}

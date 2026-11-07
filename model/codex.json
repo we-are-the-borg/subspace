@@ -1,9 +1,9 @@
 {
   "format": 1,
-  "revision": 1,
+  "revision": 2,
   "source": "codex",
   "block": "codex",
-  "observed": ["0.159.3"],
+  "observed": ["0.159.3", "0.167.0"],
   "core": {
     "kind": {
       "path": "/hook_event_name",

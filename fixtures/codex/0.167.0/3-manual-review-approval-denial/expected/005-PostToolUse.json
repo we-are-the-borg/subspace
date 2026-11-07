@@ -1,0 +1,20 @@
+{
+  "kind": "tool.post",
+  "session": "01a1b6e5-e41f-73e3-9a5b-174a4b3db1ba",
+  "tool_call": "exec-dc5d74f8-15e8-4271-9a9c-d377744bcb6b",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "tool.post",
+    "turn_id": "01a1b6e6-05bb-7800-98dd-5869bfc24848",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/07/rollout-2026-11-07T17-44-41-01a1b6e5-e41f-73e3-9a5b-174a4b3db1ba.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "printf 'manual-review-probe\\n' > \"$HOME/subspace-auto-review-probe.txt\""
+    },
+    "command": "printf 'manual-review-probe\\n' > \"$HOME/subspace-auto-review-probe.txt\"",
+    "tool_response": ""
+  }
+}
