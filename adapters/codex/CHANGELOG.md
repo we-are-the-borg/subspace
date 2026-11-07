@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/we-are-the-borg/subspace/compare/codex-1.1.0...codex-1.2.0) (2026-11-07)
+
+
+### Features
+
+* **contract:** Clarify who handles Codex permission requests ([#35](https://github.com/we-are-the-borg/subspace/issues/35)) ([ae148dc](https://github.com/we-are-the-borg/subspace/commit/ae148dc7ec9754ea4309aee29af48b814b7b2c5c)), closes [#34](https://github.com/we-are-the-borg/subspace/issues/34)
+
 ## [1.1.0](https://github.com/we-are-the-borg/subspace/compare/codex-1.0.1...codex-1.1.0) (2026-11-04)
 
 
