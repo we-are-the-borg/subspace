@@ -1,0 +1,23 @@
+{
+  "kind": "tool.pre",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "agent": "aaafa080a35df2c26",
+  "tool_call": "toolu_018No9VVf94aLWu8KTRRN3Rv",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "353bed90-341e-446f-afcc-517290b8a04c",
+    "permission_mode": "default",
+    "effort": "max",
+    "agent_type": "general-purpose",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo sub-inherit",
+      "description": "Print sub-inherit"
+    },
+    "command": "echo sub-inherit",
+    "command_description": "Print sub-inherit"
+  }
+}

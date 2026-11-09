@@ -1,0 +1,16 @@
+{
+  "kind": "turn.stop",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "62e7fa98-4fa5-45fa-b5cf-20ed3c89b598",
+    "permission_mode": "default",
+    "effort": "max",
+    "last_assistant_message": "Both agents finished:\n\n- **First agent (effort high):** returned `sub-high`.\n- **Second agent (no effort parameter):** ran the command once and printed `sub-inherit`.",
+    "background_tasks": [],
+    "background_agents": [],
+    "background_shells": []
+  }
+}

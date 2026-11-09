@@ -1,0 +1,21 @@
+{
+  "kind": "tool.pre",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "tool_call": "toolu_011BWjLeoqoW4CtPN9zWQ7CX",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "9d6780c5-2b0c-49e1-acfe-9fd495ae475f",
+    "permission_mode": "default",
+    "effort": "max",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "ls captures/nonexistent-dir",
+      "description": "List nonexistent captures directory"
+    },
+    "command": "ls captures/nonexistent-dir",
+    "command_description": "List nonexistent captures directory"
+  }
+}

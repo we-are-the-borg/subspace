@@ -1,0 +1,35 @@
+{
+  "kind": "tool.post",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "tool_call": "toolu_014Wfb6czMNRCX8tAtP18Dbq",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "353bed90-341e-446f-afcc-517290b8a04c",
+    "permission_mode": "default",
+    "effort": "max",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Echo sub-inherit",
+      "prompt": "Run exactly this Bash command once and nothing else: echo sub-inherit",
+      "subagent_type": "general-purpose"
+    },
+    "tool_response": {
+      "isAsync": true,
+      "status": "async_launched",
+      "agentId": "aaafa080a35df2c26",
+      "description": "Echo sub-inherit",
+      "resolvedModel": "claude-sonnet-5-5",
+      "prompt": "Run exactly this Bash command once and nothing else: echo sub-inherit",
+      "outputFile": "/private/tmp/claude-501/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a/tasks/aaafa080a35df2c26.output",
+      "canReadOutputFile": true,
+      "canContinueAgent": true
+    },
+    "duration_ms": 4,
+    "spawned_agent": "aaafa080a35df2c26",
+    "spawned_async": true,
+    "spawned_model": "claude-sonnet-5-5"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "kind": "tool.pre",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "tool_call": "toolu_0195x6nfLzRsHRDjWEYnGUka",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "375f38a7-3199-4986-9cc4-3338d145009b",
+    "permission_mode": "default",
+    "effort": "high",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo high",
+      "description": "Print high"
+    },
+    "command": "echo high",
+    "command_description": "Print high"
+  }
+}

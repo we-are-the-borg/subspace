@@ -1,0 +1,148 @@
+{"ms": 1794242513034, "action": "settings sonnet entry before", "modelSettings": {"claude-sonnet-5-5": {}}}
+{"ms": 1794242513037, "action": "start", "pid": 44621, "model": "sonnet", "args": ["--permission-mode", "default", "--allowedTools", "Agent", "Bash(echo default)", "Bash(echo low)", "Bash(echo medium)", "Bash(echo high)", "Bash(echo xhigh)", "Bash(echo max)", "Bash(ls captures/nonexistent-dir)", "Bash(echo sub-high)", "Bash(echo sub-inherit)"]}
+{"ms": 1794242513840, "n": 1, "file": "status/001-status.json", "inode_changed": false}
+{"ms": 1794242513921, "n": 2, "file": "events/002-SessionStart.json"}
+{"ms": 1794242514056, "action": "saw SessionStart", "pid": 44621}
+{"ms": 1794242514074, "n": 3, "file": "status/003-status.json", "inode_changed": false}
+{"ms": 1794242514181, "n": 4, "file": "events/004-InstructionsLoaded.json"}
+{"ms": 1794242514183, "n": 5, "file": "events/005-InstructionsLoaded.json"}
+{"ms": 1794242517567, "action": "send", "pid": 44621, "text": "Run exactly this Bash command once and nothing else: echo default"}
+{"ms": 1794242517652, "n": 6, "file": "status/006-status.json", "inode_changed": false}
+{"ms": 1794242517653, "n": 7, "file": "events/007-UserPromptSubmit.json"}
+{"ms": 1794242517770, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242518915, "n": 8, "file": "events/008-PreToolUse.json"}
+{"ms": 1794242519614, "n": 9, "file": "events/009-PostToolUse.json"}
+{"ms": 1794242519676, "n": 10, "file": "events/010-PostToolBatch.json"}
+{"ms": 1794242520322, "n": 11, "file": "events/011-Stop.json"}
+{"ms": 1794242520427, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242520695, "n": 12, "file": "status/012-status.json", "inode_changed": false}
+{"ms": 1794242521243, "n": 13, "file": "events/013-SubagentStop.json"}
+{"ms": 1794242523936, "action": "send", "pid": 44621, "text": "/effort low"}
+{"ms": 1794242523983, "n": 14, "file": "status/014-status.json", "inode_changed": false}
+{"ms": 1794242524039, "n": 15, "file": "status/015-status.json", "inode_changed": false}
+{"ms": 1794242525141, "action": "effort answer", "level": "low", "kind": "set", "dialog": false, "screen": "Seteffortleveltolow(savedasyourdefaultfornewsessions):Quick,straightforwardimplementationwithminimaloverhead○low·/effort"}
+{"ms": 1794242525646, "action": "send", "pid": 44621, "text": "Run exactly this Bash command once and nothing else: echo low"}
+{"ms": 1794242525686, "n": 16, "file": "status/016-status.json", "inode_changed": false}
+{"ms": 1794242525726, "n": 17, "file": "events/017-UserPromptSubmit.json"}
+{"ms": 1794242525852, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242526908, "n": 18, "file": "events/018-PreToolUse.json"}
+{"ms": 1794242526960, "n": 19, "file": "events/019-PostToolUse.json"}
+{"ms": 1794242527021, "n": 20, "file": "events/020-PostToolBatch.json"}
+{"ms": 1794242527602, "n": 21, "file": "events/021-Stop.json"}
+{"ms": 1794242527690, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242527964, "n": 22, "file": "status/022-status.json", "inode_changed": false}
+{"ms": 1794242528732, "n": 23, "file": "events/023-SubagentStop.json"}
+{"ms": 1794242531197, "action": "send", "pid": 44621, "text": "/effort medium"}
+{"ms": 1794242531222, "n": 24, "file": "status/024-status.json", "inode_changed": false}
+{"ms": 1794242531277, "n": 25, "file": "status/025-status.json", "inode_changed": false}
+{"ms": 1794242532405, "action": "effort answer", "level": "medium", "kind": "set", "dialog": false, "screen": "Seteffortleveltomedium(savedasyourdefaultfornewsessions):Balancedapproachwithstandardimplementationandtesting◐medium·/effort"}
+{"ms": 1794242532910, "action": "send", "pid": 44621, "text": "Run exactly this Bash command once and nothing else: echo medium"}
+{"ms": 1794242532973, "n": 26, "file": "status/026-status.json", "inode_changed": false}
+{"ms": 1794242532995, "n": 27, "file": "events/027-UserPromptSubmit.json"}
+{"ms": 1794242533116, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242534164, "n": 28, "file": "events/028-PreToolUse.json"}
+{"ms": 1794242534217, "n": 29, "file": "events/029-PostToolUse.json"}
+{"ms": 1794242534279, "n": 30, "file": "events/030-PostToolBatch.json"}
+{"ms": 1794242534881, "n": 31, "file": "events/031-Stop.json"}
+{"ms": 1794242534959, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242535254, "n": 32, "file": "status/032-status.json", "inode_changed": false}
+{"ms": 1794242535780, "n": 33, "file": "events/033-SubagentStop.json"}
+{"ms": 1794242538469, "action": "send", "pid": 44621, "text": "/effort high"}
+{"ms": 1794242538490, "n": 34, "file": "status/034-status.json", "inode_changed": false}
+{"ms": 1794242538598, "n": 35, "file": "status/035-status.json", "inode_changed": false}
+{"ms": 1794242539681, "action": "effort answer", "level": "high", "kind": "set", "dialog": false, "screen": "Seteffortleveltohigh(savedasyourdefaultfornewsessions):Comprehensiveimplementationwithextensivetestinganddocumentation●high·/effort"}
+{"ms": 1794242540185, "action": "send", "pid": 44621, "text": "Run exactly this Bash command once and nothing else: echo high"}
+{"ms": 1794242540213, "n": 36, "file": "status/036-status.json", "inode_changed": false}
+{"ms": 1794242540264, "n": 37, "file": "events/037-UserPromptSubmit.json"}
+{"ms": 1794242540389, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242541601, "n": 38, "file": "events/038-PreToolUse.json"}
+{"ms": 1794242541644, "n": 39, "file": "events/039-PostToolUse.json"}
+{"ms": 1794242541698, "n": 40, "file": "events/040-PostToolBatch.json"}
+{"ms": 1794242542327, "n": 41, "file": "events/041-Stop.json"}
+{"ms": 1794242542446, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242542685, "n": 42, "file": "status/042-status.json", "inode_changed": false}
+{"ms": 1794242543265, "n": 43, "file": "events/043-SubagentStop.json"}
+{"ms": 1794242545956, "action": "send", "pid": 44621, "text": "/effort xhigh"}
+{"ms": 1794242546003, "n": 44, "file": "status/044-status.json", "inode_changed": false}
+{"ms": 1794242546122, "n": 45, "file": "status/045-status.json", "inode_changed": false}
+{"ms": 1794242547165, "action": "effort answer", "level": "xhigh", "kind": "set", "dialog": false, "screen": "Seteffortleveltoxhigh(savedasyourdefaultfornewsessions):Deeperreasoningthanhigh,justbelowmaximum(onsupportedmodels)◉xhigh·/effort"}
+{"ms": 1794242547671, "action": "send", "pid": 44621, "text": "Run exactly this Bash command once and nothing else: echo xhigh"}
+{"ms": 1794242547726, "n": 46, "file": "status/046-status.json", "inode_changed": false}
+{"ms": 1794242547749, "n": 47, "file": "events/047-UserPromptSubmit.json"}
+{"ms": 1794242547879, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242548939, "n": 48, "file": "events/048-PreToolUse.json"}
+{"ms": 1794242548981, "n": 49, "file": "events/049-PostToolUse.json"}
+{"ms": 1794242549039, "n": 50, "file": "events/050-PostToolBatch.json"}
+{"ms": 1794242549704, "n": 51, "file": "events/051-Stop.json"}
+{"ms": 1794242549734, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242550070, "n": 52, "file": "status/052-status.json", "inode_changed": false}
+{"ms": 1794242550669, "n": 53, "file": "events/053-SubagentStop.json"}
+{"ms": 1794242553244, "action": "send", "pid": 44621, "text": "/effort max"}
+{"ms": 1794242553303, "n": 54, "file": "status/054-status.json", "inode_changed": false}
+{"ms": 1794242554454, "action": "effort answer", "level": "max", "kind": "set", "dialog": false, "screen": "Seteffortleveltomax(thissessiononly):Maximumcapabilitywithdeepestreasoning.Mayuseexcessivetokensresultinginlongresponsetimesoroverthinking.Usesparinglyforthehardesttasks.◈max·/effort"}
+{"ms": 1794242554961, "action": "send", "pid": 44621, "text": "Run exactly this Bash command once and nothing else: echo max"}
+{"ms": 1794242554978, "n": 55, "file": "status/055-status.json", "inode_changed": false}
+{"ms": 1794242555032, "n": 56, "file": "events/056-UserPromptSubmit.json"}
+{"ms": 1794242555167, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242556132, "n": 57, "file": "events/057-PreToolUse.json"}
+{"ms": 1794242556180, "n": 58, "file": "events/058-PostToolUse.json"}
+{"ms": 1794242556237, "n": 59, "file": "events/059-PostToolBatch.json"}
+{"ms": 1794242556926, "n": 60, "file": "events/060-Stop.json"}
+{"ms": 1794242557009, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242557300, "n": 61, "file": "status/061-status.json", "inode_changed": false}
+{"ms": 1794242558804, "n": 62, "file": "events/062-SubagentStop.json"}
+{"ms": 1794242560519, "action": "send", "pid": 44621, "text": "Run exactly this Bash command once and nothing else: ls captures/nonexistent-dir"}
+{"ms": 1794242560581, "n": 63, "file": "status/063-status.json", "inode_changed": false}
+{"ms": 1794242560587, "n": 64, "file": "events/064-UserPromptSubmit.json"}
+{"ms": 1794242560725, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242561916, "n": 65, "file": "events/065-PreToolUse.json"}
+{"ms": 1794242561961, "n": 66, "file": "events/066-PostToolUseFailure.json"}
+{"ms": 1794242561978, "n": 67, "file": "events/067-PostToolBatch.json"}
+{"ms": 1794242563009, "n": 68, "file": "events/068-Stop.json"}
+{"ms": 1794242563188, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242563389, "n": 69, "file": "status/069-status.json", "inode_changed": false}
+{"ms": 1794242564433, "n": 70, "file": "events/070-SubagentStop.json"}
+{"ms": 1794242566193, "action": "settings sonnet entry before the Agent calls", "modelSettings": {"claude-sonnet-5-5": {"effortLevel": "xhigh"}}}
+{"ms": 1794242566694, "action": "send", "pid": 44621, "text": "Call the Agent tool twice in one message, both with subagent_type general-purpose and no model parameter. First call: effort high, prompt 'Run exactly this Bash command once and nothing else: echo sub-high'. Second call: no effort parameter, prompt 'Run exactly this Bash command once and nothing else: echo sub-inherit'. Then reply with both results."}
+{"ms": 1794242566761, "n": 71, "file": "status/071-status.json", "inode_changed": false}
+{"ms": 1794242566773, "n": 72, "file": "events/072-UserPromptSubmit.json"}
+{"ms": 1794242568354, "n": 73, "file": "events/073-PreToolUse.json"}
+{"ms": 1794242568377, "n": 74, "file": "events/074-SubagentStart.json"}
+{"ms": 1794242568380, "n": 75, "file": "events/075-PostToolUse.json"}
+{"ms": 1794242568997, "n": 76, "file": "events/076-PreToolUse.json"}
+{"ms": 1794242569027, "n": 77, "file": "events/077-SubagentStart.json"}
+{"ms": 1794242569032, "n": 78, "file": "events/078-PostToolUse.json"}
+{"ms": 1794242569094, "n": 79, "file": "events/079-PostToolBatch.json"}
+{"ms": 1794242569586, "n": 80, "file": "events/080-PreToolUse.json"}
+{"ms": 1794242569620, "n": 81, "file": "events/081-PostToolUse.json"}
+{"ms": 1794242569675, "n": 82, "file": "events/082-PostToolBatch.json"}
+{"ms": 1794242569921, "n": 83, "file": "events/083-Stop.json"}
+{"ms": 1794242570245, "n": 84, "file": "events/084-PreToolUse.json"}
+{"ms": 1794242570279, "n": 85, "file": "events/085-PostToolUse.json"}
+{"ms": 1794242570347, "n": 86, "file": "events/086-PostToolBatch.json"}
+{"ms": 1794242570462, "n": 87, "file": "events/087-SubagentStop.json"}
+{"ms": 1794242570510, "n": 88, "file": "events/088-UserPromptSubmit.json"}
+{"ms": 1794242570591, "action": "saw SubagentStop", "pid": 44621}
+{"ms": 1794242571575, "n": 89, "file": "events/089-SubagentStop.json"}
+{"ms": 1794242571634, "action": "saw SubagentStop", "pid": 44621}
+{"ms": 1794242571635, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242571741, "n": 90, "file": "events/090-SubagentStop.json"}
+{"ms": 1794242571792, "n": 91, "file": "events/091-Stop.json"}
+{"ms": 1794242571840, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242572191, "n": 92, "file": "status/092-status.json", "inode_changed": false}
+{"ms": 1794242572210, "n": 93, "file": "events/093-UserPromptSubmit.json"}
+{"ms": 1794242572249, "action": "saw UserPromptSubmit", "pid": 44621}
+{"ms": 1794242573485, "n": 94, "file": "events/094-Stop.json"}
+{"ms": 1794242573508, "n": 95, "file": "events/095-SubagentStop.json"}
+{"ms": 1794242573686, "action": "saw Stop", "pid": 44621}
+{"ms": 1794242573882, "n": 96, "file": "status/096-status.json", "inode_changed": false}
+{"ms": 1794242574709, "n": 97, "file": "events/097-SubagentStop.json"}
+{"ms": 1794242579193, "action": "send", "pid": 44621, "text": "/effort auto"}
+{"ms": 1794242579228, "n": 98, "file": "status/098-status.json", "inode_changed": false}
+{"ms": 1794242579335, "n": 99, "file": "status/099-status.json", "inode_changed": false}
+{"ms": 1794242580399, "action": "effort answer", "level": "auto", "kind": "auto", "dialog": false, "screen": "Effortlevelettoauto◐medium·/effort"}
+{"ms": 1794242580905, "action": "send", "pid": 44621, "text": "/exit"}
+{"ms": 1794242581211, "file_deleted": "44621.json"}
+{"ms": 1794242581266, "n": 100, "file": "events/100-SessionEnd.json"}
+{"ms": 1794242582910, "action": "exited", "pid": 44621, "status": 0}
+{"ms": 1794242582915, "action": "settings sonnet entry after", "modelSettings": {"claude-sonnet-5-5": {}}}

@@ -1,9 +1,9 @@
 {
   "format": 1,
-  "revision": 8,
+  "revision": 9,
   "source": "claude-code",
   "block": "claude_code",
-  "observed": ["2.1.285", "2.1.287", "2.1.288", "2.1.289", "2.1.316"],
+  "observed": ["2.1.285", "2.1.287", "2.1.288", "2.1.289", "2.1.316", "2.1.319"],
   "core": {
     "kind": {
       "path": "/hook_event_name",
@@ -92,6 +92,12 @@
     "transcript_path": { "path": "/transcript_path", "type": "string" },
     "prompt_id": { "path": "/prompt_id", "type": "id" },
     "permission_mode": { "path": "/permission_mode", "type": "string" },
+    "effort": {
+      "when": [{ "path": "/hook_event_name", "in": ["PreToolUse", "PostToolUse", "PostToolUseFailure", "PostToolBatch", "PermissionRequest", "Stop", "SubagentStop"] }],
+      "path": "/effort/level",
+      "type": "string",
+      "note": "the effort of the agent that fired the event, a subagent's own too (S25-080; inherited S25-084); absent for models without effort support, e.g. haiku (S16, S17)"
+    },
     "agent_type": { "path": "/agent_type", "type": "string", "note": "empty for internal agents (C2-025)" },
     "start_source": {
       "when": [{ "path": "/hook_event_name", "in": ["SessionStart"] }],

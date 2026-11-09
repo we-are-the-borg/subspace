@@ -102,6 +102,9 @@
         "permission_mode": {
           "type": "string"
         },
+        "effort": {
+          "type": "string"
+        },
         "agent_type": {
           "type": "string"
         },

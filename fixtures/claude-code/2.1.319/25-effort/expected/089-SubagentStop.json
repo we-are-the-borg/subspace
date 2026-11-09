@@ -1,0 +1,29 @@
+{
+  "kind": "other",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "agent": "aaafa080a35df2c26",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "20fe9a60-bcfc-4e7b-be38-623e259915bd",
+    "permission_mode": "default",
+    "effort": "max",
+    "agent_type": "general-purpose",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a/subagents/agent-aaafa080a35df2c26.jsonl",
+    "last_assistant_message": "The command ran once and printed `sub-inherit`.",
+    "background_tasks": [
+      {
+        "id": "aaafa080a35df2c26",
+        "type": "subagent",
+        "status": "running",
+        "description": "Echo sub-inherit",
+        "agent_type": "general-purpose"
+      }
+    ],
+    "background_agents": [
+      "aaafa080a35df2c26"
+    ],
+    "background_shells": []
+  }
+}

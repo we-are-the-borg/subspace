@@ -1,0 +1,31 @@
+{
+  "kind": "tool.post",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "agent": "abc55eb11550b885d",
+  "tool_call": "toolu_01TrFjhfsMQfBDj6gvbKntup",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "353bed90-341e-446f-afcc-517290b8a04c",
+    "permission_mode": "default",
+    "effort": "high",
+    "agent_type": "general-purpose",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo sub-high",
+      "description": "Echo sub-high"
+    },
+    "tool_response": {
+      "stdout": "sub-high",
+      "stderr": "",
+      "interrupted": false,
+      "isImage": false,
+      "noOutputExpected": false
+    },
+    "duration_ms": 15,
+    "command": "echo sub-high",
+    "command_description": "Echo sub-high"
+  }
+}
