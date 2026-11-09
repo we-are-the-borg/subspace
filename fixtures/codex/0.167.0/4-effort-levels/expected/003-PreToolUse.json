@@ -1,0 +1,19 @@
+{
+  "kind": "tool.pre",
+  "session": "01a1c1e8-6082-7422-80f4-53c2796d361e",
+  "tool_call": "exec-7e707eb9-c6da-447b-91ef-22d7bc511f12",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a1c1e8-78f5-7341-8036-5a7a3d0265f7",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/09/rollout-2026-11-09T21-03-14-01a1c1e8-6082-7422-80f4-53c2796d361e.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo one"
+    },
+    "command": "echo one"
+  }
+}

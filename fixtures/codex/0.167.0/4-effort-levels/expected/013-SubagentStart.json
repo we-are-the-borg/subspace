@@ -1,0 +1,14 @@
+{
+  "kind": "agent.start",
+  "session": "01a1c1e8-6082-7422-80f4-53c2796d361e",
+  "agent": "01a1c1e9-2e62-7de3-8d90-cc34bb9539b8",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "agent.start",
+    "turn_id": "01a1c1e9-2e9d-7ac1-ac4c-6edacde01c01",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/09/rollout-2026-11-09T21-04-06-01a1c1e9-2e62-7de3-8d90-cc34bb9539b8.jsonl",
+    "model": "gpt-5.6-luna",
+    "permission_mode": "default",
+    "agent_type": "default"
+  }
+}

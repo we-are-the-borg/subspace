@@ -1,0 +1,13 @@
+{
+  "kind": "turn.start",
+  "session": "01a1c1e8-6082-7422-80f4-53c2796d361e",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "turn.start",
+    "turn_id": "01a1c1e8-78f5-7341-8036-5a7a3d0265f7",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/09/rollout-2026-11-09T21-03-14-01a1c1e8-6082-7422-80f4-53c2796d361e.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "prompt": "This is a capture workload for reasoning effort. Run exactly this one shell command with your shell tool and nothing else: echo one. Then reply with its output."
+  }
+}

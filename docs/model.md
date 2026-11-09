@@ -26,7 +26,7 @@ It is a small **core** with the same meaning for every source, plus **one block 
 - Claude Code 2.1.318, hook events plus session status files: S22 a background session (`claude --bg`), ended with `claude stop`; S24 another one, attached with `claude attach <job>`, one prompt sent through the attach client, detached with Ctrl+Z, ended with `claude stop`.
 - Claude Code 2.1.319, hook events plus session status files: S25 a sonnet session that sets every effort level with `/effort`, one failing tool, then, at the session-only level `max` while `xhigh` is saved as the default, two `Agent` calls, one with its own `effort: "high"`, one inheriting.
 - Codex 0.159.3: X1 parallel and reused children plus a failed command; X2 daemon permission and compact; X3 manual permission and rejection; X4/X5 interrupt before a tool; X6/X7 interrupt of a running shell; X8 resume; X9 ephemeral; X10 cwd with spaces.
-- Codex 0.167.0, hook events plus rollout excerpts: R1 automatic review, four approvals, two of them concurrent in one turn; R2 automatic review, one rejection and two approvals; R3 manual reviewer, one approval and one denial.
+- Codex 0.167.0, hook events plus rollout excerpts: R1 automatic review, four approvals, two of them concurrent in one turn; R2 automatic review, one rejection and two approvals; R3 manual reviewer, one approval and one denial; R4 reasoning effort: one turn at `low`, `/model` to `high` for the session, one turn, then one child agent.
 
 ## 1. Principles
 
@@ -214,7 +214,7 @@ Left in `payload` because no app uses them today: `scratchpad_dir`, `Instruction
 
 ### 4.2 Fields, Codex 0.159.3
 
-Unchanged in 0.167.0 for the hooks R1–R3 cover (no children or spawns).
+Unchanged in 0.167.0 for every hook R1–R4 cover, child events and the `spawn_agent` and `wait_agent` calls included (R4-011…018).
 
 | Block field | Type | From the payload, on which hooks | Evidence |
 |---|---|---|---|
@@ -253,6 +253,11 @@ Left in `payload`: `stop_hook_active`, and `tool_input.message` of spawns, which
   - Rejected by the automatic reviewer: **no `tool.post` and no `turn.interrupt`**; the turn goes on and ends with `turn.stop` (R2-003…005). Close the request at the latest with that `turn.stop`. The rollout has the rejection only as the call's output text (`Rejected(…)`, R2 excerpt).
   - Denied by the user: `turn.interrupt` ends the turn (X3-008…010, R3-008…010).
   - Unobserved: the automatic reviewer handing a request to the user, and further calls in a turn after a rejection.
+- **Effort** (R4; R1–R3). No payload carries the reasoning effort (R4-001…019; `model` is in each). The turn's rollout does, with the same lookup as for the reviewer: its `turn_context` record with the same `turn_id` has `payload.effort` and `payload.model`, strings in every record of R1–R4 (`rollouts/excerpt.jsonl` of each run). That is app work: read it from the event's `rollout_path`. Rules for apps:
+  - **Per thread.** A child's events have the child's `turn_id` and `rollout_path` (the child's rollout, also on `agent.turn.stop`), so the lookup finds the child's own record, not the parent's. R4's child runs at `medium` on `gpt-5.6-luna` (excerpt line 4, `root_turn_id` = turn 3; R4-013, R4-015…017) while its parent's turn 3 runs at `high` on `gpt-6.1-sol` (line 3; R4-010…012, R4-014, R4-018, R4-019). The spawn call set neither (R4-011); the values are the capture machine's `[agents] default_subagent_model` and `default_subagent_reasoning_effort`.
+  - **A change shows from the next turn.** `/model` sends no hook event. R4 turn 1 runs at `low` (line 1; R4-002…005, started with `-c 'model_reasoning_effort="low"'`); after `/model` → same model → High for this session, turn 2 has `high` (line 2; R4-006…009), turn 1's record stays `low`.
+  - **Unknown** before the first turn (`session.start` has no `turn_id`), and when there is no such record, no readable rollout, or `rollout_path: null` (ephemeral). The rollout may lag the hooks (contract §8).
+  - **Values:** captured `low`, `medium`, `high` (R1–R3: `high` everywhere). Codex offers others depending on the model, none of them captured: its documentation names `none`, `minimal` and `xhigh`, and the `/model` picker for `gpt-6.1-sol` also offered Extra high, Max and Ultra. Treat values as opaque strings and show unknown ones as they are.
 - **Child ↔ spawn** (core `tool: spawn_agent`): the spawn's post has `spawn_task` (`/root/alpha`). No child event names its task path or spawning call (X1-009 … X1-026). The link needs the child rollout's first `session_meta` line (`payload.source.subagent.thread_spawn.agent_path`); the child's `rollout_path` points to that file (X1-009, `rollouts/session_meta.jsonl` of X1). That is app work. In ephemeral sessions (`rollout_path: null`, X9) children stay unassigned. The parent is the core `agent` of the spawning call (absent: the root). Never assign by order: X1-015 arrives after X1-014.
 - **Session end.** There is no end event (`SessionEnd` is never subscribed). Apps infer inactivity from a timeout; the envelope `pid` can be a shared app-server (contract §6).
 
@@ -368,6 +373,7 @@ fixtures/<source>/<version>/<run>/
 | Tool pairing | core `tool_call` | pairing across files |
 | Permission ↔ call | the match fields (§3.3, §4.3) | matching, ambiguity |
 | Who answers a permission, Codex | `turn_id`, `rollout_path` | reading `turn_context.approvals_reviewer` from the rollout (§4.3) |
+| Effort, Codex | `turn_id`, `rollout_path` | reading `turn_context.effort` from the rollout (§4.3) |
 | Subagent ↔ spawn, Claude Code | `spawned_agent` on the `Agent` post; `parent_tool_use_id` once sent | earlier link via `meta.json` |
 | Child ↔ spawn, Codex | `spawn_task`, child `rollout_path` | reading `session_meta` from the rollout |
 | Turn/agent state | block kinds and turn IDs | sticky state, timeouts |
@@ -390,7 +396,7 @@ Checked against today's logic in The Collective (`ClaudeCodeAdapter.swift`) and 
 |---|---|
 | Session start, `cwd`, end | core `session.start`, `cwd`; Claude Code `session.end`, `end_reason` |
 | Session model | Claude Code `model`, `to_model`, carried over per `pid` on `clear` (§3.3 "Session model") |
-| Effort level per agent | Claude Code `effort`, from the agent's latest event that has it (§3.3 "Effort"); Codex hook payloads carry none (#38) |
+| Effort level per agent | Claude Code `effort`, from the agent's latest event that has it (§3.3 "Effort"); Codex: none in the hooks; `turn_id` and `rollout_path`, for reading the turn's `turn_context.effort` from the rollout (§4.3 "Effort") |
 | Prompt text, notification prompts | block `prompt`; Claude Code `<task-notification>` / `<agent-message ` prefix |
 | Tool activity and a one-line detail | core `tool.pre`, `tool`; block `tool_name`, `tool_input` (`file_path`, …); `command` in both sources, Claude Code `command_description` |
 | Tool pairing, late pre | core `tool_call` |
@@ -424,6 +430,7 @@ Anything else an app wants is still in `payload`; reading it there couples that 
 - Child ↔ spawn needs the rollout, and is impossible in ephemeral sessions. Nested spawning and reuse across resume are unobserved.
 - There is no tool outcome at all.
 - No hook tells who answers a permission request or what the automatic reviewer decided; only the rollout's `turn_context` names the reviewer, and a rejection ends nothing (R2, §4.3). A hand-over from the automatic reviewer to the user is unobserved.
+- The effort, too, is only in the rollout's `turn_context` (§4.3). Captured are `low`, `medium` and `high` only; `none`, `minimal`, `xhigh`, the picker's Max and Ultra, and a model without reasoning are not. The only child captured got its model and effort from the `[agents] default_subagent_*` config (R4); a child without that config, one whose spawn call sets them, and a `/model` switch while a turn runs are unobserved.
 - A child announces only its first turn.
 - There is no session end and no background snapshot.
 - Code-mode and MCP tool names are unobserved.
