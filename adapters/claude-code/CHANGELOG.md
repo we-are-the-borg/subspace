@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.4.0...claude-code-1.5.0) (2026-11-09)
+
+
+### Features
+
+* **contract:** Add effort level for Claude Code agents ([#39](https://github.com/we-are-the-borg/subspace/issues/39)) ([dd01346](https://github.com/we-are-the-borg/subspace/commit/dd01346454e91e3acb0d1f42464d3df952ef24de)), closes [#37](https://github.com/we-are-the-borg/subspace/issues/37)
+
 ## [1.4.0](https://github.com/we-are-the-borg/subspace/compare/claude-code-1.3.0...claude-code-1.4.0) (2026-11-05)
 
 
