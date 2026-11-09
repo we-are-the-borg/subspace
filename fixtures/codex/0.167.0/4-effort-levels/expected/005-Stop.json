@@ -1,0 +1,13 @@
+{
+  "kind": "turn.stop",
+  "session": "01a1c1e8-6082-7422-80f4-53c2796d361e",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "turn.stop",
+    "turn_id": "01a1c1e8-78f5-7341-8036-5a7a3d0265f7",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/09/rollout-2026-11-09T21-03-14-01a1c1e8-6082-7422-80f4-53c2796d361e.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "last_assistant_message": "one"
+  }
+}

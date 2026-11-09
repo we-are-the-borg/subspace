@@ -1,0 +1,18 @@
+{
+  "kind": "tool.pre",
+  "session": "01a1c1e8-6082-7422-80f4-53c2796d361e",
+  "tool_call": "call_cbe79150b62c451bb59537fdc57c5776",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a1c1e9-2061-7f43-b518-e8515572a23e",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/09/rollout-2026-11-09T21-03-14-01a1c1e8-6082-7422-80f4-53c2796d361e.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "collaborationwait_agent",
+    "tool_input": {
+      "timeout_ms": 10000
+    }
+  }
+}

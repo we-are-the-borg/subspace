@@ -1,0 +1,21 @@
+{
+  "kind": "tool.pre",
+  "session": "01a1c1e8-6082-7422-80f4-53c2796d361e",
+  "tool_call": "call_d4190f989cba4ab39796d1c96f9b2e51",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace",
+  "codex": {
+    "kind": "tool.pre",
+    "turn_id": "01a1c1e9-2061-7f43-b518-e8515572a23e",
+    "rollout_path": "/Users/user/.codex/sessions/2026/11/09/rollout-2026-11-09T21-03-14-01a1c1e8-6082-7422-80f4-53c2796d361e.jsonl",
+    "model": "gpt-6.1-sol",
+    "permission_mode": "default",
+    "tool_name": "collaborationspawn_agent",
+    "tool_input": {
+      "task_name": "capture",
+      "fork_turns": "none",
+      "message": "<encrypted message omitted>"
+    },
+    "spawn_name": "capture"
+  }
+}

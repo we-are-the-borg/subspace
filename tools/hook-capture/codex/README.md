@@ -197,6 +197,33 @@ dialog with Esc and stops if it stays, and starts Codex with
 `HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1`. Curated result:
 `fixtures/codex/0.167.0/`.
 
+### 2f. Reasoning effort per turn (#38)
+
+`drive-review-runs.py 2f`, same setup, writes `captures/review/2f/`. Codex
+records each turn's reasoning effort only in the rollout's `turn_context`
+(`effort`), so this run changes it within one session: `codex --no-daemon
+-a on-request -s workspace-write -c 'model_reasoning_effort="low"'`, one
+turn running `echo one`, then `/model`: the current model again, **High**
+with `s` (this session only; Enter there is offered as `enter default`,
+the default for every session), one turn running `echo two`, then one turn that spawns one
+child agent running `echo three`. The commands stay in the workspace
+sandbox, so no request is expected.
+
+This run reads the rendered screen before every keystroke (`Screen` in the
+driver, a minimal terminal for what Codex draws): it waits for the idle
+composer, skips the update offer with Esc (once per session, never Enter;
+should it come back, the run aborts) and aborts on any screen it does not
+know. It presses Enter on a slash command, `/exit`
+included, only when the popup highlights it, and on a prompt only when the
+composer, read again after typing, shows exactly that text with no offer,
+approval dialog or picker open; otherwise it aborts. It walks the pickers
+one key at a time, checking the highlighted row and the key hint each time.
+Should the screen model fail on what Codex draws (an erase mode other than
+from the cursor, for instance), the run logs it once,
+keeps recording `tty.log`, and treats the screen as unknown, so it aborts.
+`actions.jsonl` keeps every screen it read.
+Curated result: `fixtures/codex/0.167.0/4-effort-levels/`.
+
 ## 3. Interactive without daemon: interrupt and normal exit
 
 Answers open questions **1, 2, 5, 7, 8**; compare `.meta` with run 2.
@@ -345,6 +372,7 @@ Stop the watcher with Ctrl-C. Curated result:
 | 2: raw bytes, fields, tool coverage and outer vs nested/parallel calls | 1–6; retain CLI JSONL, try a read-only MCP/code-mode tool if already available and record absence otherwise |
 | 3: manual/remembered approvals, denials, request correlation | 2 and supplemental 2b if inherited auto-review handled requests; note dialogs, retries and reviewer behavior |
 | #34: who answers a permission request, automatic review | 2c–2e |
+| #38: reasoning effort per turn, a child's effort | 2f |
 | 4: concurrent/nested children, reused child turns and transcript paths | 1, 2, 4 |
 | 5: host PID with/without shared daemon | 2 vs 3; complete `.meta` chains, 1 as headless comparison |
 | 6: plugin data path, custom `CODEX_HOME`, re-trust, uninstall | Installed-plugin test (`tools/e2e/codex.md`) |
