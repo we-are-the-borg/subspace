@@ -8,6 +8,7 @@
     "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e.jsonl",
     "prompt_id": "dbeb1c9a-5283-47b8-9833-a6b874c182cd",
     "permission_mode": "auto",
+    "effort": "medium",
     "agent_type": "",
     "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f36170bf-a638-463e-a6cc-f7550e72b11e/subagents/agent-a05301f1893065150.jsonl",
     "background_tasks": [],

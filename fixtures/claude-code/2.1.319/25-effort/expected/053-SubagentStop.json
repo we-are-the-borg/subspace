@@ -1,0 +1,19 @@
+{
+  "kind": "other",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "agent": "a588ccc79359cf702",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "8959557e-1515-4357-b1d0-557d77c99fd4",
+    "permission_mode": "default",
+    "effort": "xhigh",
+    "agent_type": "",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a/subagents/agent-a588ccc79359cf702.jsonl",
+    "last_assistant_message": "Run exactly this Bash command once and nothing else: echo max",
+    "background_tasks": [],
+    "background_agents": [],
+    "background_shells": []
+  }
+}

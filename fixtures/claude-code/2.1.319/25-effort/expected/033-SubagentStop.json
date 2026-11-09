@@ -1,0 +1,19 @@
+{
+  "kind": "other",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "agent": "a87f3bc469746d7ab",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "agent.stop",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "ba743a77-4bb8-4d51-85db-6257e179b71f",
+    "permission_mode": "default",
+    "effort": "medium",
+    "agent_type": "",
+    "agent_transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a/subagents/agent-a87f3bc469746d7ab.jsonl",
+    "last_assistant_message": "/effort high",
+    "background_tasks": [],
+    "background_agents": [],
+    "background_shells": []
+  }
+}

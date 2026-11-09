@@ -1,0 +1,24 @@
+{
+  "kind": "tool.pre",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "tool_call": "toolu_01B7TcFA2eyyczt2z6RMSBcK",
+  "tool": "spawn_agent",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "353bed90-341e-446f-afcc-517290b8a04c",
+    "permission_mode": "default",
+    "effort": "max",
+    "tool_name": "Agent",
+    "tool_input": {
+      "description": "Echo sub-high",
+      "prompt": "Run exactly this Bash command once and nothing else: echo sub-high",
+      "subagent_type": "general-purpose",
+      "effort": "high"
+    },
+    "spawn_description": "Echo sub-high",
+    "spawn_prompt": "Run exactly this Bash command once and nothing else: echo sub-high",
+    "spawn_type": "general-purpose"
+  }
+}

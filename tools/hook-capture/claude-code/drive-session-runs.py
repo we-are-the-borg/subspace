@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plays the runs S1-S24 of README.md without a human (#58).
+"""Plays the runs S1-S25 of README.md without a human (#58).
 
 Starts watch-sessions.py, then drives interactive `claude` sessions in a
 pseudo-terminal: types prompts, presses Enter, Esc and Ctrl-C, and waits for
@@ -10,7 +10,8 @@ without a pseudo-terminal. S24 starts a background session the same way and
 drives `claude attach <job>` in the pseudo-terminal.
 Every action goes to captures/sessions/actions.jsonl with wall-clock ms, the
 terminal output of each run to captures/tty/<run>.log. Runs collect.sh at
-the end. Uses haiku; costs a few cents.
+the end. Uses haiku (some runs sonnet, S25 because haiku sends no effort);
+costs a few cents.
 
 Usage: ./drive-session-runs.py [S1 S2 …]   (default: all)
 """
@@ -99,7 +100,7 @@ class Session:
             os.execvpe(argv[0], argv, {**clean_env(), **(env or {})})
         fcntl.ioctl(self.fd, termios.TIOCSWINSZ, struct.pack("HHHH", 40, 120, 0, 0))
         self.log = open(os.path.join(TTY, f"{run}.log"), "ab")
-        self.out = b""
+        self.out, self.total, self.lock = b"", 0, threading.RLock()  # re-entrant: keep_since() calls since()
         LIVE.append(self)
         threading.Thread(target=self._drain, daemon=True).start()
         self.started = now_ms()
@@ -116,7 +117,50 @@ class Session:
                 return
             self.log.write(data)
             self.log.flush()
-            self.out = (self.out + ANSI.sub(b"", data))[-20000:]
+            self.add(ANSI.sub(b"", data))
+
+    def add(self, text):
+        """Appends drawn text to out (its last 20000 bytes); total counts every byte added.
+
+        Runs on the drain thread, under lock: since() and the rewrites of out on
+        the main thread see an add() whole or not at all, and lose none.
+        """
+        with self.lock:
+            self.total += len(text)
+            self.out = (self.out + text)[-20000:]
+
+    def since(self, pos):
+        """out from the total pos on; all of out if the trim already dropped pos.
+
+        Reads total and out under lock, so both are of the same moment.
+        Text removed from out (ready()'s drop()) moves the cut earlier: more kept, never less.
+        If more than 20000 bytes are drawn after pos before it is used, the oldest of
+        them are already gone from out (add()'s limit); since() then keeps all of out.
+        """
+        with self.lock:
+            return self.out[max(0, pos - (self.total - len(self.out))):]
+
+    # The rewrites of out: under lock, so text the drain thread adds meanwhile is kept.
+    def keep_since(self, pos):
+        """Keeps only since(pos) in out."""
+        with self.lock:
+            self.out = self.since(pos)
+
+    def keep_from(self, find):
+        """Keeps out from the index find(out) returns on; all of it if that is negative."""
+        with self.lock:
+            i = find(self.out)
+            if i >= 0:
+                self.out = self.out[i:]
+
+    def drop(self, text):
+        """Removes every occurrence of text from out."""
+        with self.lock:
+            self.out = self.out.replace(text, b"")
+
+    def clear(self):
+        with self.lock:
+            self.out = b""
 
     def keys(self, what, keys):
         os.write(self.fd, keys.encode())
@@ -135,22 +179,29 @@ class Session:
         return ev
 
     def ready(self):
-        deadline = time.time() + 60
+        """Waits for SessionStart, answering DIALOGS; returns it and the total (Session.add)
+        just before the last Enter on one, for since() (None if none was answered)."""
+        deadline, answered = time.time() + 60, None
         while True:
             try:
-                self.wait("SessionStart", self.started, 1)
+                start = self.wait("SessionStart", self.started, 1)
                 break
             except TimeoutError:
                 if time.time() > deadline:
                     raise
             for d in DIALOGS:
                 if d in self.out:
-                    self.out = self.out.replace(d, b"")
+                    self.drop(d)
+                    # Taken before the Enter: the drain thread may add what the TUI
+                    # draws after it while keys() still runs, and that must count.
+                    pos = self.total
                     self.keys(f"dialog {d.decode()}: default", ENTER)
+                    answered = pos
         time.sleep(3)
+        return start, answered
 
     def exit(self):
-        self.out = b""
+        self.clear()
         self.send("/exit")
         time.sleep(2)
         if EXIT_DIALOG in self.out:
@@ -408,7 +459,7 @@ def s17():
     s.ready()
     s.wait("Stop", s.send("Reply with the word one. No tools."))
     time.sleep(3)
-    s.out = b""
+    s.clear()
     t = s.send("/model sonnet")
     time.sleep(2)
     if b"Switchmodel?" in s.out:  # asked once the conversation is cached
@@ -441,7 +492,7 @@ def s19():
     Several questions end on a review screen, submitted with Enter.
     """
     def ask(prompt):
-        s.out = b""
+        s.clear()
         t = s.send(prompt)
         s.wait("PreToolUse", t, pred=lambda e: e.get("tool_name") == "AskUserQuestion")
         return t
@@ -1046,11 +1097,255 @@ def s23():
     action("S23", "pid tally", **pid_tally(EVENTS, started, modes))
 
 
+# What the TUI answers to `/effort <level>` (2.1.319), as Session.out has it.
+# Short markers: the TUI redraws only changed cells, so an answer drawn over an
+# older one loses letters in the stream ("Effortlevelettoauto").
+EFFORT_REPLIES = ((b"exceedsthecap", "capped"), (b"Failed", "failed"),
+                  (b"Notapplied", "not applied"), (b"Kept", "kept"), (b"toauto", "auto"))
+EFFORT_DIALOG = b"Changeeffortlevel?"  # asked once the conversation is cached
+REPLY_MARK = "⎿".encode()  # starts a command's answer in the transcript
+REPLY_END = ("─".encode(), "❯".encode())  # the prompt box below it
+
+
+def effort_reply(out, level):
+    """(kind, text) of the answer to `/effort <level>` on screen.
+
+    The answer follows the command in the transcript; one to an earlier
+    command still on screen doesn't count (so the same level twice in a row
+    can't be told apart). After the confirm dialog the answer is the first one
+    drawn after it, whether or not the command is drawn again. ("dialog", …)
+    while only the dialog shows, (None, b"") before anything, "unknown" for an
+    answer of no known kind.
+    """
+    cmd = b"/effort" + level.encode() + REPLY_MARK
+    at, d = out.rfind(cmd), out.rfind(EFFORT_DIALOG)
+    if d > at:  # the dialog's own text ("switch to auto") is never the answer
+        a = out.find(REPLY_MARK, d)
+        if a < 0:
+            return "dialog", out[d:d + 200]
+        at, cmd = a, REPLY_MARK
+    elif at < 0:
+        return None, b""
+    text = out[at + len(cmd):at + len(cmd) + 400]
+    for end in REPLY_END:
+        text = text.split(end, 1)[0]
+    if f"to{level}(".encode() in text:
+        return "set", text
+    return next((k for m, k in EFFORT_REPLIES if m in text), "unknown"), text
+
+
+def set_effort(s, level, run, wait=20, now=None, sleep=None):
+    """Types `/effort <level>`, logs the answer read off the screen, returns its kind.
+
+    Confirms a "Change effort level?" dialog with its default; the answer gets
+    `wait` seconds from the confirm, since it is drawn only after it.
+    """
+    now, sleep = now or time.time, sleep or time.sleep  # looked up per call: s25's tests fake the clock
+    s.clear()
+    s.send(f"/effort {level}")
+    deadline, confirmed = now() + wait, False
+    while True:
+        kind, text = effort_reply(s.out, level)
+        if kind == "dialog" and not confirmed:
+            s.keys("change effort level dialog: default", ENTER)
+            deadline, confirmed = now() + wait, True
+        elif kind not in (None, "dialog"):
+            break
+        if now() > deadline:
+            raise TimeoutError(f"/effort {level}: no answer on screen: {s.out[-300:]!r}")
+        sleep(0.2)
+    sleep(1)  # let the line finish drawing
+    kind, text = effort_reply(s.out, level)
+    action(run, "effort answer", level=level, kind=kind, dialog=confirmed,
+           screen=text.decode(errors="replace"))
+    if kind not in ("set", "capped", "auto"):
+        raise RuntimeError(f"/effort {level}: {kind}")
+    return kind
+
+
+# What the TUI draws while typing into it would answer a dialog or end up in a
+# running turn (2.1.316, 2.1.319). Session.out is a stream, not a screen: the
+# caller clears it once the TUI is idle, so any marker since then is current.
+# Enter in a permission dialog picks its default "Yes" and runs the tool.
+DIALOG_MARKERS = (b"Entertoconfirm", b"Esctocancel", "❯1.".encode(), b"Doyouwanttoproceed?",
+                  EFFORT_DIALOG, EXIT_DIALOG, *DIALOGS)
+# The spinner ("Roosting…(0s·↓34tokens)", not a collapsed "…(+3morelines)"), background agents.
+TURN_MARKERS = re.compile("…\\((\\d|running)|backgroundagents?tofinish".encode())
+
+
+def typing_blocker(out):
+    """Why typing into the TUI now is unsafe ("dialog open", "turn running"), else None.
+
+    out is what the TUI drew since the driver last saw it idle at its prompt.
+    """
+    if any(m in out for m in DIALOG_MARKERS):
+        return "dialog open"
+    if TURN_MARKERS.search(out):
+        return "turn running"
+    return None
+
+
+SONNET = "claude-sonnet-5-5"  # the model S25 runs on, its key in `modelSettings`
+
+
+def sonnet_model_settings(settings):
+    """The sonnet entry of `modelSettings` in ~/.claude/settings.json, nothing else of it."""
+    return ((settings or {}).get("modelSettings") or {}).get(SONNET)
+
+
+def restore_level(entry):
+    """The `/effort` argument that puts back the saved sonnet entry: its level, else auto."""
+    return (entry or {}).get("effortLevel") or "auto"
+
+
+def s25():
+    """Effort levels (#37): which hooks carry `effort`, and which level.
+
+    Sonnet, since haiku sends no `effort`. One Bash call at the default level,
+    then `/effort` through every level with one Bash call each, a failing Bash
+    call, and still at `max` (this session only; the saved default is then
+    `xhigh`) two Agent calls, one with its own `effort` and one inheriting, so
+    an inheriting subagent shows whether it gets the session's level or the
+    saved one. Every /effort answer is read off the screen and logged; a
+    "Change effort level?" dialog is confirmed with its default, anything else
+    unexpected fails the run. `/effort` saves the level for sonnet in
+    ~/.claude/settings.json (`modelSettings`), so the run ends by setting the
+    sonnet entry it found back (its level, or `/effort auto`, which clears it).
+    That entry, and nothing else of the file, is logged before, ahead of the
+    Agent calls and after. Nothing is typed while the screen shows a dialog or
+    a running turn, nor into a prompt box whose last input the TUI wasn't seen
+    to take: the cleanup after a failure is skipped then, and logged. A
+    session that starts on another model than SONNET stops before any input.
+    """
+    levels = ("low", "medium", "high", "xhigh", "max")
+    fail = "ls captures/nonexistent-dir"
+    subs = ("echo sub-high", "echo sub-inherit")
+    bash = ["echo default", *(f"echo {lv}" for lv in levels), fail, *subs]
+    settings = os.path.join(CONFIG, "settings.json")
+
+    def sonnet_settings(what):
+        entry = sonnet_model_settings(read_json(settings))
+        action("S25", f"settings sonnet entry {what}", modelSettings={SONNET: entry})
+        return entry
+
+    def guard(what):
+        # s.out holds what the TUI drew since it was last seen idle (settled()).
+        # The calls in turn, effort, before the Agent prompt and /exit are
+        # deliberate backups behind settled() and the first-prompt guard: keep them.
+        blocker = typing_blocker(s.out)
+        if blocker:
+            raise RuntimeError(f"{what}: {blocker} on screen, not typing: {s.out[-300:]!r}")
+
+    unconfirmed = None  # input typed and not yet seen through to an idle prompt
+
+    def settled():
+        # s.out holds what the TUI drew since the turn or command ended: a dialog
+        # drawn then must stop the run, not be dropped unseen.
+        nonlocal unconfirmed
+        guard("next keystroke")
+        s.clear()
+        unconfirmed = None
+
+    def turn(text):
+        nonlocal unconfirmed
+        guard(f"prompt {text!r}")
+        unconfirmed = text
+        t = s.send(text)
+        n = s.wait("UserPromptSubmit", t, 60, lambda e: e.get("prompt") == text)
+        s.wait("Stop", t, 120, lambda e: e.get("prompt_id") == n.get("prompt_id"))
+        # out is cleared once the poller sees the Stop, so text drawn between the
+        # Stop and the clear goes unchecked. Accepted: before the Stop, the turn's
+        # own spinner can't be told apart from a running turn; settled() checks
+        # what is drawn after the clear.
+        s.clear()  # the turn's own spinner is over; only what follows its Stop counts
+        time.sleep(3)
+        settled()
+        return t
+
+    def run_bash(cmd):
+        return turn(f"Run exactly this Bash command once and nothing else: {cmd}")
+
+    def effort(level):
+        nonlocal unconfirmed
+        guard(f"/effort {level}")
+        unconfirmed = f"/effort {level}"
+        set_effort(s, level, "S25")
+        # set_effort confirmed its own dialog; what counts starts at the answer after it.
+        def answer(out):
+            d = out.rfind(EFFORT_DIALOG)
+            return out.find(REPLY_MARK, d) if d >= 0 else -1
+        s.keep_from(answer)
+        settled()
+
+    saved = sonnet_settings("before")
+    s = Session("S25", ["--permission-mode", "default", "--allowedTools", "Agent",
+                        *(f"Bash({c})" for c in bash)], model="sonnet",
+                env={"HOMEBREW_NO_AUTO_UPDATE": "1", "HOMEBREW_NO_INSTALL_CLEANUP": "1"})
+    start, answered = s.ready()
+    if answered is not None:  # its leftovers ("Entertoconfirm", "❯1.") are no dialog open;
+        s.keep_since(answered)  # what was drawn after its Enter still counts
+    # SONNET names the `modelSettings` entry to put back; on another model the
+    # restore would clear the user's saved level, so stop before any /effort.
+    if start.get("model") != SONNET:
+        action("S25", "unexpected model", model=start.get("model"), expected=SONNET)
+        raise RuntimeError(f"S25 runs on {start.get('model')!r}, not {SONNET}: no /effort typed")
+    try:
+        guard("first prompt")  # a dialog ready() doesn't know: never type into it
+        run_bash("echo default")
+        for lv in levels:
+            effort(lv)
+            run_bash(f"echo {lv}")
+        run_bash(fail)
+        sonnet_settings("before the Agent calls")  # the saved default, against the session's max
+        text = ("Call the Agent tool twice in one message, both with subagent_type "
+                "general-purpose and no model parameter. First call: effort high, prompt "
+                f"'Run exactly this Bash command once and nothing else: {subs[0]}'. Second "
+                f"call: no effort parameter, prompt 'Run exactly this Bash command once and "
+                f"nothing else: {subs[1]}'. Then reply with both results.")
+        guard("Agent prompt")
+        unconfirmed = text
+        t = s.send(text)
+        done = []
+        while len(done) < 2:
+            e = s.wait("SubagentStop", t, 240, lambda e: e.get("agent_type") == "general-purpose"
+                       and e.get("agent_id") not in done)
+            done.append(e.get("agent_id"))
+        # 2.1.319 runs them in the background: each result comes back in a
+        # <task-notification> turn of its own; wait for both turns' Stop.
+        for agent in done:
+            n = s.wait("UserPromptSubmit", t, 120, lambda e, a=agent: str(
+                e.get("prompt", "")).startswith("<task-notification>") and a in e["prompt"])
+            s.wait("Stop", t, 120, lambda e, n=n: e.get("prompt_id") == n.get("prompt_id"))
+        # As in turn(): cleared once the poller sees the last Stop, so text drawn
+        # between that Stop and the clear goes unchecked; settled() checks what follows.
+        s.clear()  # the "Waiting for 2 background agents" turn is over
+        time.sleep(5)
+        settled()
+    finally:
+        # Also after a failure: put back the user's saved sonnet level, unless
+        # the screen may answer a dialog (Enter picks "Yes" in a permission
+        # prompt), a turn is still running, or the last input may still sit in
+        # the prompt box (no spinner then, so typing_blocker can't tell).
+        level, blocker = restore_level(saved), typing_blocker(s.out)
+        if not blocker and unconfirmed is not None:
+            blocker = "prompt not confirmed"
+        if s in LIVE and blocker:
+            action("S25", "effort restore skipped", level=level, reason=blocker)
+        elif s in LIVE:
+            try:
+                effort(level)
+            except Exception as e:
+                action("S25", "effort restore failed", level=level, error=str(e))
+    guard("/exit")
+    s.exit()
+    sonnet_settings("after")
+
+
 RUNS = {"S1": s1, "S2": s2, "S3": s3, "S4": s4, "S5": s5, "S6": s6, "S7": s7,
         "S8": s8, "S9": s9, "S10": s10, "S11": s11, "S12": s12, "S13": s13,
         "S14": s14, "S15": s15, "S16": s16,
         "S17": s17, "S18": s18, "S19": s19, "S20": s20, "S21": s21, "S22": s22,
-        "S23": s23, "S24": s24}
+        "S23": s23, "S24": s24, "S25": s25}
 
 
 def main():

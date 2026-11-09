@@ -1,0 +1,29 @@
+{
+  "kind": "tool.post",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "tool_call": "toolu_01CPZ6BGkey5EjRPLp198MFY",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "ba743a77-4bb8-4d51-85db-6257e179b71f",
+    "permission_mode": "default",
+    "effort": "medium",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo medium",
+      "description": "Print medium"
+    },
+    "tool_response": {
+      "stdout": "medium",
+      "stderr": "",
+      "interrupted": false,
+      "isImage": false,
+      "noOutputExpected": false
+    },
+    "duration_ms": 31,
+    "command": "echo medium",
+    "command_description": "Print medium"
+  }
+}

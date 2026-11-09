@@ -8,6 +8,7 @@
     "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/12ce6954-14e0-488c-9478-5e0f9754d416.jsonl",
     "prompt_id": "e3c84793-9c8d-4698-8d68-573cdeb08734",
     "permission_mode": "default",
+    "effort": "medium",
     "tool_name": "AskUserQuestion",
     "tool_input": {
       "questions": [

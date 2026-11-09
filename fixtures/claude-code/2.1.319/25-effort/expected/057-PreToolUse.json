@@ -1,0 +1,21 @@
+{
+  "kind": "tool.pre",
+  "session": "f50183d9-eba6-4bc9-9ee3-78ca452c197a",
+  "tool_call": "toolu_019SkzY9vRxZZb1E1rsC2cr6",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/claude-code",
+  "claude_code": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.claude/projects/-Users-user-dev-subspace-tools-hook-capture-claude-code/f50183d9-eba6-4bc9-9ee3-78ca452c197a.jsonl",
+    "prompt_id": "f54dd4fd-80d9-49fc-8a8b-a9f74dd707a8",
+    "permission_mode": "default",
+    "effort": "max",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "echo max",
+      "description": "Print max"
+    },
+    "command": "echo max",
+    "command_description": "Print max"
+  }
+}
