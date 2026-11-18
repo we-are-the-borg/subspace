@@ -3,8 +3,8 @@
 subspace lets desktop apps follow your coding agents while they work.
 
 It currently connects **Claude Code** and **Codex** to
-[The Collective](https://github.com/we-are-the-borg/collective) and
-[Unimatrix Zero](https://github.com/we-are-the-borg/unimatrix-zero).
+[The Collective](https://github.com/we-are-the-borg/collective), 
+[Unimatrix Zero](https://github.com/we-are-the-borg/unimatrix-zero) and whatever you build.
 Each plugin saves the agent's hook events to a local folder. The apps read
 those files to keep track of sessions, tool calls and subagents.
 
@@ -19,7 +19,7 @@ to get those fixes.
 The hooks run in the background. They don't give the agent instructions or
 make decisions for it. Both plugins use the same small shell script and
 require only POSIX `sh` and standard utilities. Your agent data will
-stay on your machine. subspace doesn't send it anywhere.
+stay on your machine. **subspace doesn't send it anywhere**.
 
 ## Install
 
@@ -115,7 +115,7 @@ folder behind; delete it separately if you want to remove the saved events.
 I build subspace with help from Claude Code and Codex.
 I review everything the agents write and test the code before releasing it.
 
-To borrow a line from the agents: I can make mistakes.
+But as agents like to say: I can make mistakes.
 You're welcome to read the code, question a decision or point out a bug.
 
 ## Building an app or contributing
