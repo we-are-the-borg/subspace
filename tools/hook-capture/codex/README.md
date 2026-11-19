@@ -224,6 +224,22 @@ keeps recording `tty.log`, and treats the screen as unknown, so it aborts.
 `actions.jsonl` keeps every screen it read.
 Curated result: `fixtures/codex/0.167.0/4-effort-levels/`.
 
+### 2g. Multi-line command
+
+How does a multi-line command reach the hooks? By hand, from this capture
+directory, with the command of run 2b:
+
+```sh
+codex --no-daemon -a on-request -s read-only -c 'approvals_reviewer="user"'
+```
+
+Send: `Run this exact command in the shell as one call, without changing it:
+cat > captures/multiline-probe.txt <<'EOF' then the lines first line, second
+line, third line, then EOF. The session is read-only; request elevated sandbox
+permission for this disposable write and wait for my approval. Do not retry or
+modify other files.` Approve once without remembering a rule, then `/exit` and
+`sh ./collect.sh`. Curated result: `fixtures/codex/0.167.0/5-multiline-command/`.
+
 ## 3. Interactive without daemon: interrupt and normal exit
 
 Answers open questions **1, 2, 5, 7, 8**; compare `.meta` with run 2.
@@ -373,6 +389,7 @@ Stop the watcher with Ctrl-C. Curated result:
 | 3: manual/remembered approvals, denials, request correlation | 2 and supplemental 2b if inherited auto-review handled requests; note dialogs, retries and reviewer behavior |
 | #34: who answers a permission request, automatic review | 2c–2e |
 | #38: reasoning effort per turn, a child's effort | 2f |
+| Multi-line command in `PreToolUse`, `PermissionRequest`, `PostToolUse` | 2g |
 | 4: concurrent/nested children, reused child turns and transcript paths | 1, 2, 4 |
 | 5: host PID with/without shared daemon | 2 vs 3; complete `.meta` chains, 1 as headless comparison |
 | 6: plugin data path, custom `CODEX_HOME`, re-trust, uninstall | Installed-plugin test (`tools/e2e/codex.md`) |
