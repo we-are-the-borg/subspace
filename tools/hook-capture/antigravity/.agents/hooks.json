@@ -1,0 +1,50 @@
+{
+  "subspace-capture": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "if [ -f ../log.sh ]; then exec sh ../log.sh; else exec sh ./log.sh; fi"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f ../log.sh ]; then exec sh ../log.sh; else exec sh ./log.sh; fi"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f ../log.sh ]; then exec sh ../log.sh; else exec sh ./log.sh; fi"
+          }
+        ]
+      }
+    ],
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "if [ -f ../log.sh ]; then exec sh ../log.sh; else exec sh ./log.sh; fi"
+      }
+    ],
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "if [ -f ../log.sh ]; then exec sh ../log.sh; else exec sh ./log.sh; fi"
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "if [ -f ../log.sh ]; then exec sh ../log.sh; else exec sh ./log.sh; fi"
+      }
+    ]
+  }
+}
