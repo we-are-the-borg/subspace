@@ -1,0 +1,25 @@
+{
+  "kind": "tool.post",
+  "session": "bd793872-9200-404c-922e-0d0017b69b7f",
+  "tool_call": "call_11705468130552633306",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/bd793872-9200-404c-922e-0d0017b69b7f/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/bd793872-9200-404c-922e-0d0017b69b7f",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "",
+    "step_idx": 2,
+    "tool_name": "send_message",
+    "tool_input": {
+      "Message": "sub-ok",
+      "Recipient": "ea5fa741-34ec-4612-ad24-205289f3eb4b"
+    },
+    "error": "",
+    "message_recipient": "ea5fa741-34ec-4612-ad24-205289f3eb4b"
+  }
+}

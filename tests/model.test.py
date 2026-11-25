@@ -79,8 +79,9 @@ class SchemasPerSource(unittest.TestCase):
             props = {k: v for k, v in result["properties"].items() if k != block}
             return props, result["required"][:-1], schema["$defs"]["id"]
         sources = sorted(p.name for p in (REPO / "schema").iterdir() if p.is_dir())
-        self.assertEqual(sources, ["claude-code", "codex"])
+        self.assertEqual(sources, ["antigravity", "claude-code", "codex"])
         self.assertEqual(core("claude-code"), core("codex"))
+        self.assertEqual(core("claude-code"), core("antigravity"))
 
 
 class SessionStatusGoldenFiles(unittest.TestCase):
@@ -243,7 +244,7 @@ class Interpreter(unittest.TestCase):
     def test_never_fails_on_malformed_payloads(self):
         for payload in (None, [], "text", 3, {"hook_event_name": 5}):
             with self.subTest(payload=payload):
-                for source in ("claude-code", "codex"):
+                for source in ("antigravity", "claude-code", "codex"):
                     result = model.apply(load(REPO / "model" / f"{source}.json"), payload)
                     self.assertEqual(result["kind"], "unknown")
                 result = model.apply(load(REPO / "model" / "claude-code-session.json"), payload)

@@ -1,0 +1,27 @@
+{
+  "kind": "tool.post",
+  "session": "91921677-ee57-400f-8371-5ea165c7bfd2",
+  "tool_call": "call_14362434922629549167",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/91921677-ee57-400f-8371-5ea165c7bfd2/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/91921677-ee57-400f-8371-5ea165c7bfd2",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "",
+    "step_idx": 2,
+    "tool_name": "run_command",
+    "tool_input": {
+      "CommandLine": "pwd",
+      "WaitMsBeforeAsync": 5000,
+      "toolSummary": "Print working directory"
+    },
+    "error": "",
+    "command": "pwd",
+    "command_description": "Print working directory"
+  }
+}
