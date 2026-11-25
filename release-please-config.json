@@ -27,6 +27,17 @@
           "jsonpath": "$.version"
         }
       ]
+    },
+    "adapters/antigravity": {
+      "component": "antigravity",
+      "initial-version": "1.0.0",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": ".antigravity-plugin/plugin.json",
+          "jsonpath": "$.version"
+        }
+      ]
     }
   }
 }

@@ -50,9 +50,15 @@ for f in "$day"/*.json; do
     elif (.ts | type) != "number" or .ts < 0 or .ts != (.ts | floor) then "FAIL ts type/value"
     elif (.pid | type) != "number" or .pid < 1 or .pid != (.pid | floor) then "FAIL pid type/value"
     elif (.payload | type) != "object" then "FAIL payload is not an object"
-    elif (.payload.hook_event_name | type) != "string" then "FAIL hook_event_name is not a string"
+    elif (((.payload | has("hook_event_name")) and (.payload.hook_event_name | type) == "string")
+      or ((.payload | has("hookEventName")) and (.payload.hookEventName | type) == "string")) | not
+      then "FAIL hook_event_name/hookEventName is not a string"
+    elif (.payload | has("hook_event_name")) and (.payload.hook_event_name | type) != "string" then "FAIL hook_event_name is not a string"
+    elif (.payload | has("hookEventName")) and (.payload.hookEventName | type) != "string" then "FAIL hookEventName is not a string"
     elif (.payload | has("session_id")) and (.payload.session_id | type) != "string" then "FAIL session_id is not a string"
+    elif (.payload | has("conversationId")) and (.payload.conversationId | type) != "string" then "FAIL conversationId is not a string"
     elif (.payload | has("transcript_path")) and ((.payload.transcript_path | type) != "string" and (.payload.transcript_path | type) != "null") then "FAIL transcript_path type"
+    elif (.payload | has("transcriptPath")) and ((.payload.transcriptPath | type) != "string" and (.payload.transcriptPath | type) != "null") then "FAIL transcriptPath type"
     elif (.payload | has("cwd")) and (.payload.cwd | type) != "string" then "FAIL cwd is not a string"
     elif (.payload | has("agent_id")) and (.payload.agent_id | type) != "string" then "FAIL agent_id is not a string"
     elif (.payload | has("agent_type")) and (.payload.agent_type | type) != "string" then "FAIL agent_type is not a string"
@@ -72,7 +78,7 @@ for f in "$day"/*.json; do
   fi
 done
 
-case $source in claude-code | codex) ;; '') ;; *) bad "unsupported source $source" ;; esac
+case $source in claude-code | codex | antigravity) ;; '') ;; *) bad "unsupported source $source" ;; esac
 [ "$fail" -eq 0 ] || { echo "--- $n events"; echo FAILED; exit 1; }
 
 if [ "$fixture_args" -eq 0 ]; then
@@ -85,18 +91,18 @@ done
 
 # Per event name: keys every fixture has, and keys any fixture has
 known=$(for d; do cat "$d"/*.json; done | jq -e -s '
-  group_by(.hook_event_name)
-  | map({key: .[0].hook_event_name,
+  group_by(.hook_event_name // .hookEventName)
+  | map({key: (.[0].hook_event_name // .[0].hookEventName),
          value: {all: (map(keys) | reduce .[1:][] as $k (.[0]; . - (. - $k))),
                  any: (map(keys) | add | unique)}})
   | from_entries') || { bad "could not read fixtures"; known='{}'; }
 
 for f in "$day"/*.json; do
   out=$(jq -r --argjson known "$known" '
-    .payload as $p | $known[$p.hook_event_name] as $k
-      | if $k == null then "NEW  \($p.hook_event_name) (no fixture)"
-        else (($k.all - ($p | keys))[] | "FAIL \($p.hook_event_name) misses \(.)"),
-             ((($p | keys) - $k.any)[] | "NEW  \($p.hook_event_name) has \(.)")
+    .payload as $p | ($p.hook_event_name // $p.hookEventName) as $ev | $known[$ev] as $k
+      | if $k == null then "NEW  \($ev) (no fixture)"
+        else (($k.all - ($p | keys))[] | "FAIL \($ev) misses \(.)"),
+             ((($p | keys) - $k.any)[] | "NEW  \($ev) has \(.)")
         end
     ' "$f" 2>&1) || out="FAIL could not compare payload"
   [ -z "$out" ] || printf '%s\n' "$out" | sed "s|\$|  (${f##*/})|"
@@ -120,5 +126,5 @@ else
 fi
 
 echo "--- $n events"
-jq -r '.payload.hook_event_name' "$day"/*.json 2>/dev/null | sort | uniq -c
+jq -r '.payload.hook_event_name // .payload.hookEventName' "$day"/*.json 2>/dev/null | sort | uniq -c
 [ "$fail" -eq 0 ] && echo OK || { echo FAILED; exit 1; }

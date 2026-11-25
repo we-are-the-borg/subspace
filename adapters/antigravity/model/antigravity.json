@@ -1,0 +1,184 @@
+{
+  "format": 1,
+  "revision": 1,
+  "source": "antigravity",
+  "block": "antigravity",
+  "observed": ["1.5.16", "1.5.17", "2.35.1"],
+  "core": {
+    "kind": {
+      "path": "/hookEventName",
+      "map": {
+        "SessionStart": "session.start",
+        "PreToolUse": "tool.pre",
+        "PostToolUse": "tool.post",
+        "Stop": "turn.stop",
+        "PreInvocation": "other",
+        "PostInvocation": "other"
+      },
+      "default": "unknown"
+    },
+    "session": { "path": "/conversationId", "type": "id" },
+    "tool_call": {
+      "when": [{ "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] }],
+      "path": "/toolCall/id",
+      "type": "id"
+    },
+    "tool": {
+      "when": [{ "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] }],
+      "path": "/toolCall/name",
+      "map": { "run_command": "shell", "invoke_subagent": "spawn_agent" },
+      "default": "other"
+    },
+    "cwd": { "path": "/cwd", "type": "string" }
+  },
+  "fields": {
+    "kind": {
+      "path": "/hookEventName",
+      "map": {
+        "SessionStart": "session.start",
+        "PreInvocation": "invocation.pre",
+        "PostInvocation": "invocation.post",
+        "PreToolUse": "tool.pre",
+        "PostToolUse": "tool.post",
+        "Stop": "turn.stop"
+      },
+      "default": "unknown"
+    },
+    "transcript_path": { "path": "/transcriptPath", "type": "string" },
+    "artifact_dir": { "path": "/artifactDirectoryPath", "type": "string" },
+    "workspace_paths": {
+      "path": "/workspacePaths",
+      "each": { "path": "", "type": "string" }
+    },
+    "model": { "path": "/modelName", "type": "string" },
+    "last_user_input": {
+      "path": "/lastUserInput",
+      "type": "string",
+      "note": "empty string in subagent conversations"
+    },
+    "invocation_num": {
+      "when": [{ "path": "/hookEventName", "in": ["PreInvocation", "PostInvocation"] }],
+      "path": "/invocationNum",
+      "type": "integer"
+    },
+    "initial_num_steps": {
+      "when": [{ "path": "/hookEventName", "in": ["PreInvocation", "PostInvocation"] }],
+      "path": "/initialNumSteps",
+      "type": "integer"
+    },
+    "step_idx": {
+      "when": [{ "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] }],
+      "path": "/stepIdx",
+      "type": "integer"
+    },
+    "tool_name": {
+      "when": [{ "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] }],
+      "path": "/toolCall/name",
+      "type": "string"
+    },
+    "tool_input": {
+      "when": [{ "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] }],
+      "path": "/toolCall/args",
+      "type": "any"
+    },
+    "error": {
+      "when": [{ "path": "/hookEventName", "in": ["PostToolUse", "Stop"] }],
+      "path": "/error",
+      "type": "string",
+      "note": "empty string on normal completion and also on nonzero shell exits; shell exit codes are in the transcript"
+    },
+    "command": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["run_command"] }
+      ],
+      "path": "/toolCall/args/CommandLine",
+      "type": "string"
+    },
+    "command_description": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["run_command"] }
+      ],
+      "path": "/toolCall/args/toolSummary",
+      "type": "string"
+    },
+    "bypass_sandbox": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["run_command"] }
+      ],
+      "path": "/toolCall/args/BypassSandbox",
+      "type": "boolean"
+    },
+    "file_path": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["read_file"] }
+      ],
+      "path": "/toolCall/args/Path",
+      "type": "string"
+    },
+    "spawn_type": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["invoke_subagent"] }
+      ],
+      "path": "/toolCall/args/TypeName",
+      "type": "string"
+    },
+    "spawn_role": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["invoke_subagent"] }
+      ],
+      "path": "/toolCall/args/Role",
+      "type": "string"
+    },
+    "spawn_prompt": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["invoke_subagent"] }
+      ],
+      "path": "/toolCall/args/Prompt",
+      "type": "string"
+    },
+    "spawn_model": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["invoke_subagent"] }
+      ],
+      "path": "/toolCall/args/Model",
+      "type": "string"
+    },
+    "message_recipient": {
+      "when": [
+        { "path": "/hookEventName", "in": ["PreToolUse", "PostToolUse"] },
+        { "path": "/toolCall/name", "in": ["send_message"] }
+      ],
+      "path": "/toolCall/args/Recipient",
+      "type": "id",
+      "note": "target conversationId, e.g. the parent conversation when a subagent replies"
+    },
+    "execution_num": {
+      "when": [{ "path": "/hookEventName", "in": ["Stop"] }],
+      "path": "/executionNum",
+      "type": "integer"
+    },
+    "termination_reason": {
+      "when": [{ "path": "/hookEventName", "in": ["Stop"] }],
+      "path": "/terminationReason",
+      "type": "string"
+    },
+    "fully_idle": {
+      "when": [{ "path": "/hookEventName", "in": ["Stop"] }],
+      "path": "/fullyIdle",
+      "type": "boolean"
+    },
+    "continuation_active": {
+      "when": [{ "path": "/hookEventName", "in": ["Stop"] }],
+      "path": "/continuationActive",
+      "type": "boolean"
+    }
+  }
+}

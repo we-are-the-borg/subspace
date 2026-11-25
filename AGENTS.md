@@ -1,6 +1,6 @@
 # subspace
 
-Hooks for coding agents that **only observe**: every hook event is written as a file into a shared folder, one per agent (*source*), which consumer apps read. Sources today: **Claude Code** and **Codex**; more (e.g. Gemini CLI) may follow. Consumers today are **The Collective** ([`we-are-the-borg/collective`](https://github.com/we-are-the-borg/collective), Swift) and **Unimatrix Zero** ([`we-are-the-borg/unimatrix-zero`](https://github.com/we-are-the-borg/unimatrix-zero), Swift); both are native macOS apps.
+Hooks for coding agents that **only observe**: every hook event is written as a file into a shared folder, one per agent (*source*), which consumer apps read. Sources today: **Claude Code**, **Codex** and **Antigravity**; more (e.g. Gemini CLI) may follow. Consumers today are **The Collective** ([`we-are-the-borg/collective`](https://github.com/we-are-the-borg/collective), Swift) and **Unimatrix Zero** ([`we-are-the-borg/unimatrix-zero`](https://github.com/we-are-the-borg/unimatrix-zero), Swift); both are native macOS apps.
 
 These rules apply to every agent working in this repo. `CLAUDE.md` only imports this file.
 
@@ -51,8 +51,10 @@ sh tests/spool.test.sh                  # the hook as shipped
 SPOOL_SH=dash sh tests/spool.test.sh    # under another shell, if dash is installed
 python3 tests/model.test.py             # mapping documents reproduce the golden files
 python3 tests/codex-adapter.test.py
+python3 tests/antigravity-adapter.test.py
 python3 tests/claude-code-capture.test.py
 python3 tests/codex-capture.test.py     # needs ps; may fail inside a sandbox
+python3 tests/antigravity-capture.test.py  # needs ps; may fail inside a sandbox
 python3 tests/fixtures-privacy.test.py  # no personal data anywhere in the repo
 shellcheck core/spool.sh                # if installed
 ```

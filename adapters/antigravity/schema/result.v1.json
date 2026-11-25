@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:subspace:result:antigravity:v1",
+  "title": "Result of applying the antigravity mapping document (format 1) to one raw antigravity payload; see docs/model.md",
+  "$ref": "#/$defs/result",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "opaque": {},
+    "result": {
+      "type": "object",
+      "required": [
+        "kind",
+        "antigravity"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "session.start",
+            "turn.start",
+            "turn.stop",
+            "tool.pre",
+            "tool.post",
+            "permission.request",
+            "agent.start",
+            "compact.start",
+            "compact.end",
+            "other",
+            "unknown"
+          ]
+        },
+        "session": {
+          "$ref": "#/$defs/id"
+        },
+        "agent": {
+          "$ref": "#/$defs/id"
+        },
+        "tool_call": {
+          "$ref": "#/$defs/id"
+        },
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cwd": {
+          "type": "string"
+        },
+        "antigravity": {
+          "$ref": "#/$defs/antigravity"
+        }
+      },
+      "additionalProperties": false
+    },
+    "antigravity": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "session.start",
+            "invocation.pre",
+            "invocation.post",
+            "tool.pre",
+            "tool.post",
+            "turn.stop",
+            "unknown"
+          ]
+        },
+        "transcript_path": {
+          "type": "string"
+        },
+        "artifact_dir": {
+          "type": "string"
+        },
+        "workspace_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "model": {
+          "type": "string"
+        },
+        "last_user_input": {
+          "type": "string"
+        },
+        "invocation_num": {
+          "type": "integer"
+        },
+        "initial_num_steps": {
+          "type": "integer"
+        },
+        "step_idx": {
+          "type": "integer"
+        },
+        "tool_name": {
+          "type": "string"
+        },
+        "tool_input": {
+          "$ref": "#/$defs/opaque"
+        },
+        "error": {
+          "type": "string"
+        },
+        "command": {
+          "type": "string"
+        },
+        "command_description": {
+          "type": "string"
+        },
+        "bypass_sandbox": {
+          "type": "boolean"
+        },
+        "file_path": {
+          "type": "string"
+        },
+        "spawn_type": {
+          "type": "string"
+        },
+        "spawn_role": {
+          "type": "string"
+        },
+        "spawn_prompt": {
+          "type": "string"
+        },
+        "spawn_model": {
+          "type": "string"
+        },
+        "message_recipient": {
+          "$ref": "#/$defs/id"
+        },
+        "execution_num": {
+          "type": "integer"
+        },
+        "termination_reason": {
+          "type": "string"
+        },
+        "fully_idle": {
+          "type": "boolean"
+        },
+        "continuation_active": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

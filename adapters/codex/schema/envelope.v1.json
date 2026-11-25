@@ -12,7 +12,7 @@
       "const": 1
     },
     "source": {
-      "description": "Agent that produced the event, e.g. \"claude-code\" or \"codex\" (contract §4). Apps ignore sources they don't know.",
+      "description": "Agent that produced the event, e.g. \"claude-code\", \"codex\" or \"antigravity\" (contract §4). Apps ignore sources they don't know.",
       "type": "string",
       "minLength": 1
     },
@@ -40,13 +40,19 @@
       "additionalProperties": { "type": "string", "pattern": "^[ -~]+$" }
     },
     "payload": {
-      "description": "The hook's stdin JSON, byte for byte. Fields depend on source and hook_event_name; see docs/events/ and fixtures/<source>/<version>/.",
+      "description": "The hook's stdin JSON, byte for byte. Fields depend on source and hook_event_name/hookEventName; see docs/events/ and fixtures/<source>/<version>/.",
       "type": "object",
-      "required": ["hook_event_name"],
+      "anyOf": [
+        { "required": ["hook_event_name"] },
+        { "required": ["hookEventName"] }
+      ],
       "properties": {
         "hook_event_name": { "type": "string" },
+        "hookEventName": { "type": "string" },
         "session_id": { "type": "string" },
+        "conversationId": { "type": "string" },
         "transcript_path": { "type": ["string", "null"] },
+        "transcriptPath": { "type": ["string", "null"] },
         "cwd": { "type": "string" },
         "agent_id": { "type": "string" },
         "agent_type": { "type": "string" }
