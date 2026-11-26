@@ -1,0 +1,25 @@
+{
+  "kind": "tool.pre",
+  "session": "eb79fbb4-b523-43b2-ba16-e221db8df6f5",
+  "tool_call": "call_16558593622475471811",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/eb79fbb4-b523-43b2-ba16-e221db8df6f5/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/eb79fbb4-b523-43b2-ba16-e221db8df6f5",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "",
+    "step_idx": 2,
+    "tool_name": "read_file",
+    "tool_input": {
+      "EndLine": 3,
+      "Path": "/Users/user/dev/subspace/README.md",
+      "StartLine": 1
+    },
+    "file_path": "/Users/user/dev/subspace/README.md"
+  }
+}

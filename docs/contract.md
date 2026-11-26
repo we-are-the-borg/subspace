@@ -2,17 +2,17 @@
 
 Version 1. Payload facts are backed by real captures in `fixtures/<source>/<version>/`. One `$ROOT` per source, with the same layout and envelope everywhere. Mapping documents (§12) let apps read target fields out of the raw payloads instead of depending on each agent's format. Claude Code's session status file (§13) and Codex's writer lock files (§14) are read-only side sources.
 
-subspace **only observes** coding agents. For each supported agent (a *source*, §4) an adapter in `adapters/<source>/` writes every hook event as a file into that source's shared folder `$ROOT` (§2). Local apps read those folders; all interpretation happens in the apps. Sources: Claude Code and Codex. Codex payload facts come from user-started macOS captures of CLI 0.159.3 in `fixtures/codex/0.159.3/` and driven captures of CLI 0.167.0 (permission review, reasoning effort) in `fixtures/codex/0.167.0/`; installed-plugin checks are described in `tools/e2e/codex.md`.
+subspace **only observes** coding agents. For each supported agent (a *source*, §4) an adapter in `adapters/<source>/` writes every hook event as a file into that source's shared folder `$ROOT` (§2). Local apps read those folders; all interpretation happens in the apps. Sources: Claude Code, Codex and Antigravity. Codex payload facts come from user-started macOS captures of CLI 0.159.3 in `fixtures/codex/0.159.3/` and driven captures of CLI 0.167.0 (permission review, reasoning effort) in `fixtures/codex/0.167.0/`; installed-plugin checks are described in `tools/e2e/codex.md`. Antigravity payload facts come from macOS captures of CLI 1.5.16 / 1.5.17 and Desktop App 2.35.1 in `fixtures/antigravity/1.5.17/`.
 
 Consumers today: **The Collective** and **Unimatrix Zero**, both native macOS apps (Swift). More can read the same folders without changes to subspace.
 
 ## 1. Principles
 
-- **Observe, never steer.** All hooks are `command` hooks with `async: true`. The script always exits 0 and writes nothing to stdout or stderr. On some events the agent would feed stdout to the model as context, and a nonzero exit shows a hook error (see `docs/events/<source>.md`). An event whose registration alone changes the agent's behavior is never subscribed.
-- **Sync must stay possible.** `async: true` is the default, but a later release may drop it if async misbehaves. Every invocation must therefore be fast enough to run synchronously.
+- **Observe, never steer.** All hooks are `command` hooks, with `async: true` wherever the agent supports it (Claude Code and Codex; Antigravity runs hooks synchronously). The script always exits 0 and writes nothing to stdout or stderr. On some events the agent would feed stdout to the model as context, and a nonzero exit shows a hook error (see `docs/events/<source>.md`). An event whose registration alone changes the agent's behavior is never subscribed.
+- **Sync must stay possible.** `async: true` is the default where supported, but Antigravity runs hooks synchronously and a later release may drop `async` elsewhere if it misbehaves. Every invocation must therefore be fast enough to run synchronously.
 - **No runtime dependencies.** The hook script is POSIX `sh` with standard utilities. No `node`, `jq` or `python`.
 - **Payload unchanged.** The agent's hook JSON is wrapped in an envelope (§4), never rebuilt or truncated.
-- **User scope only** (Claude Code: `/plugin install … --scope user`; Codex: `codex plugin add subspace@subspace`). Installation may register the marketplace/plugin in the agent configuration; the hook itself never writes there.
+- **User scope only** (Claude Code: `/plugin install … --scope user`; Codex: `codex plugin add subspace@subspace`; Antigravity: `agy plugin install …`). Installation may register the marketplace/plugin in the agent configuration; the hook itself never writes there.
 - **The plugin writes only inside `$ROOT`** (§2). Never into repos or the agent's configuration.
 
 ## 2. Location
@@ -53,6 +53,18 @@ These paths and data survival after uninstall are established by the pinned impl
 
 Codex **keeps the data directory after uninstall**. A stale root or `plugin.json` does not establish that the plugin is installed. Cleanup runs only while hooks run (§5); after uninstall events remain until explicitly removed by the user. Stop sessions using the plugin before uninstalling or purging data.
 
+### Antigravity (`antigravity`)
+
+The adapter uses `.antigravity-plugin/plugin.json` and root `hooks.json` (`hooks/hooks.json` is never loaded for native plugins) in its distribution repository `we-are-the-borg/subspace-antigravity`. The plugin name is frozen at `subspace`. Antigravity exports `PLUGIN_DATA` (and does not export `CLAUDE_PLUGIN_DATA`); the shared writer uses `$SUBSPACE_DIR` if set, else `$CLAUDE_PLUGIN_DATA`, else `$PLUGIN_DATA`.
+
+| Case | Path apps must use |
+|---|---|
+| Antigravity CLI (`agy`, verified) | `~/.gemini/antigravity-cli/plugin_data/subspace/` |
+| Antigravity App (`Antigravity.app`, verified; `--app_data_dir antigravity`) | `~/.gemini/antigravity/plugin_data/subspace/` |
+| `SUBSPACE_DIR` set | `$SUBSPACE_DIR` (tests/development) |
+
+Installed-plugin runs of CLI 1.5.16 on macOS verified `~/.gemini/config/plugins/<name>` as `PLUGIN_ROOT` and `~/.gemini/antigravity-cli/plugin_data/<name>` (created `0755`) as `PLUGIN_DATA`; an installed-plugin run of App 2.35.1 verified `~/.gemini/antigravity/plugin_data/<name>`. Antigravity **keeps the data directory after uninstall** (`agy plugin uninstall subspace` removes the plugin under `~/.gemini/config/plugins/` but leaves `plugin_data/` behind). A stale root or `plugin.json` therefore does not prove the plugin is installed.
+
 ## 3. Layout
 
 ```
@@ -90,7 +102,7 @@ $ROOT/
 | `v` | Format version. Apps skip files with an unknown version. |
 | `source` | Agent that produced the event, one of the registry below. Apps ignore sources they don't know. |
 | `ts` | Unix seconds when the plugin saw the event. With async hooks this is not the exact moment of the event. |
-| `pid` | The process that starts the hook (`$PPID` of the script), described per source in §6. It is the hook's parent when the script starts: if the agent has already exited by then, it is the process that adopted the hook, not the agent (1 on macOS; on Linux 1 or a subreaper, not observed); §6 says what that means per source. Claude Code: the session's `claude` process. Codex without the daemon: the session's `codex` process; with it: a shared `app-server`, unsuitable for session liveness. |
+| `pid` | The process that starts the hook (`$PPID` of the script), described per source in §6. It is the hook's parent when the script starts: if the agent has already exited by then, it is the process that adopted the hook, not the agent (1 on macOS; on Linux 1 or a subreaper, not observed); §6 says what that means per source. Claude Code: the session's `claude` process. Codex without the daemon: the session's `codex` process; with it: a shared `app-server`, unsuitable for session liveness. Antigravity CLI: the `agy` process (shared with its subagents); Antigravity App: a shared `language_server` process across all conversations, unsuitable for session liveness. |
 | `terminal` | Optional. Terminal identifiers from the hook's environment (below), so apps can bring the agent's terminal tab or pane to the front; §6 says when apps may use it. Absent when none is set. |
 | `payload` | The hook's stdin JSON, byte for byte. Apps parse the file as one JSON document, not line by line. |
 
@@ -119,8 +131,9 @@ Events with empty stdin are dropped.
 |---|---|---|---|
 | `claude-code` | Claude Code | `adapters/claude-code/` | §2 |
 | `codex` | Codex | `adapters/codex/` | §2 |
+| `antigravity` | Antigravity | `adapters/antigravity/` | §2 |
 
-**Schema:** `$ROOT/schema/envelope.v<v>.json` is the JSON Schema (draft 2020-12, `$id` `urn:subspace:envelope:v1`) of an event file with that `v`. The plugin copies it from its own `schema/` on every `SessionStart`, so it always matches the installed version; the source is `schema/` in this repo (each adapter ships a copy), and CI validates the fixtures' envelopes against it. `v` is the reference: event files carry no `$schema` field. The schema pins the envelope; for the payload it only requires `hook_event_name`, because the payload's format belongs to the agent (its hooks reference, and the fixtures in `fixtures/<source>/<version>/`).
+**Schema:** `$ROOT/schema/envelope.v<v>.json` is the JSON Schema (draft 2020-12, `$id` `urn:subspace:envelope:v1`) of an event file with that `v`. The plugin copies it from its own `schema/` on every `SessionStart`, so it always matches the installed version; the source is `schema/` in this repo (each adapter ships a copy), and CI validates the fixtures' envelopes against it. `v` is the reference: event files carry no `$schema` field. The schema pins the envelope; for the payload it only requires `hook_event_name` (Claude Code, Codex) or `hookEventName` (Antigravity, camelCase), because the payload's format belongs to the agent (its hooks reference, and the fixtures in `fixtures/<source>/<version>/`).
 
 **Path:** `events/<UTC date YYYY-MM-DD>/<ts>-<pid>-<random>.json`. The name only serves uniqueness.
 
@@ -130,7 +143,7 @@ Events with empty stdin are dropped.
 
 ## 5. Retention
 
-- Claude Code: the user sets `retention_days` as a plugin option (`userConfig`, default 3, range 1–30: `/plugin` → Configure options, `claude plugin configure`, or `--config` at install). The hook script reads it as `CLAUDE_PLUGIN_OPTION_RETENTION_DAYS`. Codex has no corresponding plugin setting in 0.159.3 and keeps the default of 3; its adapter declares no `userConfig`.
+- Claude Code: the user sets `retention_days` as a plugin option (`userConfig`, default 3, range 1–30: `/plugin` → Configure options, `claude plugin configure`, or `--config` at install). The hook script reads it as `CLAUDE_PLUGIN_OPTION_RETENTION_DAYS`. Codex and Antigravity have no corresponding plugin setting and keep the default of 3; their adapters declare no `userConfig`.
 - On every invocation the plugin deletes whole day folders older than `retention_days`: it keeps the current UTC day and the `retention_days` days before it, so at least `retention_days` × 24 hours of history remain. No per-file scanning, no size measuring.
 - Apps must tolerate files and folders vanishing at any time, including while they read them.
 - Apps don't delete anything. Longer history belongs in an app's own cache.
@@ -192,13 +205,28 @@ Events with empty stdin are dropped.
 - **Session liveness:** there is no subscribed `SessionEnd`. Async work can be cancelled during teardown; final events may be lost, and a late one's `pid` can be the process that adopted the hook (§4; not captured). With the daemon, multiple sessions share the hook's `pid` (`app-server`); apps **must not use Codex `pid` to establish session liveness**. Use a timeout since the last event, tolerate missing terminal events, and label this as inferred inactivity. No timeout duration is imposed by this contract. Codex's writer lock files (§14) confirm a session's end, with a delay of up to Codex's thread unload delay (30 minutes by default) when the TUI runs on the shared daemon.
 - **Terminal:** without the daemon `terminal` (§4) comes from the session's `codex` process. With the shared daemon (`codex app-server`) it is the daemon's environment, i.e. of whichever terminal started it, not the session's, and apps can't yet tell a session on the daemon from one in its own `codex` process (no documented signal; to be established, see [issue #30](https://github.com/we-are-the-borg/subspace/issues/30)). So apps treat **every** Codex `terminal` as app only: they may bring the app to the front, as for a Claude Code background session, but **never open its focus URL or select a tab, pane or window by any identifier in it**. Observed by hand on macOS with Codex 0.166.0, not captured: sessions from the ChatGPT app carry no `terminal`; two TUIs in two Warp tabs on one daemon: the hooks of both sessions carried the first tab's `TERM_PROGRAM`, `__CFBundleIdentifier` and `WARP_FOCUS_URL`.
 
+### Antigravity (CLI 1.5.16 / 1.5.17, App 2.35.1)
+
+- **Payload format & identity:** keys are **camelCase** (`hookEventName`, `conversationId`, `transcriptPath`, `modelName`, `lastUserInput`, `toolCall`, `stepIdx`). `conversationId` identifies one conversation — **including each subagent**, which runs as its own conversation with its own `conversationId` and `transcriptPath` and no parent ID in the payload. Read target fields through `model/antigravity.json` (`docs/model.md` §13).
+- **Session start and resume:** `SessionStart` fires once when a new conversation starts (in interactive CLI on the first prompt, not on TUI launch). It does **not** fire on `--conversation` resume (`fixtures/antigravity/1.5.17/5-resume/`); apps must create or re-open session state on any event, not only `SessionStart`. On resume or a new turn, `invocationNum` and `executionNum` reset to `0`, while `stepIdx` and `initialNumSteps` continue increasing.
+- **Tool correlation & outcomes:** pair `PreToolUse` and `PostToolUse` by `conversationId` and `toolCall.id` (`tool_call`). `PostToolUse` carries no tool output and sets `error: ""` both on normal completion and on nonzero shell exits (`sh -c "exit 7"` in Run 1); read shell exit codes from the transcript (§8).
+- **Permissions and interruption:** Antigravity has no `PermissionRequest` or `Interrupt` hook. `PreToolUse` fires **before** an interactive permission dialog. Approving proceeds to `PostToolUse` → `PostInvocation` → `Stop`. Denying (`4. No, cancel` or `Esc`) or interrupting a running tool (`sleep 30` + `Esc`) emits **no `PostToolUse`, no `PostInvocation` and no `Stop`** (`fixtures/antigravity/1.5.17/3-interactive-permission-approve-deny/`, `4-interactive-interrupt-mid-tool/`). Apps must close open calls/turns on the next turn's `PreInvocation` or after an inactivity timeout.
+- **Subagents & `fullyIdle`:** `invoke_subagent` launches a child conversation that fires all six hooks with `lastUserInput: ""`. When the parent finishes launching subagents, its `Stop` carries `fullyIdle: false`; when subagent messages arrive, the parent wakes up (`PreInvocation`, `invocationNum: 0`) and finishes with `Stop` (`fullyIdle: true`). Link a subagent to its parent via:
+  1. The subagent's `send_message` hook (`toolCall.args.Recipient`, target field `message_recipient`), which equals the parent's `conversationId`.
+  2. The parent transcript's `invoke_subagent` `GENERIC` step (`conversationId`) or the child transcript's step 0 `SYSTEM_MESSAGE` (`sender=<parent>`), for earlier linking before `send_message` (§8).
+- **Model:** `modelName` is present on every hook payload as a concrete ID that includes the reasoning effort suffix where applicable (observed `gemini-3.8-flash-low`, `gemini-4-neon-high`).
+- **Session liveness:** there is no `SessionEnd` hook. In `Antigravity.app`, multiple conversations share a single `language_server` `$PPID` (`fixtures/antigravity/1.5.17/7-desktop-app-shared-host/`); in CLI, a parent and its subagents share one `agy` `$PPID`. Apps **must not** use `pid` for per-session liveness; use a timeout since the last event.
+- **Terminal:** CLI sessions inherit the terminal's identifiers (all five Warp variables observed in Run 3); `Antigravity.app` sessions carry `__CFBundleIdentifier: "com.google.antigravity"` (Run 7), which apps can use to bring `Antigravity.app` to the front.
+
 ## 7. Subscribed events
 
-The plugin subscribes to every event that provably only observes; the full list with reasons per source is in `docs/events/<source>.md` ([Claude Code](events/claude-code.md), [Codex](events/codex.md)). New observing events may be added at any time (§9).
+The plugin subscribes to every event that provably only observes; the full list with reasons per source is in `docs/events/<source>.md` ([Claude Code](events/claude-code.md), [Codex](events/codex.md), [Antigravity](events/antigravity.md)). New observing events may be added at any time (§9).
 
 **Never subscribed** for Claude Code, because registering them changes its behavior: `WorktreeCreate`, `WorktreeRemove`, `PreModelSwitch`. **Skipped** for now: `MessageDisplay`, `FileChanged`.
 
 Codex subscribes to the eleven events listed in `docs/events/codex.md`, with `async: true` and no matcher. `SessionEnd` is never subscribed because Codex forces it to run synchronously; legacy `notify` is skipped and never modified.
+
+Antigravity subscribes to all six lifecycle events listed in `docs/events/antigravity.md` (`SessionStart`, `PreInvocation`, `PostInvocation`, `PreToolUse`, `PostToolUse`, `Stop`), synchronously (Antigravity has no `async` mode), with `"matcher": "*"` on `PreToolUse`/`PostToolUse` and silent exit 0.
 
 ## 8. Transcripts
 
@@ -216,6 +244,12 @@ For Claude Code: token usage, model, timestamps and full responses are not in th
 - The captured rollout `session_meta` contains the child identity and parent/task-path link (§6). Token counts, full tool output and shell exit codes are in the rollouts, not guaranteed in hook responses. The internal JSONL contains session metadata, turn context, response items and event messages; use captured paths rather than assuming one filename format.
 - Scenario 1 distributes an [edited `session_meta` excerpt](../fixtures/codex/0.159.3/1-headless-parallel-reused-child-failure/rollouts/session_meta.jsonl) from the root and both child rollouts for child-to-spawn correlation (§6). Only `payload.creator_user_id`, `payload.creator_account_id` and `payload.base_instructions.text` are replaced; all other bytes in those first lines remain as captured. The [fixture README](../fixtures/codex/0.159.3/README.md#edited-rollout-metadata-excerpt) documents the replacements. Every run in `fixtures/codex/0.167.0/` has an [edited excerpt](../fixtures/codex/0.167.0/README.md#rollout-excerpts) with its `turn_context` records reduced to the reviewer fields (who answers a permission request, §6) plus `model` and `effort` (effort, §6), and the unchanged output of a rejected or denied call; run 4's excerpt also holds the `turn_context` record of its child, from the child's rollout. Full Codex rollouts are not shipped. The user's local rollout copies establish the additional findings documented in the fixture READMEs and `docs/events/codex.md`; hook payload fixtures remain unchanged.
 
+### Antigravity
+
+- `transcriptPath` (every payload) points to `~/.gemini/<app_data_dir>/brain/<conversationId>/.system_generated/logs/transcript_full.jsonl` (`antigravity-cli` for CLI, `antigravity` for desktop App). Each subagent has its own `conversationId` and transcript file.
+- The JSONL records `USER_INPUT`, `SYSTEM_MESSAGE` (including subagent hand-off messages with `sender=<conversationId>`), `PLANNER_RESPONSE` (`model`, `input_tokens`, `output_tokens`, `cache_read_tokens`, optional `thinking`, `tool_calls`), and `GENERIC` (shell stdout and exit codes, `invoke_subagent` child `conversationId`, and `status: "ERROR"` on user-denied tool calls).
+- Runs 1, 2, 3 and 7 of [`fixtures/antigravity/1.5.17/`](../fixtures/antigravity/1.5.17/README.md#edited-transcript-excerpts) include minimal edited `transcripts/excerpt.jsonl` files for exit codes, parent ↔ child links, permission denial errors and token usage. Full transcripts are not shipped.
+
 Apps may read transcripts, read-only. Each agent's transcript format is internal and can change without notice; apps must degrade gracefully. The transcript is written asynchronously and may lag the hook events. subspace never touches transcripts.
 
 ## 9. Versioning
@@ -230,6 +264,8 @@ Apps may read transcripts, read-only. Each agent's transcript format is internal
 Claude Code: macOS and Linux. On Windows, Claude Code runs hook scripts through Git Bash; without Git Bash it falls back to PowerShell and subspace does nothing.
 
 Codex: observed on macOS 27.0 arm64 with CLI 0.159.3, including a project cwd containing spaces, and 0.167.0. Linux, WSL and native Windows are **unverified**. The adapter requires POSIX `sh` and standard utilities; Codex does not universally select Git Bash on native Windows. No native Windows support is claimed. A native binary replacing the script is planned for later; it would keep this contract unchanged.
+
+Antigravity: observed on macOS arm64 with CLI 1.5.16 / 1.5.17 (including a workspace cwd containing spaces) and Desktop App 2.35.1. Linux, WSL and native Windows are **unverified**. Antigravity runs Unix hooks via `sh -c` and Windows hooks via `cmd /c`; native Windows is unsupported while the adapter uses POSIX `sh`.
 
 ## 11. Detecting subspace
 
@@ -251,7 +287,11 @@ Codex leaves data behind on uninstall, so the marker below can survive removal. 
 
 **After an update, restart Codex.** `codex plugin add` replaces the cached plugin version and deletes the previous one, so a session that keeps running across an update silently loses its hooks: no events, no fresh `plugin.json`, until Codex is restarted and a new session (not a resumed one) starts. Apps showing a stale `plugin.json` while `codex plugin list` reports a newer version can suggest a restart. Claude Code keeps older versions in its cache; an update takes effect with the next session.
 
-### Actual delivery (both sources)
+### Antigravity
+
+Run `agy plugin list --json` and look for the entry with `"name": "subspace"` and `"enabled": true` (it also carries `version`, `source`, `path` and `hooks`). CLI discovery through a login shell may be needed for apps started from Finder/Dock, as with Claude Code. Because Antigravity leaves `$PLUGIN_DATA` behind on `agy plugin uninstall subspace`, confirm CLI state separately rather than relying on `plugin.json` alone.
+
+### Actual delivery (all sources)
 
 On every `SessionStart`, the plugin writes `$ROOT/plugin.json` (atomically, like event files):
 
@@ -266,7 +306,7 @@ On every `SessionStart`, the plugin writes `$ROOT/plugin.json` (atomically, like
 The payload is the agent's own format (§4) and changes with the agent. So that apps don't have to follow every change, subspace publishes one **mapping document** per source: where in the raw payload each **target field** is. Apps apply it when reading. Event files stay as they are; the mapping is a view on them.
 
 - **Location:** `$ROOT/model/<source>.json`; Claude Code also ships `$ROOT/model/claude-code-session.json` for its session status files (§13), handled by the same rules. The plugin copies it from its own `model/` on every `SessionStart` (atomically, `0600`), so it always matches the installed release. It is missing until the first session start after installing a release that ships it, and it is older than the installed plugin until then. Apps therefore bundle a copy (the one their tests ran against) and use whichever of the two has the higher `revision`, among those whose `format` they know; on a tie, `$ROOT`'s.
-- **Format and target fields:** [`docs/model.md`](model.md): the core fields (§2), the fields per source (§3, §4) and the rules (§5). Schemas: `$ROOT/schema/mapping.v1.json` (`$id` `urn:subspace:mapping:v1`) for the document, `$ROOT/schema/result.v1.json` for the result of applying it. Each root holds only its own source's result schema (`urn:subspace:result:claude-code:v1`, `urn:subspace:result:codex:v1`, since `claude-code-0.9.0`/`codex-0.4.0`; before that one shared `urn:subspace:result:v1` with both blocks), so a change for one source doesn't release the other's adapter. A `session-status.v1.json` left in a Codex root by `codex-0.3.0` is stale; ignore it.
+- **Format and target fields:** [`docs/model.md`](model.md): the core fields (§2), the fields per source (§3, §4, §13) and the rules (§5). Schemas: `$ROOT/schema/mapping.v1.json` (`$id` `urn:subspace:mapping:v1`) for the document, `$ROOT/schema/result.v1.json` for the result of applying it. Each root holds only its own source's result schema (`urn:subspace:result:claude-code:v1`, `urn:subspace:result:codex:v1`, `urn:subspace:result:antigravity:v1`, since `claude-code-0.9.0`/`codex-0.4.0`; before that one shared `urn:subspace:result:v1` with both blocks), so a change for one source doesn't release the other's adapter. A `session-status.v1.json` left in a Codex root by `codex-0.3.0` is stale; ignore it.
 - **Interpreter duties** (`docs/model.md` §5.1): an unknown `format` applies nothing; a rule or condition with an unknown key leaves that field absent; values are never guessed and copied unchanged; the interpreter never fails on a payload. Apps ignore unknown target fields, treat an unknown block `kind` like `unknown` and an unknown core `tool` like `other`.
 - **Tests:** an app's interpreter must reproduce every golden file in `fixtures/<source>/<version>/<run>/expected/` from the raw payload next to it (`docs/model.md` §7). The reference interpreter is `tools/model/apply.py` (test tooling, never part of the hook).
 - **A newer mapping applies to old events too.** A drift is absorbed by fallback paths, so older event files keep resolving. Results are derived data: an app that keeps them should expect a newer mapping to fill fields that were absent before.

@@ -2,7 +2,7 @@
 
 subspace lets desktop apps follow your coding agents while they work.
 
-It currently connects **Claude Code** and **Codex** to
+It currently connects **Claude Code**, **Codex** and **Antigravity** to
 [The Collective](https://github.com/we-are-the-borg/collective), 
 [Unimatrix Zero](https://github.com/we-are-the-borg/unimatrix-zero) and whatever you build.
 Each plugin saves the agent's hook events to a local folder. The apps read
@@ -16,8 +16,8 @@ When an agent update renames or moves fields, an updated mapping can keep
 the apps working without an app update. Keep the subspace plugin up to date
 to get those fixes.
 
-The hooks run in the background. They don't give the agent instructions or
-make decisions for it. Both plugins use the same small shell script and
+The hooks run in the background wherever the agent supports it (Claude Code and Codex; Antigravity runs hooks synchronously). They don't give the agent instructions or
+make decisions for it. All plugins use the same small shell script and
 require only POSIX `sh` and standard utilities. Your agent data will
 stay on your machine. **subspace doesn't send it anywhere**.
 
@@ -62,6 +62,17 @@ them again in `/hooks`.
 The Codex adapter has been tested with CLI 0.159.3 on macOS.
 Linux, WSL and native Windows have not been verified.
 
+### Antigravity
+
+```sh
+agy plugin install https://github.com/we-are-the-borg/subspace-antigravity
+```
+
+To update, run the same `agy plugin install` command again.
+
+The Antigravity adapter has been tested with CLI 1.5.16 / 1.5.17 and Desktop App 2.35.1 on macOS.
+Linux, WSL and native Windows have not been verified.
+
 ## What gets stored
 
 subspace saves the hook payloads as it receives them. These can include your
@@ -71,10 +82,11 @@ them anywhere.
 
 The default locations are:
 
-| Agent       | Event data                                  |
-| ----------- | ------------------------------------------- |
-| Claude Code | `~/.claude/plugins/data/subspace-subspace/` |
-| Codex       | `~/.codex/plugins/data/subspace-subspace/`  |
+| Agent       | Event data                                        |
+| ----------- | ------------------------------------------------- |
+| Claude Code | `~/.claude/plugins/data/subspace-subspace/`       |
+| Codex       | `~/.codex/plugins/data/subspace-subspace/`        |
+| Antigravity | `~/.gemini/antigravity-cli/plugin_data/subspace/` |
 
 If you use `CLAUDE_CONFIG_DIR` or `CODEX_HOME`, the data lives under that
 directory instead.
@@ -89,7 +101,7 @@ under `/plugin` → Installed → subspace → Configure options, or run:
 claude plugin configure subspace@subspace
 ```
 
-Codex currently uses the fixed default.
+Codex and Antigravity currently use the fixed default.
 
 ## Uninstall
 
@@ -110,6 +122,14 @@ codex plugin remove subspace@subspace
 Stop sessions using the plugin before uninstalling. Codex leaves the data
 folder behind; delete it separately if you want to remove the saved events.
 
+For Antigravity:
+
+```sh
+agy plugin uninstall subspace
+```
+
+Antigravity also leaves its `plugin_data` folder behind; delete it separately if you want to remove the saved events.
+
 ## About this repository and me
 
 I build subspace with help from Claude Code and Codex.
@@ -121,9 +141,9 @@ You're welcome to read the code, question a decision or point out a bug.
 ## Building an app or contributing
 
 This is the development repository. Releases are published to
-[subspace-claude-code](https://github.com/we-are-the-borg/subspace-claude-code)
-and [subspace-codex](https://github.com/we-are-the-borg/subspace-codex),
-where each plugin has its own marketplace.
+[subspace-claude-code](https://github.com/we-are-the-borg/subspace-claude-code),
+[subspace-codex](https://github.com/we-are-the-borg/subspace-codex)
+and [subspace-antigravity](https://github.com/we-are-the-borg/subspace-antigravity).
 
 Start with the [contract](docs/contract.md) for the folder layout, event
 format and rules for reading the data. The [mapping documents](docs/model.md)
@@ -131,8 +151,8 @@ describe how to extract fields from each agent's payloads.
 
 Hook delivery has limits. For example, Codex can lose background events
 during shutdown, so apps can't rely on receiving a final event.
-The [Claude Code](docs/events/claude-code.md) and
-[Codex](docs/events/codex.md) event notes document what we've observed.
+The [Claude Code](docs/events/claude-code.md),
+[Codex](docs/events/codex.md) and [Antigravity](docs/events/antigravity.md) event notes document what we've observed.
 
 To test the Codex plugin from a local checkout, follow the
 [local installation guide](tools/e2e/codex.md).

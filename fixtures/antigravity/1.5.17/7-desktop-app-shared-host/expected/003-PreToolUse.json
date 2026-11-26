@@ -1,0 +1,25 @@
+{
+  "kind": "tool.pre",
+  "session": "c3c435ff-856d-4ef2-bd0d-4a4b0d4e83e5",
+  "tool_call": "call_2212311120916076334",
+  "tool": "other",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.gemini/antigravity/brain/c3c435ff-856d-4ef2-bd0d-4a4b0d4e83e5/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity/brain/c3c435ff-856d-4ef2-bd0d-4a4b0d4e83e5",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-4-neon-high",
+    "last_user_input": "Read\t-3 of README.md and run pwd with run_command, then reply with both. Do not edit files.",
+    "step_idx": 2,
+    "tool_name": "read_file",
+    "tool_input": {
+      "EndLine": 3,
+      "Path": "/Users/user/dev/subspace/tools/hook-capture/antigravity/README.md",
+      "StartLine": 1
+    },
+    "file_path": "/Users/user/dev/subspace/tools/hook-capture/antigravity/README.md"
+  }
+}

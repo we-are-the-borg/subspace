@@ -1,0 +1,17 @@
+{
+  "kind": "other",
+  "session": "91921677-ee57-400f-8371-5ea165c7bfd2",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "invocation.pre",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/91921677-ee57-400f-8371-5ea165c7bfd2/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/91921677-ee57-400f-8371-5ea165c7bfd2",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "",
+    "invocation_num": 2,
+    "initial_num_steps": 5
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "kind": "turn.stop",
+  "session": "ea5fa741-34ec-4612-ad24-205289f3eb4b",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/ea5fa741-34ec-4612-ad24-205289f3eb4b/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/ea5fa741-34ec-4612-ad24-205289f3eb4b",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "Run pwd using run_command and report it. Do not edit files.",
+    "error": "",
+    "execution_num": 0,
+    "termination_reason": "NO_TOOL_CALL",
+    "fully_idle": true,
+    "continuation_active": false
+  }
+}

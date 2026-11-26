@@ -1,0 +1,20 @@
+{
+  "kind": "turn.stop",
+  "session": "bd793872-9200-404c-922e-0d0017b69b7f",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/bd793872-9200-404c-922e-0d0017b69b7f/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/bd793872-9200-404c-922e-0d0017b69b7f",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "",
+    "error": "",
+    "execution_num": 0,
+    "termination_reason": "NO_TOOL_CALL",
+    "fully_idle": true,
+    "continuation_active": false
+  }
+}

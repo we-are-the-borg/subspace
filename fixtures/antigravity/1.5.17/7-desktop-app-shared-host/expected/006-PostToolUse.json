@@ -1,0 +1,27 @@
+{
+  "kind": "tool.post",
+  "session": "c3c435ff-856d-4ef2-bd0d-4a4b0d4e83e5",
+  "tool_call": "call_2212311120916075059",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.gemini/antigravity/brain/c3c435ff-856d-4ef2-bd0d-4a4b0d4e83e5/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity/brain/c3c435ff-856d-4ef2-bd0d-4a4b0d4e83e5",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-4-neon-high",
+    "last_user_input": "Read\t-3 of README.md and run pwd with run_command, then reply with both. Do not edit files.",
+    "step_idx": 3,
+    "tool_name": "run_command",
+    "tool_input": {
+      "CommandLine": "pwd",
+      "WaitMsBeforeAsync": 5000,
+      "toolSummary": "Print working directory"
+    },
+    "error": "",
+    "command": "pwd",
+    "command_description": "Print working directory"
+  }
+}

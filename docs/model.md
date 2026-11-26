@@ -2,7 +2,7 @@
 
 The plugins ship the mapping documents to `$ROOT/model/<source>.json` (contract §12); the apps' interpreters are still to come.
 
-**The idea.** Event files stay exactly as contract v1 defines them: the agent's raw payload, byte for byte, in the v1 envelope. subspace additionally publishes one **mapping document** per source ([`model/claude-code.json`](../model/claude-code.json), [`model/codex.json`](../model/codex.json)). It says where in the raw payload each **target field** is. Apps apply it with a small generic interpreter (§5). When an agent changes its payloads, subspace changes the mapping document and releases; the apps need no update.
+**The idea.** Event files stay exactly as contract v1 defines them: the agent's raw payload, byte for byte, in the v1 envelope. subspace additionally publishes one **mapping document** per source ([`model/claude-code.json`](../model/claude-code.json), [`model/codex.json`](../model/codex.json), [`model/antigravity.json`](../model/antigravity.json)). It says where in the raw payload each **target field** is. Apps apply it with a small generic interpreter (§5). When an agent changes its payloads, subspace changes the mapping document and releases; the apps need no update.
 
 The result of applying a mapping to one payload looks like this:
 
@@ -12,11 +12,11 @@ The result of applying a mapping to one payload looks like this:
           "tool_response":"{\"task_name\":\"/root/alpha\"}","spawn_name":"alpha","spawn_task":"/root/alpha", …}}
 ```
 
-It is a small **core** with the same meaning for every source, plus **one block per source** (`claude_code` or `codex`), chosen by the envelope's `source`. Each block has its own kinds, fields and correlation rules. A name is never given two meanings, not across sources and not across hooks of one source.
+It is a small **core** with the same meaning for every source, plus **one block per source** (`claude_code`, `codex` or `antigravity`), chosen by the envelope's `source`. Each block has its own kinds, fields and correlation rules. A name is never given two meanings, not across sources and not across hooks of one source.
 
 **What the mapping solves and what it doesn't.** It answers "where is the value": a renamed, moved or newly added key is handled by changing the mapping alone. It doesn't answer "what does it mean": when an event changes its meaning or new semantics arrive (for example a link field that enables a new correlation rule), apps still change their logic.
 
-**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/`, `fixtures/claude-code/2.1.316/`, `fixtures/claude-code/2.1.318/`, `fixtures/claude-code/2.1.319/`, `fixtures/codex/0.159.3/` and `fixtures/codex/0.167.0/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`, S19 and S20 in `2.1.316/19-…` and `20-…`, S22 and S24 in `2.1.318/22-…` and `24-…`, S25 in `2.1.319/25-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`, **R2-004** is `fixtures/codex/0.167.0/2-…/events/004-*.json`. The runs:
+**Evidence.** Every mapping is derived from the real captures in `fixtures/claude-code/2.1.285/`, `fixtures/claude-code/2.1.287/`, `fixtures/claude-code/2.1.288/`, `fixtures/claude-code/2.1.289/`, `fixtures/claude-code/2.1.316/`, `fixtures/claude-code/2.1.318/`, `fixtures/claude-code/2.1.319/`, `fixtures/codex/0.159.3/`, `fixtures/codex/0.167.0/` and `fixtures/antigravity/1.5.17/`, and nothing else. Short references: **C2-014** is `fixtures/claude-code/2.1.285/2-…/events/014-*.json`, **S4-010** is `fixtures/claude-code/2.1.287/4-…/events/010-*.json` or `…/status/010-status.json` (S15 is in `2.1.288/15-…`, S16–S18 in `2.1.289/16-…` to `18-…`, S19 and S20 in `2.1.316/19-…` and `20-…`, S22 and S24 in `2.1.318/22-…` and `24-…`, S25 in `2.1.319/25-…`), **X1-008** is `fixtures/codex/0.159.3/1-…/events/008-*.json`, **R2-004** is `fixtures/codex/0.167.0/2-…/events/004-*.json`, **A1-023** is `fixtures/antigravity/1.5.17/1-…/events/023-*.json`. The runs:
 
 - Claude Code 2.1.285: C1 headless parallel subagents; C2 interactive background subagents, compact and exit; C3 permission and Ctrl-C.
 - Claude Code 2.1.287, hook events plus session status files (§12): S1 idle and exit; S2 Esc and Ctrl-C mid-turn; S3 Esc mid-tool; S4 permission and question waits; S5 `!` shell; S6 background subagents; S6a background shell, exit dialog, killed; S7 `--continue`; S8 `kill -9`; S9 `claude -p`; S11 `/exit` without a prompt; S12 failing tool; S13 file tools; S14 terminated before any input.
@@ -27,6 +27,7 @@ It is a small **core** with the same meaning for every source, plus **one block 
 - Claude Code 2.1.319, hook events plus session status files: S25 a sonnet session that sets every effort level with `/effort`, one failing tool, then, at the session-only level `max` while `xhigh` is saved as the default, two `Agent` calls, one with its own `effort: "high"`, one inheriting.
 - Codex 0.159.3: X1 parallel and reused children plus a failed command; X2 daemon permission and compact; X3 manual permission and rejection; X4/X5 interrupt before a tool; X6/X7 interrupt of a running shell; X8 resume; X9 ephemeral; X10 cwd with spaces.
 - Codex 0.167.0, hook events plus rollout excerpts: R1 automatic review, four approvals, two of them concurrent in one turn; R2 automatic review, one rejection and two approvals; R3 manual reviewer, one approval and one denial; R4 reasoning effort: one turn at `low`, `/model` to `high` for the session, one turn, then one child agent.
+- Antigravity 1.5.16 / 1.5.17 & Desktop App 2.35.1 (`fixtures/antigravity/1.5.17/`, §13): A1 headless tools (`read_file`, `run_command`, `exit 7`), single subagent and `fullyIdle`; A2 two parallel subagents; A3 interactive `accept-edits` permission approve and option-4 deny (Warp `terminal.json`); A4 interactive `sleep 30` interrupted with `Esc`; A5 `--conversation` resume; A6 cwd with spaces; A7 Desktop App two conversations sharing one `language_server` `$PPID` (`__CFBundleIdentifier: com.google.antigravity`).
 
 ## 1. Principles
 
@@ -67,11 +68,11 @@ Left out of the core on purpose: Claude Code's `SubagentStop` ends a subagent, w
 
 ### 2.2 Core tool categories
 
-| Core `tool` | Claude Code `tool_name` | Codex `tool_name` |
-|---|---|---|
-| `shell` | `Bash` (C1-009) | `Bash` (X1-003) |
-| `spawn_agent` | `Agent` (C1-005) | `collaborationspawn_agent` (X1-007) |
-| `other` | everything else, e.g. `Read` (C3-005) | everything else, e.g. `collaborationwait_agent` (X1-018) |
+| Core `tool` | Claude Code `tool_name` | Codex `tool_name` | Antigravity `toolCall.name` |
+|---|---|---|---|
+| `shell` | `Bash` (C1-009) | `Bash` (X1-003) | `run_command` (A1-011) |
+| `spawn_agent` | `Agent` (C1-005) | `collaborationspawn_agent` (X1-007) | `invoke_subagent` (A1-023) |
+| `other` | everything else, e.g. `Read` (C3-005) | everything else, e.g. `collaborationwait_agent` (X1-018) | everything else, e.g. `read_file` (A1-005), `send_message` (A1-031) |
 
 A category exists only where a tool exists in both sources. The raw name is the block's `tool_name`.
 
@@ -360,7 +361,7 @@ fixtures/<source>/<version>/<run>/
 ```
 
 - Content: the result object (§5), pretty-printed with two spaces, LF line endings and a trailing newline. Comparison is semantic (as JSON values).
-- All 564 fixture events (407 Claude Code, 157 Codex) and all 157 status snapshots (Claude Code 2.1.287 to 2.1.319) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
+- All 694 fixture events (407 Claude Code, 157 Codex, 130 Antigravity) and all 157 status snapshots (Claude Code 2.1.287 to 2.1.319) have one. A new capture adds its `expected/` files in the same PR; `python3 tools/model/apply.py model/<source>.json < events/F` prints a first version to review by hand.
 - The existing globs (`fixtures/*/*/*/events/*.json` in CI and `tools/e2e/check.sh`) don't see `expected/`.
 
 **CI check** (`tests/model.test.py`): for every `events/F`, apply `model/<source>.json` with the reference interpreter `tools/model/apply.py` and compare with `expected/F`; fail if an `events/` file has no `expected/` file or the other way round. Likewise `status/F` with `model/<source>-session.json` and `status-expected/F`. The same test covers each rule of §5.1 and checks that every adapter ships its own mapping unchanged. CI also validates the mapping documents and golden files against their schemas (§11). The reference interpreter runs only in CI and tests, never in the hook. The golden files are also the test suite for each app's interpreter: both apps run their own interpreter over the same fixtures and mappings.
@@ -441,7 +442,7 @@ Anything else an app wants is still in `payload`; reading it there couples that 
 
 ## 11. JSON Schemas
 
-- `schema/<source>/result.v1.json` ([Claude Code](../schema/claude-code/result.v1.json), `$id` `urn:subspace:result:claude-code:v1`; [Codex](../schema/codex/result.v1.json), `urn:subspace:result:codex:v1`): the result of applying that source's mapping: the core (§2), identical in both (`tests/model.test.py` checks it), plus that source's block. Blocks are closed, so a mapping can't produce a field the target model doesn't define; adding a target field ships mapping and schema together.
+- `schema/<source>/result.v1.json` ([Claude Code](../schema/claude-code/result.v1.json), `$id` `urn:subspace:result:claude-code:v1`; [Codex](../schema/codex/result.v1.json), `urn:subspace:result:codex:v1`; [Antigravity](../schema/antigravity/result.v1.json), `urn:subspace:result:antigravity:v1`): the result of applying that source's mapping: the core (§2), identical across all sources (`tests/model.test.py` checks it), plus that source's block. Blocks are closed, so a mapping can't produce a field the target model doesn't define; adding a target field ships mapping and schema together.
 - [`schema/claude-code/session-status.v1.json`](../schema/claude-code/session-status.v1.json) (`$id` `urn:subspace:session-status:claude-code:v1`): the result of applying a session-status mapping (§12), closed like the result schema.
 - [`schema/mapping.v1.json`](../schema/mapping.v1.json) (`$id` `urn:subspace:mapping:v1`): a mapping document. It is closed for this repository's own documents, so CI catches typos. Interpreters in the apps still follow §5.1 (unknown keys → field absent), so a newer document with new operations degrades instead of failing.
 
@@ -486,3 +487,54 @@ Left in the file: `procStart`, `peerProtocol`, `peerFeatures`, `pidDomain`, `mes
 - **Hide spares.** A file with `spare: true` is a warm `claude bg-spare` process, not a session the user started (`kind: bg`, `name` and `jobId` equal to the short id, `status: idle`). Hide a session while its own file (previous rules) has `spare: true`; a spare file that isn't the session's own changes nothing. A claim gives the process the job's session: its hooks carry the job's `session_id`. The claim's `SessionStart` had `source: resume` in the claim seen in Claude Code 2.1.316 (outside the fixtures), where the spare's own session was not continued, and `source: startup` for a fresh `claude --bg` job (S22-004); see contract §13.
 - **Deleted file = process ended.** Deleted on `/exit` and at the end of `claude -p`. After a crash (`kill -9`) it stays until the next `claude` process starts (S8, S6a), so a present file whose `pid` is not alive is stale.
 - **Missing, unparseable or `state` absent → unknown.** Fall back to the hooks and a timeout. Never guess from an unknown `status`.
+
+## 13. Antigravity (`antigravity`)
+
+### 13.1 Kinds
+
+| Hook (`hookEventName`) | Block `kind` | Core `kind` | Observed |
+|---|---|---|---|
+| `SessionStart` | `session.start` | `session.start` | A1-001, A1-025, A7-001 |
+| `PreInvocation` | `invocation.pre` | `other` | A1-002, A5-001 |
+| `PostInvocation` | `invocation.post` | `other` | A1-007, A5-004 |
+| `PreToolUse` | `tool.pre` | `tool.pre` | A1-003, A1-023, A3-003 |
+| `PostToolUse` | `tool.post` | `tool.post` | A1-004, A1-018, A3-004 |
+| `Stop` | `turn.stop` | `turn.stop` | A1-030, A1-043, A7-010 |
+| anything else | `unknown` | `unknown` | – |
+
+### 13.2 Fields, Antigravity 1.5.16 / 1.5.17 & Desktop App 2.35.1
+
+Core mappings: `session` from `/conversationId`, `tool_call` from `/toolCall/id` (`PreToolUse`/`PostToolUse`), `tool` from `/toolCall/name` (`run_command` → `shell`, `invoke_subagent` → `spawn_agent`, else `other`), `cwd` from `/cwd`. Core `agent` is always absent because subagents are separate conversations with their own `conversationId`.
+
+| Block field | Type | From the payload, on which hooks | Evidence |
+|---|---|---|---|
+| `kind` | string | `hookEventName` via §13.1 | |
+| `transcript_path` | string | `transcriptPath`, every hook | A1-001, A7-001 |
+| `artifact_dir` | string | `artifactDirectoryPath`, every hook | A1-001, A7-001 |
+| `workspace_paths` | array of strings | `workspacePaths`, every hook | A1-001, A6-001 |
+| `model` | string | `modelName`, every hook; concrete model ID encoding effort where applicable | A1-001 (`gemini-3.8-flash-low`), A7-001 (`gemini-4-neon-high`) |
+| `last_user_input` | string | `lastUserInput`, every hook; `""` in subagent conversations | A1-001 vs. A1-025 |
+| `invocation_num` | integer | `invocationNum` on `PreInvocation`, `PostInvocation` | A1-002 (`0`), A1-008 (`1`) |
+| `initial_num_steps` | integer | `initialNumSteps` on `PreInvocation`, `PostInvocation` | A1-002 (`1`), A5-001 (`20`) |
+| `step_idx` | integer | `stepIdx` on `PreToolUse`, `PostToolUse` | A1-005 (`3`), A5-002 (`22`) |
+| `tool_name` | string | `toolCall.name` on `PreToolUse`, `PostToolUse` | A1-005 (`read_file`), A1-011 (`run_command`), A1-023 (`invoke_subagent`) |
+| `tool_input` | **opaque** | `toolCall.args` on `PreToolUse`, `PostToolUse` | A1-005, A1-011 |
+| `error` | string | `error` on `PostToolUse`, `Stop`; `""` on normal completion and also on nonzero shell exits | A1-018 (`""` on `exit 7`), A1-043 (`""`) |
+| `command` | string | `toolCall.args.CommandLine` of `run_command` on `PreToolUse`, `PostToolUse` | A1-011, A1-017 |
+| `command_description` | string | `toolCall.args.toolSummary` of `run_command` on `PreToolUse`, `PostToolUse` | A1-011 |
+| `bypass_sandbox` | boolean | `toolCall.args.BypassSandbox` of `run_command` on `PreToolUse`, `PostToolUse` | A3-003 (`true`) |
+| `file_path` | string | `toolCall.args.Path` of `read_file` on `PreToolUse`, `PostToolUse` | A1-005, A7-003 |
+| `spawn_type`, `spawn_role`, `spawn_prompt`, `spawn_model` | string | `toolCall.args.TypeName`, `.Role`, `.Prompt`, `.Model` of `invoke_subagent` on `PreToolUse`, `PostToolUse` | A1-023, A2-005 |
+| `message_recipient` | non-empty string | `toolCall.args.Recipient` of `send_message` on `PreToolUse`, `PostToolUse`; equals the parent's `session` when a subagent replies | A1-031, A2-025 |
+| `execution_num` | integer | `executionNum` on `Stop` | A1-030 (`0`) |
+| `termination_reason` | string | `terminationReason` on `Stop` | A1-030 (`NO_TOOL_CALL`) |
+| `fully_idle` | boolean | `fullyIdle` on `Stop`; `false` while background subagents run | A1-030 (`false`), A1-043 (`true`) |
+| `continuation_active` | boolean | `continuationActive` on `Stop` | A1-030 (`false`) |
+
+### 13.3 Correlation rules (Antigravity)
+
+- **Turns and resume:** `SessionStart` fires once on new conversations and does **not** fire on `--conversation` resume (A5-001 starts with `invocation.pre`). `invocation_num` and `execution_num` reset to `0` per turn/wakeup while `step_idx` and `initial_num_steps` increase monotonically.
+- **Tool pairing and outcomes:** pair `tool.pre` ↔ `tool.post` by (`session`, `tool_call`). `error: ""` does not guarantee exit code 0 (A1-018 for `sh -c "exit 7"`); shell exit codes live in `transcript_path`.
+- **Denials and interrupts:** denying a permission dialog (`4. No, cancel`, A3-010) or pressing `Esc` mid-tool (A4-003) emits no `tool.post`, `invocation.post` or `turn.stop`. Close open calls on the next `invocation.pre` or after a timeout.
+- **Subagents:** each subagent has its own `session` (`conversationId`) and `last_user_input: ""`. Link it to its parent via `message_recipient` on its `send_message` call (A1-031, A2-025), or earlier via the parent transcript's `invoke_subagent` step / child transcript's step 0 `sender=<parent>` (contract §6, §8). A parent `turn.stop` with `fully_idle: false` means background work is still running (A1-030, A2-019).
+- **Liveness:** no `SessionEnd`, and Desktop App conversations share one `language_server` `pid` (A7). Infer session inactivity from a timeout, never from `pid`.

@@ -1,0 +1,20 @@
+{
+  "kind": "turn.stop",
+  "session": "62896c79-8e97-4cd7-81bd-41df7c086c4a",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "turn.stop",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/62896c79-8e97-4cd7-81bd-41df7c086c4a/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/62896c79-8e97-4cd7-81bd-41df7c086c4a",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "Use run_command with BypassSandbox=true to run exactly: echo perm-approved-ok . Reply with its output.",
+    "error": "",
+    "execution_num": 0,
+    "termination_reason": "NO_TOOL_CALL",
+    "fully_idle": true,
+    "continuation_active": false
+  }
+}

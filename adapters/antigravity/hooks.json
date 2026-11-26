@@ -1,0 +1,50 @@
+{
+  "subspace": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "sh ./scripts/spool.sh antigravity session-start"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh ./scripts/spool.sh antigravity"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh ./scripts/spool.sh antigravity"
+          }
+        ]
+      }
+    ],
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "sh ./scripts/spool.sh antigravity"
+      }
+    ],
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "sh ./scripts/spool.sh antigravity"
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "sh ./scripts/spool.sh antigravity"
+      }
+    ]
+  }
+}

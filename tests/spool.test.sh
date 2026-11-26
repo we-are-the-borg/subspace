@@ -10,8 +10,8 @@ manifest="$here/../adapters/claude-code/.claude-plugin/plugin.json"
 schemas="$here/../adapters/claude-code/schema"
 models="$here/../adapters/claude-code/model"
 run_sh=${SPOOL_SH:-sh}
-# Don't inherit a real plugin environment (e.g. when run from Claude Code).
-unset SUBSPACE_DIR CLAUDE_PLUGIN_DATA CLAUDE_PLUGIN_OPTION_RETENTION_DAYS
+# Don't inherit a real plugin environment (e.g. when run from Claude Code or Antigravity).
+unset SUBSPACE_DIR CLAUDE_PLUGIN_DATA PLUGIN_DATA CLAUDE_PLUGIN_OPTION_RETENTION_DAYS
 # Nor the terminal's identifiers (contract §4), e.g. Warp's or tmux's.
 terminal_vars="TERM_PROGRAM TERM_PROGRAM_VERSION __CFBundleIdentifier TERM_SESSION_ID
   ITERM_SESSION_ID WARP_FOCUS_URL WARP_TERMINAL_SESSION_UUID WEZTERM_PANE
@@ -250,14 +250,18 @@ check '[ "$(count)" = 1 ]' "missing \$ROOT not created"
 check 'ls -ld "$root" | grep -q "^drwx------"' "\$ROOT not 0700"
 current=unset-root
 : > "$tmp/out"
-(cd "$tmp" && unset SUBSPACE_DIR CLAUDE_PLUGIN_DATA; printf '{}' | "$run_sh" "$spool" claude-code > "$tmp/out" 2>&1) \
+(cd "$tmp" && unset SUBSPACE_DIR CLAUDE_PLUGIN_DATA PLUGIN_DATA; printf '{}' | "$run_sh" "$spool" claude-code > "$tmp/out" 2>&1) \
   || no "exit code $?"
 check '[ ! -s "$tmp/out" ] && [ ! -e "$tmp/events" ] && [ ! -e /events ]' "misbehaved without \$ROOT"
 done_test
 
 setup plugin-data-fallback
-printf '{}' | (unset SUBSPACE_DIR; CLAUDE_PLUGIN_DATA=$root "$run_sh" "$spool" claude-code) > "$tmp/out" 2>&1 || no "exit code $?"
+printf '{}' | (unset SUBSPACE_DIR PLUGIN_DATA; CLAUDE_PLUGIN_DATA=$root "$run_sh" "$spool" claude-code) > "$tmp/out" 2>&1 || no "exit code $?"
 check '[ "$(count)" = 1 ] && [ ! -s "$tmp/out" ]' "CLAUDE_PLUGIN_DATA not used"
+printf '{}' | (unset SUBSPACE_DIR CLAUDE_PLUGIN_DATA; PLUGIN_DATA=$root "$run_sh" "$spool" antigravity) > "$tmp/out" 2>&1 || no "exit code $?"
+check '[ "$(count)" = 2 ] && [ ! -s "$tmp/out" ]' "PLUGIN_DATA not used"
+printf '{}' | (unset SUBSPACE_DIR; CLAUDE_PLUGIN_DATA=$root PLUGIN_DATA="$tmp/ignored" "$run_sh" "$spool" claude-code) > "$tmp/out" 2>&1 || no "exit code $?"
+check '[ "$(count)" = 3 ] && [ ! -e "$tmp/ignored" ] && [ ! -s "$tmp/out" ]' "CLAUDE_PLUGIN_DATA did not win over PLUGIN_DATA"
 done_test
 
 setup source

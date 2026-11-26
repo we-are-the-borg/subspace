@@ -1,0 +1,27 @@
+{
+  "kind": "tool.pre",
+  "session": "18150b75-dc24-4a8f-bcca-b97323c3fffa",
+  "tool_call": "call_3053875225739613547",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/18150b75-dc24-4a8f-bcca-b97323c3fffa/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/18150b75-dc24-4a8f-bcca-b97323c3fffa",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "Use run_command to run exactly: sleep 30 . Then reply done.",
+    "step_idx": 2,
+    "tool_name": "run_command",
+    "tool_input": {
+      "CommandLine": "sleep 30",
+      "NotificationTimeoutSeconds": 35,
+      "WaitMsBeforeAsync": 10000,
+      "toolSummary": "Sleep 30 seconds"
+    },
+    "command": "sleep 30",
+    "command_description": "Sleep 30 seconds"
+  }
+}

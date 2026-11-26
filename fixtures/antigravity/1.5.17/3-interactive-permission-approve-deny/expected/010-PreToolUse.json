@@ -1,0 +1,28 @@
+{
+  "kind": "tool.pre",
+  "session": "62896c79-8e97-4cd7-81bd-41df7c086c4a",
+  "tool_call": "call_561267951115866283",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.pre",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/62896c79-8e97-4cd7-81bd-41df7c086c4a/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/62896c79-8e97-4cd7-81bd-41df7c086c4a",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "Use run_command with BypassSandbox=true to run exactly: rm -rf /tmp/subspace-nonexistent-88888 . If denied, report denial without retrying.",
+    "step_idx": 6,
+    "tool_name": "run_command",
+    "tool_input": {
+      "BypassSandbox": true,
+      "CommandLine": "rm -rf /tmp/subspace-nonexistent-88888",
+      "WaitMsBeforeAsync": 5000,
+      "toolSummary": "Remove nonexistent temporary directory"
+    },
+    "command": "rm -rf /tmp/subspace-nonexistent-88888",
+    "command_description": "Remove nonexistent temporary directory",
+    "bypass_sandbox": true
+  }
+}

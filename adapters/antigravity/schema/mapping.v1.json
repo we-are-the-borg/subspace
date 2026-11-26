@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:subspace:mapping:v1",
+  "title": "subspace mapping document, format 1; see docs/model.md §5",
+  "$ref": "#/$defs/document",
+  "$defs": {
+    "pointer": {
+      "type": "string",
+      "pattern": "^(/.*)?$"
+    },
+    "type": {
+      "enum": [
+        "string",
+        "id",
+        "integer",
+        "number",
+        "boolean",
+        "object",
+        "array",
+        "null",
+        "any"
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "required": [
+        "path",
+        "in"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/pointer"
+        },
+        "in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "when": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "path": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/pointer"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/pointer"
+              },
+              "minItems": 1
+            }
+          ]
+        },
+        "parse": {
+          "const": "json"
+        },
+        "pick": {
+          "$ref": "#/$defs/pointer"
+        },
+        "each": {
+          "$ref": "#/$defs/spec"
+        },
+        "map": {
+          "type": "object"
+        },
+        "type": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/type"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/type"
+              },
+              "minItems": 1
+            }
+          ]
+        },
+        "default": {},
+        "note": {
+          "type": "string"
+        }
+      },
+      "dependentRequired": {
+        "pick": [
+          "parse"
+        ]
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/rule"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rule"
+          },
+          "minItems": 1
+        }
+      ]
+    },
+    "document": {
+      "type": "object",
+      "required": [
+        "format",
+        "revision",
+        "source",
+        "block",
+        "core",
+        "fields"
+      ],
+      "properties": {
+        "format": {
+          "const": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Increases with every change of the document. Apps use the higher revision of $ROOT's copy and their bundled one (contract §12)."
+        },
+        "source": {
+          "type": "string"
+        },
+        "document": {
+          "enum": [
+            "hook-event",
+            "session-status"
+          ],
+          "description": "What the document applies to: an event file's payload (hook-event, the default) or a side-source file (docs/model.md §12)."
+        },
+        "block": {
+          "type": "string"
+        },
+        "observed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "core": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/spec"
+          }
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/spec"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "if": {
+        "required": [
+          "document"
+        ],
+        "properties": {
+          "document": {
+            "const": "session-status"
+          }
+        }
+      },
+      "then": {},
+      "else": {
+        "properties": {
+          "fields": {
+            "type": "object",
+            "required": [
+              "kind"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

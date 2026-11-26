@@ -1,0 +1,29 @@
+{
+  "kind": "tool.post",
+  "session": "62896c79-8e97-4cd7-81bd-41df7c086c4a",
+  "tool_call": "call_4354118485226306980",
+  "tool": "shell",
+  "cwd": "/Users/user/dev/subspace/tools/hook-capture/antigravity",
+  "antigravity": {
+    "kind": "tool.post",
+    "transcript_path": "/Users/user/.gemini/antigravity-cli/brain/62896c79-8e97-4cd7-81bd-41df7c086c4a/.system_generated/logs/transcript_full.jsonl",
+    "artifact_dir": "/Users/user/.gemini/antigravity-cli/brain/62896c79-8e97-4cd7-81bd-41df7c086c4a",
+    "workspace_paths": [
+      "/Users/user/dev/subspace/tools/hook-capture/antigravity"
+    ],
+    "model": "gemini-3.8-flash-low",
+    "last_user_input": "Use run_command with BypassSandbox=true to run exactly: echo perm-approved-ok . Reply with its output.",
+    "step_idx": 2,
+    "tool_name": "run_command",
+    "tool_input": {
+      "BypassSandbox": true,
+      "CommandLine": "echo perm-approved-ok",
+      "WaitMsBeforeAsync": 5000,
+      "toolSummary": "Echo permission check string"
+    },
+    "error": "",
+    "command": "echo perm-approved-ok",
+    "command_description": "Echo permission check string",
+    "bypass_sandbox": true
+  }
+}

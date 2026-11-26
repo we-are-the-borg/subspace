@@ -18,8 +18,8 @@ exec > /dev/null 2>&1
 umask 077
 # Byte semantics: ${#var} counts bytes and [[:print:]] is printable ASCII.
 export LC_ALL=C
-# use $SUBSPACE_DIR if set, else $CLAUDE_PLUGIN_DATA if set, else empty string
-root=${SUBSPACE_DIR:-${CLAUDE_PLUGIN_DATA:-}}
+# use $SUBSPACE_DIR if set, else $CLAUDE_PLUGIN_DATA or $PLUGIN_DATA, else empty string
+root=${SUBSPACE_DIR:-${CLAUDE_PLUGIN_DATA:-${PLUGIN_DATA:-}}}
 source=${1:-}
 event=${2:-}
 # Lowercase letters, digits and dashes, spelled out: ranges like a-z depend
