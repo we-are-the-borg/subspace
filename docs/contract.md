@@ -60,10 +60,10 @@ The adapter uses `.antigravity-plugin/plugin.json` and root `hooks.json` (`hooks
 | Case | Path apps must use |
 |---|---|
 | Antigravity CLI (`agy`, verified) | `~/.gemini/antigravity-cli/plugin_data/subspace/` |
-| Antigravity App (unverified installed-plugin path; `--app_data_dir antigravity`) | `~/.gemini/antigravity/plugin_data/subspace/` |
+| Antigravity App (`Antigravity.app`, verified; `--app_data_dir antigravity`) | `~/.gemini/antigravity/plugin_data/subspace/` |
 | `SUBSPACE_DIR` set | `$SUBSPACE_DIR` (tests/development) |
 
-Installed-plugin runs of CLI 1.5.16 on macOS verified `~/.gemini/config/plugins/<name>` as `PLUGIN_ROOT` and `~/.gemini/antigravity-cli/plugin_data/<name>` (created `0755`) as `PLUGIN_DATA`. Antigravity **keeps the data directory after uninstall** (`agy plugin uninstall subspace` removes the plugin under `~/.gemini/config/plugins/` but leaves `plugin_data/` behind). A stale root or `plugin.json` therefore does not prove the plugin is installed.
+Installed-plugin runs of CLI 1.5.16 on macOS verified `~/.gemini/config/plugins/<name>` as `PLUGIN_ROOT` and `~/.gemini/antigravity-cli/plugin_data/<name>` (created `0755`) as `PLUGIN_DATA`; an installed-plugin run of App 2.35.1 verified `~/.gemini/antigravity/plugin_data/<name>`. Antigravity **keeps the data directory after uninstall** (`agy plugin uninstall subspace` removes the plugin under `~/.gemini/config/plugins/` but leaves `plugin_data/` behind). A stale root or `plugin.json` therefore does not prove the plugin is installed.
 
 ## 3. Layout
 
