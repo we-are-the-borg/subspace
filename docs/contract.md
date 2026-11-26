@@ -63,7 +63,7 @@ The adapter uses `.antigravity-plugin/plugin.json` and root `hooks.json` (`hooks
 | Antigravity App (`Antigravity.app`, verified; `--app_data_dir antigravity`) | `~/.gemini/antigravity/plugin_data/subspace/` |
 | `SUBSPACE_DIR` set | `$SUBSPACE_DIR` (tests/development) |
 
-Installed-plugin runs of CLI 1.5.16 on macOS verified `~/.gemini/config/plugins/<name>` as `PLUGIN_ROOT` and `~/.gemini/antigravity-cli/plugin_data/<name>` (created `0755`) as `PLUGIN_DATA`; an installed-plugin run of App 2.35.1 verified `~/.gemini/antigravity/plugin_data/<name>`. Antigravity **keeps the data directory after uninstall** (`agy plugin uninstall subspace` removes the plugin under `~/.gemini/config/plugins/` but leaves `plugin_data/` behind). A stale root or `plugin.json` therefore does not prove the plugin is installed.
+Installed-plugin runs of CLI 1.5.16 on macOS verified `~/.gemini/config/plugins/<name>` as `PLUGIN_ROOT` and `~/.gemini/antigravity-cli/plugin_data/<name>` (created `0755`) as `PLUGIN_DATA`; an installed-plugin run of App 2.35.1 verified `~/.gemini/antigravity/plugin_data/<name>`. A plain `git clone` of the distribution repository into `~/.gemini/config/plugins/subspace` is a complete install too (verified with App 2.35.1 and CLI 1.5.17): it needs no entry in `config.json` or `import_manifest.json`, and `agy plugin install` itself leaves such a clone, `.git` included. On uninstall, CLI 1.5.16 removed the plugin under `~/.gemini/config/plugins/` but **kept `plugin_data/`**; CLI 1.5.17 deletes both data directories (`antigravity-cli` and `antigravity`) as well. Removing the plugin folder by hand keeps them. A stale root or `plugin.json` therefore does not prove the plugin is installed.
 
 ## 3. Layout
 
@@ -289,7 +289,7 @@ Codex leaves data behind on uninstall, so the marker below can survive removal. 
 
 ### Antigravity
 
-Run `agy plugin list --json` and look for the entry with `"name": "subspace"` and `"enabled": true` (it also carries `version`, `source`, `path` and `hooks`). CLI discovery through a login shell may be needed for apps started from Finder/Dock, as with Claude Code. Because Antigravity leaves `$PLUGIN_DATA` behind on `agy plugin uninstall subspace`, confirm CLI state separately rather than relying on `plugin.json` alone.
+Run `agy plugin list --json` and look for the entry with `"name": "subspace"` and `"enabled": true` (it also carries `version`, `path` and `hooks`, and `source` unless the plugin was installed by a plain `git clone`, §2). CLI discovery through a login shell may be needed for apps started from Finder/Dock, as with Claude Code. Without `agy` (App only), the plugin is installed if `~/.gemini/config/plugins/subspace/.antigravity-plugin/plugin.json` exists; whether it is enabled only the App shows (Customizations › Installed). Because `$PLUGIN_DATA` can outlive the plugin (§2), never take `plugin.json` in the root alone as proof of an install.
 
 ### Actual delivery (all sources)
 
